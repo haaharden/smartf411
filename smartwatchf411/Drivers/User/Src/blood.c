@@ -40,23 +40,25 @@ void blood_data_update(void)
 	//标志位被使能时 读取FIFO
 	g_fft_index=0;
 	while(g_fft_index < FFT_N)
-	{
-		while(max30102_read_reg(REG_INTR_STATUS_1)&0x40 )
-		{
-			//读取FIFO
-			max30102_read_fifo();  //read from MAX30102 FIFO2
-			//将数据写入fft输入并清除输出
-			if(g_fft_index < FFT_N)
-			{
-				//将数据写入fft输入并清除输出
-				s1[g_fft_index].real = fifo_red;
-				s1[g_fft_index].imag= 0;
-				s2[g_fft_index].real = fifo_ir;
-				s2[g_fft_index].imag= 0;
-				g_fft_index++;
-			}
-		}
-	}
+    {
+        uint8_t status = max30102_read_reg(REG_INTR_STATUS_1);
+
+        if (status & 0x40)   // 有新数据
+        {
+            max30102_read_fifo();  // 从 FIFO 读出 red/ir
+
+            s1[g_fft_index].real = fifo_red;
+            s1[g_fft_index].imag = 0;
+            s2[g_fft_index].real = fifo_ir;
+            s2[g_fft_index].imag = 0;
+            g_fft_index++;
+        }
+        else
+        {
+            // 没数据就等等，避免疯转
+            HAL_Delay(1);    // 或者空跑几次，视情况
+        }
+    }
 }
 
 
@@ -178,7 +180,7 @@ void blood_Loop(void)
 
 	SpO2 = (SpO2 > 99.99f) ? 99.99f:SpO2;  
 
-	printf("心率%3d/min; 血氧%2d%%\n", heart, (int)SpO2);
+	printf("心率%3d/min; 血氧%2d%%\n\r", heart, (int)SpO2);
 
 }
 
