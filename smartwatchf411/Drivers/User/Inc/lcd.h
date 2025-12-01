@@ -26,7 +26,7 @@ extern "C" {
 
 /* 如果你的屏幕需要偏移（常见 240x280 面板会有 X/Y offset），可以在这里改 */
 #define TFT_X_OFFSET   0
-#define TFT_Y_OFFSET   0
+#define TFT_Y_OFFSET   20
 
 /*================ 对外 API =================*/
 

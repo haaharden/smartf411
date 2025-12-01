@@ -116,12 +116,11 @@ int main(void)
   /* USER CODE BEGIN WHILE */
 	  TFT_FillColor(0xF800); // 红
     HAL_Delay(500);
-		printf("red\n\r");
     TFT_FillColor(0x07E0); // 绿
     HAL_Delay(500);
-		printf("green\n\r");
     TFT_FillColor(0x001F); // 蓝
-		printf("blue\n\r");
+		HAL_Delay(500);
+		TFT_FillColor(0x0000); //黑
   while (1)
   {
     /* USER CODE END WHILE */
@@ -134,8 +133,8 @@ int main(void)
 		HAL_Delay(1000);
 		HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);*/
 		//blood_Loop();
-		printf("cc\n\r");
-		HAL_Delay(1000);
+		//printf("cc\n\r");
+		//HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }

@@ -3,9 +3,9 @@
 <title>Static Call Graph - [smartwatchf411\smartwatchf411.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image smartwatchf411\smartwatchf411.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Mon Dec 01 11:15:06 2025
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Mon Dec 01 15:44:18 2025
 <BR><P>
-<H3>Maximum Stack Usage =        320 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        328 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 main &rArr; TFT_Init &rArr; TFT_FillColor &rArr; TFT_FillRect &rArr; tft_set_addr_window &rArr; tft_write_data &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 <P>
@@ -448,8 +448,8 @@ Global Symbols
 <P><STRONG><a name="[5a]"></a>HAL_InitTick</STRONG> (Thumb, 64 bytes, Stack size 16 bytes, stm32f4xx_hal.o(i.HAL_InitTick))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = HAL_InitTick &rArr; HAL_NVIC_SetPriority &rArr; __NVIC_SetPriority
 </UL>
-<BR>[Calls]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
-<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SYSTICK_Config
+<BR>[Calls]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SYSTICK_Config
+<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
 </UL>
 <BR>[Called By]<UL><LI><a href="#[61]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_RCC_ClockConfig
 <LI><a href="#[58]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_Init
@@ -752,7 +752,7 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_stm32f411xe.o(.text)
 </UL>
 <P><STRONG><a name="[81]"></a>TFT_FillColor</STRONG> (Thumb, 22 bytes, Stack size 16 bytes, lcd.o(i.TFT_FillColor))
-<BR><BR>[Stack]<UL><LI>Max Depth = 312<LI>Call Chain = TFT_FillColor &rArr; TFT_FillRect &rArr; tft_set_addr_window &rArr; tft_write_data &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
+<BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = TFT_FillColor &rArr; TFT_FillRect &rArr; tft_set_addr_window &rArr; tft_write_data &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[82]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFT_FillRect
 </UL>
@@ -760,8 +760,8 @@ Global Symbols
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFT_Init
 </UL>
 
-<P><STRONG><a name="[82]"></a>TFT_FillRect</STRONG> (Thumb, 182 bytes, Stack size 160 bytes, lcd.o(i.TFT_FillRect))
-<BR><BR>[Stack]<UL><LI>Max Depth = 296<LI>Call Chain = TFT_FillRect &rArr; tft_set_addr_window &rArr; tft_write_data &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
+<P><STRONG><a name="[82]"></a>TFT_FillRect</STRONG> (Thumb, 204 bytes, Stack size 168 bytes, lcd.o(i.TFT_FillRect))
+<BR><BR>[Stack]<UL><LI>Max Depth = 304<LI>Call Chain = TFT_FillRect &rArr; tft_set_addr_window &rArr; tft_write_data &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SPI_Transmit
 <LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
@@ -771,7 +771,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[84]"></a>TFT_Init</STRONG> (Thumb, 108 bytes, Stack size 8 bytes, lcd.o(i.TFT_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = TFT_Init &rArr; TFT_FillColor &rArr; TFT_FillRect &rArr; tft_set_addr_window &rArr; tft_write_data &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
+<BR><BR>[Stack]<UL><LI>Max Depth = 328<LI>Call Chain = TFT_Init &rArr; TFT_FillColor &rArr; TFT_FillRect &rArr; tft_set_addr_window &rArr; tft_write_data &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[79]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_GPIO_WritePin
 <LI><a href="#[81]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;TFT_FillColor
@@ -810,8 +810,8 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> printf6.o(i.__0printf$6)
 </UL>
-<P><STRONG><a name="[44]"></a>main</STRONG> (Thumb, 118 bytes, Stack size 0 bytes, main.o(i.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 320<LI>Call Chain = main &rArr; TFT_Init &rArr; TFT_FillColor &rArr; TFT_FillRect &rArr; tft_set_addr_window &rArr; tft_write_data &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
+<P><STRONG><a name="[44]"></a>main</STRONG> (Thumb, 100 bytes, Stack size 0 bytes, main.o(i.main))
+<BR><BR>[Stack]<UL><LI>Max Depth = 328<LI>Call Chain = main &rArr; TFT_Init &rArr; TFT_FillColor &rArr; TFT_FillRect &rArr; tft_set_addr_window &rArr; tft_write_data &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_USART1_UART_Init
 <LI><a href="#[7c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MX_SPI1_Init
@@ -830,7 +830,7 @@ Global Symbols
 <H3>
 Local Symbols
 </H3>
-<P><STRONG><a name="[83]"></a>tft_set_addr_window</STRONG> (Thumb, 102 bytes, Stack size 24 bytes, lcd.o(i.tft_set_addr_window))
+<P><STRONG><a name="[83]"></a>tft_set_addr_window</STRONG> (Thumb, 110 bytes, Stack size 24 bytes, lcd.o(i.tft_set_addr_window))
 <BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = tft_set_addr_window &rArr; tft_write_data &rArr; HAL_SPI_Transmit &rArr; SPI_EndRxTxTransaction &rArr; SPI_WaitFlagStateUntilTimeout
 </UL>
 <BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;tft_write_data
@@ -874,8 +874,8 @@ Local Symbols
 <P><STRONG><a name="[5f]"></a>__NVIC_SetPriority</STRONG> (Thumb, 32 bytes, Stack size 8 bytes, stm32f4xx_hal_cortex.o(i.__NVIC_SetPriority))
 <BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = __NVIC_SetPriority
 </UL>
-<BR>[Called By]<UL><LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
-<LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SYSTICK_Config
+<BR>[Called By]<UL><LI><a href="#[5c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_SYSTICK_Config
+<LI><a href="#[5d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;HAL_NVIC_SetPriority
 </UL>
 
 <P><STRONG><a name="[72]"></a>SPI_EndRxTxTransaction</STRONG> (Thumb, 128 bytes, Stack size 24 bytes, stm32f4xx_hal_spi.o(i.SPI_EndRxTxTransaction))

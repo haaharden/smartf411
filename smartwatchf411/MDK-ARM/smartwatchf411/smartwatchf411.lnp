@@ -1,5 +1,4 @@
 --cpu=Cortex-M4.fp
-"smartwatchf411\startup_stm32f411xe.o"
 "smartwatchf411\key.o"
 "smartwatchf411\blood.o"
 "smartwatchf411\algorithm.o"
@@ -33,6 +32,7 @@
 "smartwatchf411\stm32f4xx_hal_spi.o"
 "smartwatchf411\stm32f4xx_hal_uart.o"
 "smartwatchf411\system_stm32f4xx.o"
+"smartwatchf411\startup_stm32f411xe.o"
 --library_type=microlib --strict --scatter "smartwatchf411\smartwatchf411.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

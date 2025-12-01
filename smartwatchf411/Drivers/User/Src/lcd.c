@@ -167,7 +167,8 @@ void TFT_DrawPixel(uint16_t x, uint16_t y, uint16_t color)
     tft_write_data16(color);
 }
 
-/* 填充一个矩形区域 */
+/* 填充一个矩形区域
+	 stm32存的低字节在前，而屏幕要的是高字节在前，注意 */
 void TFT_FillRect(uint16_t x, uint16_t y,
                   uint16_t w, uint16_t h, uint16_t color)
 {
@@ -182,19 +183,28 @@ void TFT_FillRect(uint16_t x, uint16_t y,
     tft_set_addr_window(x, y, x + w - 1, y + h - 1);
 
     uint32_t total = (uint32_t)w * h;
-    /* 小缓冲区循环发，避免一次性占太多栈 */
-    uint16_t buf[64];
+
+    // 注意：这次用 uint8_t 缓冲区，每个像素2字节
+    uint8_t buf[64 * 2];
+    uint8_t hi = color >> 8;       // 高字节
+    uint8_t lo = color & 0xFF;     // 低字节
+
     for (int i = 0; i < 64; i++)
-        buf[i] = color;
+    {
+        buf[2*i]     = hi; // 先发高字节
+        buf[2*i + 1] = lo; // 再发低字节
+    }
 
     TFT_CS_LOW();
     TFT_DC_DATA();
+
     while (total > 0)
     {
         uint16_t chunk = (total > 64) ? 64 : total;
-        HAL_SPI_Transmit(&TFT_SPI, (uint8_t *)buf, chunk * 2, HAL_MAX_DELAY);
+        HAL_SPI_Transmit(&TFT_SPI, buf, chunk * 2, HAL_MAX_DELAY);
         total -= chunk;
     }
+
     TFT_CS_HIGH();
 }
 
