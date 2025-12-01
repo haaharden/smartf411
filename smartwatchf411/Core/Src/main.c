@@ -51,14 +51,14 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-//�����ⲿ����
+//     ?    
 extern int heart;
 extern float SpO2;
 
-extern RTC_HandleTypeDef hrtc;	// RTC���
+extern RTC_HandleTypeDef hrtc;	// RTC   
 
-RTC_TimeTypeDef Time_Struct;		// ����
-RTC_DateTypeDef Date_Struct;		// ʱ��
+RTC_TimeTypeDef Time_Struct;		//     
+RTC_DateTypeDef Date_Struct;		// ?  
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -96,7 +96,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-
+	HAL_Delay(200);     // 
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -106,27 +106,36 @@ int main(void)
   MX_SPI1_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-	Max30102_reset();     //����max30102
-	MAX30102_Config();    //����max30102
+	TFT_Init();         
+	//Max30102_reset();
+	//MAX30102_Config();
 	printf("Initialize successfully\n\r");
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+	  TFT_FillColor(0xF800); // 红
+    HAL_Delay(500);
+		printf("red\n\r");
+    TFT_FillColor(0x07E0); // 绿
+    HAL_Delay(500);
+		printf("green\n\r");
+    TFT_FillColor(0x001F); // 蓝
+		printf("blue\n\r");
   while (1)
   {
     /* USER CODE END WHILE */
-	HAL_RTC_GetTime(&hrtc,&Time_Struct,RTC_FORMAT_BIN);	// 获取时间
-//	STM32的RTC为确保这 亚秒、时间、日期 3个值来自同一时刻点，
-//	读取 亚秒（RTC_SSR ）或 时间（RTC_TR ）时会锁定高阶影子寄存器中的值，直到读取RTC_DR。	
-//	也就是说用户不读日期的话，时间值会被锁定	
-	/*HAL_RTC_GetDate(&hrtc,&Date_Struct,RTC_FORMAT_BIN);	// 获取日期	
-	printf("%d-%d-%d ",Date_Struct.Year+2000,Date_Struct.Month,Date_Struct.Date);
-	printf("%d:%d:%d\r\n",Time_Struct.Hours,Time_Struct.Minutes,Time_Struct.Seconds);
-	HAL_Delay(1000);
-	HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);*/
-	blood_Loop();
+
     /* USER CODE BEGIN 3 */
+		/*HAL_RTC_GetTime(&hrtc,&Time_Struct,RTC_FORMAT_BIN);	
+		HAL_RTC_GetDate(&hrtc,&Date_Struct,RTC_FORMAT_BIN);	
+		printf("%d-%d-%d ",Date_Struct.Year+2000,Date_Struct.Month,Date_Struct.Date);
+		printf("%d:%d:%d\r\n",Time_Struct.Hours,Time_Struct.Minutes,Time_Struct.Seconds);
+		HAL_Delay(1000);
+		HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);*/
+		//blood_Loop();
+		printf("cc\n\r");
+		HAL_Delay(1000);
   }
   /* USER CODE END 3 */
 }

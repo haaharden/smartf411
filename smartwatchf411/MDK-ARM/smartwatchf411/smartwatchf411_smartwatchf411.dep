@@ -1,8 +1,8 @@
 Dependencies for Project 'smartwatchf411', Target 'smartwatchf411': (DO NOT MODIFY !)
-F (startup_stm32f411xe.s)(0x69259B66)(--cpu Cortex-M4.fp -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include--pd "__UVISION_VERSION SETA 524" --pd "_RTE_ SETA 1" --pd "STM32F411xE SETA 1"--list startup_stm32f411xe.lst --xref -o smartwatchf411\startup_stm32f411xe.o --depend smartwatchf411\startup_stm32f411xe.d)
+F (startup_stm32f411xe.s)(0x692D05CD)(--cpu Cortex-M4.fp -g --apcs=interwork --pd "__MICROLIB SETA 1"-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include--pd "__UVISION_VERSION SETA 524" --pd "_RTE_ SETA 1" --pd "STM32F411xE SETA 1"--list startup_stm32f411xe.lst --xref -o smartwatchf411\startup_stm32f411xe.o --depend smartwatchf411\startup_stm32f411xe.d)
 F (..\Drivers\User\Src\key.c)(0x691BE379)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\key.o --omf_browse smartwatchf411\key.crf --depend smartwatchf411\key.d)
-I (..\Drivers\User\Inc\key.h)(0x691BE379)
-I (../Core/Inc/main.h)(0x69259B65)
+I (../Drivers/User/Inc/key.h)(0x691BE379)
+I (../Core/Inc/main.h)(0x69266E89)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x691AC3D8)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x69257176)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x691AC3D8)
@@ -36,9 +36,9 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc_ex.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x691AC3D8)
-F (..\Drivers\User\Src\blood.c)(0x69259456)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\blood.o --omf_browse smartwatchf411\blood.crf --depend smartwatchf411\blood.d)
-I (..\Drivers\User\Inc\blood.h)(0x69205E9E)
-I (../Core/Inc/main.h)(0x69259B65)
+F (..\Drivers\User\Src\blood.c)(0x6925AB92)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\blood.o --omf_browse smartwatchf411\blood.crf --depend smartwatchf411\blood.d)
+I (../Drivers/User/Inc/blood.h)(0x69205E9E)
+I (../Core/Inc/main.h)(0x69266E89)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x691AC3D8)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x69257176)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x691AC3D8)
@@ -72,10 +72,10 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc_ex.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x691AC3D8)
-I (..\Drivers\User\Inc\MAX30102.h)(0x69205E9E)
+I (../Drivers/User/Inc/MAX30102.h)(0x69205E9E)
 I (../Core/Inc/i2c.h)(0x69257175)
 I (C:\Emb\keil\ARM\ARMCC\include\stdbool.h)(0x588B8344)
-I (..\Drivers\User\Inc\algorithm.h)(0x69205E9E)
+I (../Drivers/User/Inc/algorithm.h)(0x69205E9E)
 I (C:\Emb\keil\ARM\ARMCC\include\math.h)(0x588B8344)
 I (../Core/Inc/usart.h)(0x69257CB1)
 I (C:\Emb\keil\ARM\ARMCC\include\stdio.h)(0x588B8344)
@@ -115,8 +115,8 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc_ex.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x691AC3D8)
 F (..\Drivers\User\Src\max30102.c)(0x69255527)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\max30102.o --omf_browse smartwatchf411\max30102.crf --depend smartwatchf411\max30102.d)
-I (..\Drivers\User\Inc\MAX30102.h)(0x69205E9E)
-I (../Core/Inc/main.h)(0x69259B65)
+I (../Drivers/User/Inc/MAX30102.h)(0x69205E9E)
+I (../Core/Inc/main.h)(0x69266E89)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x691AC3D8)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x69257176)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x691AC3D8)
@@ -153,8 +153,8 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x691AC3D8)
 I (../Core/Inc/i2c.h)(0x69257175)
 I (C:\Emb\keil\ARM\ARMCC\include\stdbool.h)(0x588B8344)
 F (..\Drivers\User\Src\lcd.c)(0x692599A2)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\lcd.o --omf_browse smartwatchf411\lcd.crf --depend smartwatchf411\lcd.d)
-I (../Drivers/User/Inc/lcd.h)(0x692599A2)
-I (../Core/Inc/main.h)(0x69259B65)
+I (../Drivers/User/Inc/lcd.h)(0x6925A6D9)
+I (../Core/Inc/main.h)(0x69266E89)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x691AC3D8)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x69257176)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x691AC3D8)
@@ -190,8 +190,8 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x691AC3D8)
 I (../Core/Inc/spi.h)(0x69257176)
 I (../Core/Inc/gpio.h)(0x69257175)
-F (../Core/Src/main.c)(0x69259EBE)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\main.o --omf_browse smartwatchf411\main.crf --depend smartwatchf411\main.d)
-I (../Core/Inc/main.h)(0x69259B65)
+F (../Core/Src/main.c)(0x692D01A2)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\main.o --omf_browse smartwatchf411\main.crf --depend smartwatchf411\main.d)
+I (../Core/Inc/main.h)(0x69266E89)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x691AC3D8)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x69257176)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x691AC3D8)
@@ -237,10 +237,10 @@ I (../Drivers/User/Inc/algorithm.h)(0x69205E9E)
 I (../Drivers/User/Inc/blood.h)(0x69205E9E)
 I (C:\Emb\keil\ARM\ARMCC\include\math.h)(0x588B8344)
 I (../Drivers/User/Inc/key.h)(0x691BE379)
-I (../Drivers/User/Inc/lcd.h)(0x692599A2)
-F (../Core/Src/gpio.c)(0x69259B63)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\gpio.o --omf_browse smartwatchf411\gpio.crf --depend smartwatchf411\gpio.d)
+I (../Drivers/User/Inc/lcd.h)(0x6925A6D9)
+F (../Core/Src/gpio.c)(0x692D0809)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\gpio.o --omf_browse smartwatchf411\gpio.crf --depend smartwatchf411\gpio.d)
 I (../Core/Inc/gpio.h)(0x69257175)
-I (../Core/Inc/main.h)(0x69259B65)
+I (../Core/Inc/main.h)(0x69266E89)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x691AC3D8)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x69257176)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x691AC3D8)
@@ -276,7 +276,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x691AC3D8)
 F (../Core/Src/i2c.c)(0x69257175)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\i2c.o --omf_browse smartwatchf411\i2c.crf --depend smartwatchf411\i2c.d)
 I (../Core/Inc/i2c.h)(0x69257175)
-I (../Core/Inc/main.h)(0x69259B65)
+I (../Core/Inc/main.h)(0x69266E89)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x691AC3D8)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x69257176)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x691AC3D8)
@@ -312,7 +312,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x691AC3D8)
 F (../Core/Src/rtc.c)(0x69257175)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\rtc.o --omf_browse smartwatchf411\rtc.crf --depend smartwatchf411\rtc.d)
 I (../Core/Inc/rtc.h)(0x69257175)
-I (../Core/Inc/main.h)(0x69259B65)
+I (../Core/Inc/main.h)(0x69266E89)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x691AC3D8)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x69257176)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x691AC3D8)
@@ -346,9 +346,9 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rtc_ex.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x691AC3D8)
-F (../Core/Src/spi.c)(0x69257176)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\spi.o --omf_browse smartwatchf411\spi.crf --depend smartwatchf411\spi.d)
+F (../Core/Src/spi.c)(0x692D0839)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\spi.o --omf_browse smartwatchf411\spi.crf --depend smartwatchf411\spi.d)
 I (../Core/Inc/spi.h)(0x69257176)
-I (../Core/Inc/main.h)(0x69259B65)
+I (../Core/Inc/main.h)(0x69266E89)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x691AC3D8)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x69257176)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x691AC3D8)
@@ -384,7 +384,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x691AC3D8)
 F (../Core/Src/usart.c)(0x69259B64)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\usart.o --omf_browse smartwatchf411\usart.crf --depend smartwatchf411\usart.d)
 I (../Core/Inc/usart.h)(0x69257CB1)
-I (../Core/Inc/main.h)(0x69259B65)
+I (../Core/Inc/main.h)(0x69266E89)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x691AC3D8)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x69257176)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x691AC3D8)
@@ -420,7 +420,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x691AC3D8)
 I (C:\Emb\keil\ARM\ARMCC\include\stdio.h)(0x588B8344)
 F (../Core/Src/stm32f4xx_it.c)(0x69257176)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\stm32f4xx_it.o --omf_browse smartwatchf411\stm32f4xx_it.crf --depend smartwatchf411\stm32f4xx_it.d)
-I (../Core/Inc/main.h)(0x69259B65)
+I (../Core/Inc/main.h)(0x69266E89)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x691AC3D8)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x69257176)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x691AC3D8)
@@ -456,7 +456,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x691AC3D8)
 I (../Core/Inc/stm32f4xx_it.h)(0x69257176)
 F (../Core/Src/stm32f4xx_hal_msp.c)(0x69257176)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\stm32f4xx_hal_msp.o --omf_browse smartwatchf411\stm32f4xx_hal_msp.crf --depend smartwatchf411\stm32f4xx_hal_msp.d)
-I (../Core/Inc/main.h)(0x69259B65)
+I (../Core/Inc/main.h)(0x69266E89)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal.h)(0x691AC3D8)
 I (../Core/Inc/stm32f4xx_hal_conf.h)(0x69257176)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_rcc.h)(0x691AC3D8)
