@@ -41,6 +41,23 @@ void TFT_FillRect(uint16_t x, uint16_t y, uint16_t w, uint16_t h, uint16_t color
 /* 画一个像素 */
 void TFT_DrawPixel(uint16_t x, uint16_t y, uint16_t color);
 
+//横线
+void TFT_DrawHLine(uint16_t x, uint16_t y,uint16_t w, uint16_t color);
+
+//竖线
+void TFT_DrawVLine(uint16_t x, uint16_t y,uint16_t h, uint16_t color);
+
+//画圆
+void TFT_DrawCircle(int xc, int yc, int r, uint16_t color);
+
+//画空心矩形
+void TFT_DrawRect(uint16_t x, uint16_t y,uint16_t w, uint16_t h, uint16_t color);
+
+//显示字符串
+void TFT_DrawString(uint16_t x, uint16_t y,const char *str,uint16_t fg, uint16_t bg);
+
+void UI_Home(void);
+void UI_UpdateTemp(float temp);
 #ifdef __cplusplus
 }
 #endif

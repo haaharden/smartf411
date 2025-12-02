@@ -114,13 +114,9 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-	  TFT_FillColor(0xF800); // 红
-    HAL_Delay(500);
-    TFT_FillColor(0x07E0); // 绿
-    HAL_Delay(500);
-    TFT_FillColor(0x001F); // 蓝
-		HAL_Delay(500);
-		TFT_FillColor(0x0000); //黑
+	UI_Home();
+	
+	float t = 25.0f;
   while (1)
   {
     /* USER CODE END WHILE */
@@ -135,6 +131,9 @@ int main(void)
 		//blood_Loop();
 		//printf("cc\n\r");
 		//HAL_Delay(1000);
+		t += 0.1f;
+    UI_UpdateTemp(t);
+    HAL_Delay(2000);
   }
   /* USER CODE END 3 */
 }

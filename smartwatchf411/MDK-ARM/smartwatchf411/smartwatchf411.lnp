@@ -4,6 +4,7 @@
 "smartwatchf411\algorithm.o"
 "smartwatchf411\max30102.o"
 "smartwatchf411\lcd.o"
+"smartwatchf411\font8x16.o"
 "smartwatchf411\main.o"
 "smartwatchf411\gpio.o"
 "smartwatchf411\i2c.o"

@@ -408,6 +408,11 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\User\Src\lcd.c</FilePath>
             </File>
+            <File>
+              <FileName>font8x16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\User\Src\font8x16.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

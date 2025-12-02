@@ -12,6 +12,9 @@
 #include "lcd.h"
 #include "spi.h"
 #include "gpio.h"
+#include "font8x16.h"
+#include "lcdfont.h"
+#include "stdio.h"
 
 /*SCK<->PA5
 	SDA<->PA7
@@ -57,6 +60,7 @@ static void tft_write_cmd(uint8_t cmd)
 }
 
 /* 发送一串数据 */
+//有些低效，之后肯定是要在外面通义片选和dc，不用没传一次数据就拉一次
 static void tft_write_data(const uint8_t *data, uint16_t size)
 {
     TFT_CS_LOW();
@@ -163,15 +167,18 @@ void TFT_DrawPixel(uint16_t x, uint16_t y, uint16_t color)
     if (x >= TFT_WIDTH || y >= TFT_HEIGHT)
         return;
 
+    // 把绘图窗口设置成 1x1 的小区域
     tft_set_addr_window(x, y, x, y);
-    tft_write_data16(color);
+
+		tft_write_data16(color);
+
 }
 
 /* 填充一个矩形区域
 	 stm32存的低字节在前，而屏幕要的是高字节在前，注意 */
 void TFT_FillRect(uint16_t x, uint16_t y,
                   uint16_t w, uint16_t h, uint16_t color)
-{
+{		//下面三个if，目的是超过屏幕的就不显示
     if (x >= TFT_WIDTH || y >= TFT_HEIGHT)
         return;
 
@@ -179,8 +186,8 @@ void TFT_FillRect(uint16_t x, uint16_t y,
         w = TFT_WIDTH - x;
     if ((y + h) > TFT_HEIGHT)
         h = TFT_HEIGHT - y;
-
-    tft_set_addr_window(x, y, x + w - 1, y + h - 1);
+		
+    tft_set_addr_window(x, y, x + w - 1, y + h - 1);//告诉屏幕我要在这里画图
 
     uint32_t total = (uint32_t)w * h;
 
@@ -195,9 +202,9 @@ void TFT_FillRect(uint16_t x, uint16_t y,
         buf[2*i + 1] = lo; // 再发低字节
     }
 
-    TFT_CS_LOW();
-    TFT_DC_DATA();
-
+    TFT_CS_LOW(); //选中屏幕
+    TFT_DC_DATA();//dc=1，接下来发送到是数据，不是命令
+		//chunk是要这次烧的像素，total是总的还剩的像素
     while (total > 0)
     {
         uint16_t chunk = (total > 64) ? 64 : total;
@@ -205,7 +212,7 @@ void TFT_FillRect(uint16_t x, uint16_t y,
         total -= chunk;
     }
 
-    TFT_CS_HIGH();
+    TFT_CS_HIGH();//取消片选
 }
 
 /* 整屏填充一种颜色 */
@@ -213,5 +220,131 @@ void TFT_FillColor(uint16_t color)
 {
     TFT_FillRect(0, 0, TFT_WIDTH, TFT_HEIGHT, color);
 }
+//横线
+void TFT_DrawHLine(uint16_t x, uint16_t y,
+                   uint16_t w, uint16_t color)
+{
+    TFT_FillRect(x, y, w, 1, color);
+}
+//竖线
+void TFT_DrawVLine(uint16_t x, uint16_t y,
+                   uint16_t h, uint16_t color)
+{
+    TFT_FillRect(x, y, 1, h, color);
+}
+//下面两个画圆
+static void draw_circle_points(int xc, int yc, int x, int y, uint16_t color)
+{
+    TFT_DrawPixel(xc + x, yc + y, color);
+    TFT_DrawPixel(xc - x, yc + y, color);
+    TFT_DrawPixel(xc + x, yc - y, color);
+    TFT_DrawPixel(xc - x, yc - y, color);
+    TFT_DrawPixel(xc + y, yc + x, color);
+    TFT_DrawPixel(xc - y, yc + x, color);
+    TFT_DrawPixel(xc + y, yc - x, color);
+    TFT_DrawPixel(xc - y, yc - x, color);
+}
 
+void TFT_DrawCircle(int xc, int yc, int r, uint16_t color)
+{
+    int x = 0;
+    int y = r;
+    int d = 3 - 2 * r;
 
+    while (x <= y)
+    {
+        draw_circle_points(xc, yc, x, y, color);
+        if (d < 0)
+            d = d + 4 * x + 6;
+        else
+        {
+            d = d + 4 * (x - y) + 10;
+            y--;
+        }
+        x++;
+    }
+}
+
+//画空心矩形
+void TFT_DrawRect(uint16_t x, uint16_t y,
+                  uint16_t w, uint16_t h, uint16_t color)
+{
+    if (w == 0 || h == 0) return;
+
+    // 上边
+    TFT_DrawHLine(x, y, w, color);
+    // 下边
+    TFT_DrawHLine(x, y + h - 1, w, color);
+    // 左边
+    TFT_DrawVLine(x, y, h, color);
+    // 右边
+    TFT_DrawVLine(x + w - 1, y, h, color);
+}
+
+// ch: 普通 ASCII 字符，比如 'A'、'0' 等
+//ASCII可打印字符是32-126，所以从32开始，126-32+1=95
+void TFT_DrawChar(uint16_t x, uint16_t y,
+                  char ch, uint16_t fg, uint16_t bg)
+{
+    if (ch < 32 || ch > 126) ch = '?';  // 不认识的就画 '?'
+
+    const uint8_t *bitmap = ascii_1608[ch - 32];
+
+    for (uint8_t row = 0; row < 16; row++)
+    {
+        uint8_t bits = bitmap[row];
+        for (uint8_t col = 0; col < 8; col++)
+        {
+            uint16_t color =
+                (bits & (1 << col)) ? fg : bg;
+
+            TFT_DrawPixel(x + col, y + row, color);
+        }
+    }
+}
+
+//字符串
+void TFT_DrawString(uint16_t x, uint16_t y,
+                    const char *str,
+                    uint16_t fg, uint16_t bg)
+{
+    while (*str)
+    {
+        TFT_DrawChar(x, y, *str, fg, bg);
+        x += 8;      // 每个字符宽 8 像素
+        str++;
+    }
+}
+//测试显示ui
+void UI_Home(void)
+{
+    // 背景
+    TFT_FillColor(0x0000);
+
+    // 顶部状态栏
+    TFT_FillRect(0, 0, TFT_WIDTH, 20, 0x2104);
+    TFT_DrawString(5, 4, "My Device", 0xFFFF, 0x2104);
+    TFT_DrawString(180, 4, "12:34",    0xFFFF, 0x2104);
+
+    // 中间数据框
+    TFT_DrawRect(10, 30, TFT_WIDTH - 20, 80, 0xFFFF);
+    TFT_DrawString(20, 40, "TEMP:", 0xFFE0, 0x0000);
+    TFT_DrawString(20, 60, "25.3 C", 0xFFFF, 0x0000);
+
+    // 底部两个按钮
+    TFT_FillRect(20, 130, 80, 40, 0x07E0);
+    TFT_DrawString(35, 140, "START", 0x0000, 0x07E0);
+
+    TFT_FillRect(140, 130, 80, 40, 0xF800);
+    TFT_DrawString(155, 140, "STOP", 0xFFFF, 0xF800);
+}
+void UI_UpdateTemp(float temp)
+{
+    char buf[16];
+    sprintf(buf, "%2.1f C", temp);
+
+    // 先擦掉旧的数字区域
+    TFT_FillRect(20, 60, 100, 16, 0x0000);
+    // 再画新的
+    TFT_DrawString(20, 60, buf, 0xFFFF, 0x0000);
+}
