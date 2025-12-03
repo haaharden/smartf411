@@ -114,7 +114,7 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-	UI_Home();
+	TFT_UI_Home();
 	
 	float t = 25.0f;
   while (1)
@@ -132,7 +132,7 @@ int main(void)
 		//printf("cc\n\r");
 		//HAL_Delay(1000);
 		t += 0.1f;
-    UI_UpdateTemp(t);
+    TFT_UI_UpdateTemp(t);
     HAL_Delay(2000);
   }
   /* USER CODE END 3 */

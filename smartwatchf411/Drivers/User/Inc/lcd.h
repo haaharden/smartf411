@@ -30,6 +30,8 @@ extern "C" {
 
 /*================ 对外 API =================*/
 
+static void tft_set_addr_window(uint16_t x0, uint16_t y0,uint16_t x1, uint16_t y1);
+	
 void TFT_Init(void);
 
 /* 整屏填充一种颜色（RGB565） */
@@ -56,8 +58,9 @@ void TFT_DrawRect(uint16_t x, uint16_t y,uint16_t w, uint16_t h, uint16_t color)
 //显示字符串
 void TFT_DrawString(uint16_t x, uint16_t y,const char *str,uint16_t fg, uint16_t bg);
 
-void UI_Home(void);
-void UI_UpdateTemp(float temp);
+//UI函数
+void TFT_UI_Home(void);
+void TFT_UI_UpdateTemp(float temp);
 #ifdef __cplusplus
 }
 #endif

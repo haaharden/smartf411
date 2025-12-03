@@ -12,7 +12,6 @@
 #include "lcd.h"
 #include "spi.h"
 #include "gpio.h"
-#include "font8x16.h"
 #include "lcdfont.h"
 #include "stdio.h"
 
@@ -283,6 +282,7 @@ void TFT_DrawRect(uint16_t x, uint16_t y,
 
 // ch: 普通 ASCII 字符，比如 'A'、'0' 等
 //ASCII可打印字符是32-126，所以从32开始，126-32+1=95
+//fg是字体颜色，bg是背景颜色
 void TFT_DrawChar(uint16_t x, uint16_t y,
                   char ch, uint16_t fg, uint16_t bg)
 {
@@ -316,7 +316,7 @@ void TFT_DrawString(uint16_t x, uint16_t y,
     }
 }
 //测试显示ui
-void UI_Home(void)
+void TFT_UI_Home(void)
 {
     // 背景
     TFT_FillColor(0x0000);
@@ -329,7 +329,7 @@ void UI_Home(void)
     // 中间数据框
     TFT_DrawRect(10, 30, TFT_WIDTH - 20, 80, 0xFFFF);
     TFT_DrawString(20, 40, "TEMP:", 0xFFE0, 0x0000);
-    TFT_DrawString(20, 60, "25.3 C", 0xFFFF, 0x0000);
+    TFT_DrawString(20, 60, "25.1 C", 0xFFFF, 0x0000);
 
     // 底部两个按钮
     TFT_FillRect(20, 130, 80, 40, 0x07E0);
@@ -338,13 +338,42 @@ void UI_Home(void)
     TFT_FillRect(140, 130, 80, 40, 0xF800);
     TFT_DrawString(155, 140, "STOP", 0xFFFF, 0xF800);
 }
-void UI_UpdateTemp(float temp)
+void TFT_UI_UpdateTemp(float temp)
 {
     char buf[16];
-    sprintf(buf, "%2.1f C", temp);
-
+		//sprintf可以自动格式化成字符串，不用自己把int或float转化了
+		//%2.1f表示，%是占位符，小数保留1位，浮点数，字母C原样输出
+		//snprintf比sprintf更加安全，不会超限写内存
+    snprintf(buf, sizeof(buf), "%.1f C", temp);//把temp按1位小数格式写进buf
     // 先擦掉旧的数字区域
     TFT_FillRect(20, 60, 100, 16, 0x0000);
     // 再画新的
     TFT_DrawString(20, 60, buf, 0xFFFF, 0x0000);
 }
+
+//据说是lvgl桥梁
+/*
+void my_disp_flush(lv_display_t * disp,const lv_area_t * area,uint8_t * px_map)
+{
+    int32_t x1 = area->x1;
+    int32_t y1 = area->y1;
+    int32_t x2 = area->x2;
+    int32_t y2 = area->y2;
+
+    int32_t w = x2 - x1 + 1;
+    int32_t h = y2 - y1 + 1;
+
+    // 1) 设置 TFT 写入窗口
+    tft_set_addr_window(x1, y1, x2, y2);
+
+    // 2) 把 px_map 里的像素通过 SPI 全部发给屏
+    //    假设 LVGL 配置的是 RGB565，每个像素 2 字节
+    TFT_CS_LOW();
+    TFT_DC_DATA();
+    HAL_SPI_Transmit(&TFT_SPI, px_map, w * h * 2, HAL_MAX_DELAY);
+    TFT_CS_HIGH();
+
+    // 3) 告诉 LVGL：这次刷屏我已经干完了
+    lv_disp_flush_ready(disp);
+}
+*/
