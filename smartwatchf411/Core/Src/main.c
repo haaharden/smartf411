@@ -139,10 +139,7 @@ int main(void)
 		HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);*/
 		//blood_Loop();
 		//printf("cc\n\r");
-		//HAL_Delay(1000);
-		//t += 0.1f;
     //TFT_UI_UpdateTemp(t);
-    //HAL_Delay(2000);
   }
   /* USER CODE END 3 */
 }
