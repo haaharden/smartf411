@@ -30,6 +30,7 @@
 #include "algorithm.h"
 #include "blood.h"
 #include "key.h"
+#include "touch.h"
 #include "lcd.h"
 #include "lvgl.h"
 #include "lv_port_disp.h"
@@ -53,14 +54,13 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-//     ?    
 extern int heart;
 extern float SpO2;
 
 extern RTC_HandleTypeDef hrtc;	// RTC   
 
-RTC_TimeTypeDef Time_Struct;		//     
-RTC_DateTypeDef Date_Struct;		// ?  
+RTC_TimeTypeDef Time_Struct;	     
+RTC_DateTypeDef Date_Struct;		 
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -98,7 +98,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-	HAL_Delay(200);     // 
+	HAL_Delay(200);     
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -108,7 +108,7 @@ int main(void)
   MX_SPI1_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-	//TFT_Init();  
+	CST816T_Init();  
 	lv_init();
 	lv_port_disp_init();
 	//Max30102_reset();
@@ -118,7 +118,6 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-	 /*‘⁄∆¡ƒª÷–º‰¥¥Ω®“ª∏ˆ120*50¥Û–°µƒ∞¥≈•*/
    lv_obj_t* switch_obj = lv_switch_create(lv_scr_act());
    lv_obj_set_size(switch_obj, 120, 50);
    lv_obj_align(switch_obj, LV_ALIGN_CENTER, 0, 0);
@@ -129,14 +128,37 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		lv_timer_handler();   // »√ LVGL ¥¶¿Ì÷ÿªÊ∫Õ∂Øª≠
-    HAL_Delay(5);         // …‘Œ¢ÀØ“ªª·£¨5~10ms ∂º––
+		if (touch_int_flag)
+		{
+				touch_int_flag = 0;
+
+				uint16_t x, y;
+				uint8_t gesture;
+				if (CST816_GetAction(&x, &y, &gesture))
+				{
+						uint8_t fingers = 1;   // ‰Ω†‰πüÂèØ‰ª•Êää FingerNum ‰º†ËøõÊù•ÔºåÂÖàÁÆÄÂçïÂÜôÊ≠ª
+
+						TouchEvent ev = GetTouchEvent(x, y, gesture, fingers);
+						if (ev == EVENT_SINGLE_CLICK)
+						{
+								// ÂçïÂáªÔºöÊØîÂ¶ÇÁøªËΩ¨ LED
+								HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+						}
+						else if (ev == EVENT_DOUBLE_CLICK)
+						{
+								// ÂèåÂáªÔºöÂÅöÂà´ÁöÑ‰∫ãÊÉÖ
+						}
+				}
+		}
+		lv_timer_handler();   
+    HAL_Delay(1);       
 		/*HAL_RTC_GetTime(&hrtc,&Time_Struct,RTC_FORMAT_BIN);	
 		HAL_RTC_GetDate(&hrtc,&Date_Struct,RTC_FORMAT_BIN);	
 		printf("%d-%d-%d ",Date_Struct.Year+2000,Date_Struct.Month,Date_Struct.Date);
 		printf("%d:%d:%d\r\n",Time_Struct.Hours,Time_Struct.Minutes,Time_Struct.Seconds);
-		HAL_Delay(1000);
-		HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);*/
+		HAL_Delay(1000);*/
+		//HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
+		//HAL_Delay(1000);
 		//blood_Loop();
 		//printf("cc\n\r");
     //TFT_UI_UpdateTemp(t);
