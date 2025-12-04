@@ -340,29 +340,25 @@ void TFT_UI_UpdateTemp(float temp)
     TFT_DrawString(20, 60, buf, 0xFFFF, 0x0000);
 }
 
-//据说是lvgl桥梁
-/*
-void my_disp_flush(lv_display_t * disp,const lv_area_t * area,uint8_t * px_map)
+// 假定你已有：void tft_set_addr_window(uint16_t x1, uint16_t y1, uint16_t x2, uint16_t y2);
+
+void TFT_FlushArea(uint16_t x1, uint16_t y1,
+                          uint16_t x2, uint16_t y2,
+                          const lv_color_t *color_p)
 {
-    int32_t x1 = area->x1;
-    int32_t y1 = area->y1;
-    int32_t x2 = area->x2;
-    int32_t y2 = area->y2;
+    if(x2 >= TFT_WIDTH)  x2 = TFT_WIDTH  - 1;
+    if(y2 >= TFT_HEIGHT) y2 = TFT_HEIGHT - 1;
 
-    int32_t w = x2 - x1 + 1;
-    int32_t h = y2 - y1 + 1;
+    uint32_t w = (uint32_t)(x2 - x1 + 1);
+    uint32_t h = (uint32_t)(y2 - y1 + 1);
+    uint32_t size = w * h;                    // 像素个数
 
-    // 1) 设置 TFT 写入窗口
+    // 1. 把地址窗口设置成整个区域
     tft_set_addr_window(x1, y1, x2, y2);
 
-    // 2) 把 px_map 里的像素通过 SPI 全部发给屏
-    //    假设 LVGL 配置的是 RGB565，每个像素 2 字节
-    TFT_CS_LOW();
-    TFT_DC_DATA();
-    HAL_SPI_Transmit(&TFT_SPI, px_map, w * h * 2, HAL_MAX_DELAY);
-    TFT_CS_HIGH();
-
-    // 3) 告诉 LVGL：这次刷屏我已经干完了
-    lv_disp_flush_ready(disp);
+    // 2. 一口气把这块区域的像素数据全发出去
+    //    注意：前提是 LV_COLOR_16_SWAP = 1，这样内存中的字节序
+    //    已经是高字节在前，可以直接当字节流发
+    tft_write_data((const uint8_t *)color_p, size * sizeof(lv_color_t));
 }
-*/
+

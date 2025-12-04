@@ -2,6 +2,8 @@
 #include "gpio.h"
 #include "touch.h"
 #include "stm32f4xx_it.h"
+#include "usart.h"
+#include <stdio.h>
 
 /*	TP_SCL<->PB6
 		TP_SDA<->PB7
@@ -50,8 +52,9 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
     if (GPIO_Pin == TP_INT_Pin)   // TP_INT_Pin 在 main.h 里，一般就是 GPIO_PIN_x
     {
         // 只做简单的标志位，不在中断里读 I2C
+				//注意，flag只能判断是不是抬起和松手的状态变了，不能判断手是否在屏幕上
         touch_int_flag = 1;
-				HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
+				//HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
     }
 }
 
@@ -134,7 +137,17 @@ uint8_t CST816_GetAction(uint16_t *X, uint16_t *Y, uint8_t *Gesture)
     if (X) *X = x;
     if (Y) *Y = y;
     if (Gesture) *Gesture = gesture;
-
+    
+		{
+        char msg[64];
+        int len = snprintf(msg, sizeof(msg),
+                           "raw x=%u y=%u gesture=0x%02X\r\n",
+                           x, y, gesture);
+        if (len > 0)
+        {
+            HAL_UART_Transmit(&huart1, (uint8_t *)msg, len, 100);
+        }
+    }
     return 1;
 }
 

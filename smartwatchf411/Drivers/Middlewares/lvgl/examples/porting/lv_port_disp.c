@@ -155,25 +155,40 @@ void disp_disable_update(void)
 /*Flush the content of the internal buffer the specific area on the display
  *You can use DMA or any hardware acceleration to do this operation in the background but
  *'lv_disp_flush_ready()' has to be called when finished.*/
-static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p)
+/*static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p)
 {
     if(disp_flush_enabled) {
-        /*The most simple case (but also the slowest) to put all pixels to the screen one-by-one*/
+        //The most simple case (but also the slowest) to put all pixels to the screen one-by-one
 
         int32_t x;
         int32_t y;
         for(y = area->y1; y <= area->y2; y++) {
             for(x = area->x1; x <= area->x2; x++) {
-                /*Put a pixel to the display. For example:*/
-                /*put_px(x, y, *color_p)*/
+                //Put a pixel to the display. For example:
+                //put_px(x, y, *color_p)
 								TFT_DrawPixel(x,y, *(uint16_t *)color_p);
                 color_p++;
             }
         }
     }
 
-    /*IMPORTANT!!!
-     *Inform the graphics library that you are ready with the flushing*/
+    //IMPORTANT!!!Inform the graphics library that you are ready with the flushing
+    lv_disp_flush_ready(disp_drv);
+}*/
+static void disp_flush(lv_disp_drv_t * disp_drv,
+                       const lv_area_t * area,
+                       lv_color_t * color_p)
+{
+    if(disp_flush_enabled) {
+
+        TFT_FlushArea(area->x1,
+                      area->y1,
+                      area->x2,
+                      area->y2,
+                      color_p);
+    }
+
+    // 通知 LVGL：这一块刷完了
     lv_disp_flush_ready(disp_drv);
 }
 

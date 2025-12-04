@@ -34,6 +34,7 @@
 #include "lcd.h"
 #include "lvgl.h"
 #include "lv_port_disp.h"
+#include "lv_port_indev.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -108,9 +109,9 @@ int main(void)
   MX_SPI1_Init();
   MX_USART1_UART_Init();
   /* USER CODE BEGIN 2 */
-	CST816T_Init();  
 	lv_init();
 	lv_port_disp_init();
+	lv_port_indev_init();
 	//Max30102_reset();
 	//MAX30102_Config();
 	printf("Initialize successfully\n\r");
@@ -121,37 +122,13 @@ int main(void)
    lv_obj_t* switch_obj = lv_switch_create(lv_scr_act());
    lv_obj_set_size(switch_obj, 120, 50);
    lv_obj_align(switch_obj, LV_ALIGN_CENTER, 0, 0);
-	//TFT_UI_Home();
-	//float t = 25.0f;
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		if (touch_int_flag)
-		{
-				touch_int_flag = 0;
-
-				uint16_t x, y;
-				uint8_t gesture;
-				if (CST816_GetAction(&x, &y, &gesture))
-				{
-						uint8_t fingers = 1;   // 你也可以把 FingerNum 传进来，先简单写死
-
-						TouchEvent ev = GetTouchEvent(x, y, gesture, fingers);
-						if (ev == EVENT_SINGLE_CLICK)
-						{
-								// 单击：比如翻转 LED
-								HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
-						}
-						else if (ev == EVENT_DOUBLE_CLICK)
-						{
-								// 双击：做别的事情
-						}
-				}
-		}
 		lv_timer_handler();   
-    HAL_Delay(1);       
+    HAL_Delay(5);       
 		/*HAL_RTC_GetTime(&hrtc,&Time_Struct,RTC_FORMAT_BIN);	
 		HAL_RTC_GetDate(&hrtc,&Date_Struct,RTC_FORMAT_BIN);	
 		printf("%d-%d-%d ",Date_Struct.Year+2000,Date_Struct.Month,Date_Struct.Date);

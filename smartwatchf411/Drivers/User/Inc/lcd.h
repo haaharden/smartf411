@@ -17,7 +17,8 @@ extern "C" {
 #endif
 
 #include "main.h"
-
+#include "lvgl.h"
+	
 /*================ 基本参数，根据你的屏幕实际情况修改 =================*/
 
 /* 分辨率：先按 240x280 写，如果你的是 240x240 自己改这里 */
@@ -61,6 +62,8 @@ void TFT_DrawString(uint16_t x, uint16_t y,const char *str,uint16_t fg, uint16_t
 //UI函数
 void TFT_UI_Home(void);
 void TFT_UI_UpdateTemp(float temp);
+
+void TFT_FlushArea(uint16_t x1, uint16_t y1,uint16_t x2, uint16_t y2,const lv_color_t *color_p);
 #ifdef __cplusplus
 }
 #endif
