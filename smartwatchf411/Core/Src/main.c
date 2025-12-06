@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "cmsis_os.h"
 #include "dma.h"
 #include "i2c.h"
 #include "rtc.h"
@@ -33,6 +34,7 @@
 #include "key.h"
 #include "touch.h"
 #include "lcd.h"
+#include "gui.h"
 #include "lvgl.h"
 #include "lv_port_disp.h"
 #include "lv_port_indev.h"
@@ -57,16 +59,13 @@
 
 /* USER CODE BEGIN PV */
 extern int heart;
-extern float SpO2;
-
-extern RTC_HandleTypeDef hrtc;	// RTC   
-
-RTC_TimeTypeDef Time_Struct;	     
-RTC_DateTypeDef Date_Struct;		 
+extern float SpO2;  
+ 
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
+void MX_FREERTOS_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -114,33 +113,30 @@ int main(void)
 	lv_init();
 	lv_port_disp_init();
 	lv_port_indev_init();
-	//Max30102_reset();
-	//MAX30102_Config();
+	Max30102_reset();
+	MAX30102_Config();
 	printf("Initialize successfully\n\r");
+	ui_init();
   /* USER CODE END 2 */
+
+  /* Init scheduler */
+  osKernelInitialize();  /* Call init function for freertos objects (in cmsis_os2.c) */
+  MX_FREERTOS_Init();
+
+  /* Start scheduler */
+  osKernelStart();
+
+  /* We should never get here as control is now taken by the scheduler */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-   lv_obj_t* switch_obj = lv_switch_create(lv_scr_act());
-   lv_obj_set_size(switch_obj, 120, 50);
-   lv_obj_align(switch_obj, LV_ALIGN_CENTER, 0, 0);
+
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		lv_timer_handler();   
-    HAL_Delay(5);       
-		/*HAL_RTC_GetTime(&hrtc,&Time_Struct,RTC_FORMAT_BIN);	
-		HAL_RTC_GetDate(&hrtc,&Date_Struct,RTC_FORMAT_BIN);	
-		printf("%d-%d-%d ",Date_Struct.Year+2000,Date_Struct.Month,Date_Struct.Date);
-		printf("%d:%d:%d\r\n",Time_Struct.Hours,Time_Struct.Minutes,Time_Struct.Seconds);
-		HAL_Delay(1000);*/
-		//HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
-		//HAL_Delay(1000);
 		//blood_Loop();
-		//printf("cc\n\r");
-    //TFT_UI_UpdateTemp(t);
   }
   /* USER CODE END 3 */
 }
@@ -194,6 +190,28 @@ void SystemClock_Config(void)
 /* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM11 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM11)
+  {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
+}
 
 /**
   * @brief  This function is executed in case of error occurrence.

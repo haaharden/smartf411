@@ -11,6 +11,7 @@
  */
 #include "blood.h"
 #include "usart.h"
+#include "cmsis_os.h"
 
 int heart;		//定义心率
 float SpO2;		//定义血氧饱和度
@@ -56,7 +57,7 @@ void blood_data_update(void)
         else
         {
             // 没数据就等等，避免疯转
-            HAL_Delay(1);    // 或者空跑几次，视情况
+            osDelay(1);    // 或者空跑几次，视情况
         }
     }
 }
@@ -180,7 +181,7 @@ void blood_Loop(void)
 
 	SpO2 = (SpO2 > 99.99f) ? 99.99f:SpO2;  
 
-	printf("心率%3d/min; 血氧%2d%%\n\r", heart, (int)SpO2);
+	//printf("心率%3d/min; 血氧%2d%%\n\r", heart, (int)SpO2);
 
 }
 
