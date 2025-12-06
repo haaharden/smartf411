@@ -29,7 +29,6 @@ RTC_HandleTypeDef hrtc;
 /* RTC init function */
 void MX_RTC_Init(void)
 {
-
   /* USER CODE BEGIN RTC_Init 0 */
 
   /* USER CODE END RTC_Init 0 */
@@ -38,11 +37,12 @@ void MX_RTC_Init(void)
   RTC_DateTypeDef sDate = {0};
 
   /* USER CODE BEGIN RTC_Init 1 */
-
+  // 允许访问备份域
+  __HAL_RCC_PWR_CLK_ENABLE();
+  HAL_PWR_EnableBkUpAccess();
   /* USER CODE END RTC_Init 1 */
 
-  /** Initialize RTC Only
-  */
+  /** Initialize RTC Only */
   hrtc.Instance = RTC;
   hrtc.Init.HourFormat = RTC_HOURFORMAT_24;
   hrtc.Init.AsynchPrediv = 127;
@@ -57,32 +57,45 @@ void MX_RTC_Init(void)
 
   /* USER CODE BEGIN Check_RTC_BKUP */
 
+  // 只在“第一次上电/初始化”时设置时间和日期
+  // 用备份寄存器 RTC_BKP_DR0 存一个魔数做标记
+  if (HAL_RTCEx_BKUPRead(&hrtc, RTC_BKP_DR0) != 0x32F2)
+  {
+      // 第一次初始化 RTC：给一个初始时间
+      sTime.Hours          = 0x12;   // 随便先设 12:00:00
+      sTime.Minutes        = 0x00;
+      sTime.Seconds        = 0x00;
+      sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
+      sTime.StoreOperation = RTC_STOREOPERATION_RESET;
+      if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
+      {
+        Error_Handler();
+      }
+
+      sDate.WeekDay = RTC_WEEKDAY_MONDAY;
+      sDate.Month   = RTC_MONTH_JANUARY;
+      sDate.Date    = 0x1;
+      sDate.Year    = 0x25;   // 2024，你可以改成你想要的
+
+      if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
+      {
+        Error_Handler();
+      }
+
+      // 写“已经初始化过”的标记
+      HAL_RTCEx_BKUPWrite(&hrtc, RTC_BKP_DR0, 0x32F2);
+  }
+  else
+  {
+      // 不是第一次：不要再 SetTime / SetDate，保持原来的时间
+      // 你可以在这里 printf("RTC already initialized\n"); 调试
+  }
+
   /* USER CODE END Check_RTC_BKUP */
 
-  /** Initialize RTC and set the Time and Date
-  */
-  sTime.Hours = 0x0;
-  sTime.Minutes = 0x0;
-  sTime.Seconds = 0x0;
-  sTime.DayLightSaving = RTC_DAYLIGHTSAVING_NONE;
-  sTime.StoreOperation = RTC_STOREOPERATION_RESET;
-  if (HAL_RTC_SetTime(&hrtc, &sTime, RTC_FORMAT_BCD) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  sDate.WeekDay = RTC_WEEKDAY_MONDAY;
-  sDate.Month = RTC_MONTH_JANUARY;
-  sDate.Date = 0x1;
-  sDate.Year = 0x0;
-
-  if (HAL_RTC_SetDate(&hrtc, &sDate, RTC_FORMAT_BCD) != HAL_OK)
-  {
-    Error_Handler();
-  }
   /* USER CODE BEGIN RTC_Init 2 */
 
   /* USER CODE END RTC_Init 2 */
-
 }
 
 void HAL_RTC_MspInit(RTC_HandleTypeDef* rtcHandle)
