@@ -31,9 +31,11 @@ extern "C" {
 
 /*================ 对外 API =================*/
 
-static void tft_set_addr_window(uint16_t x0, uint16_t y0,uint16_t x1, uint16_t y1);
+void tft_set_addr_window(uint16_t x0, uint16_t y0,uint16_t x1, uint16_t y1);
 	
 void TFT_Init(void);
+
+void tft_write_data_dma(uint8_t *data, uint16_t size);
 
 /* 整屏填充一种颜色（RGB565） */
 void TFT_FillColor(uint16_t color);

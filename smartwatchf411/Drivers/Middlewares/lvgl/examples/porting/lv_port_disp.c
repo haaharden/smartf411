@@ -12,6 +12,7 @@
 #include "lv_port_disp.h"
 #include <stdbool.h>
 #include "lcd.h"
+#include "lvgl.h"
 
 /*********************
  *      DEFINES
@@ -23,7 +24,7 @@
 /**********************
  *      TYPEDEFS
  **********************/
-
+static lv_disp_drv_t * s_disp_drv_act = NULL;   // 当前正在刷的显示驱动
 /**********************
  *  STATIC PROTOTYPES
  **********************/
@@ -79,8 +80,8 @@ void lv_port_disp_init(void)
 
     /* Example for 1) */
     static lv_disp_draw_buf_t draw_buf_dsc_1;
-    static lv_color_t buf_1[MY_DISP_HOR_RES * 10];                          /*A buffer for 10 rows*/
-    lv_disp_draw_buf_init(&draw_buf_dsc_1, buf_1, NULL, MY_DISP_HOR_RES * 10);   /*Initialize the display buffer*/
+    static lv_color_t buf_1[MY_DISP_HOR_RES * 20];                          /*A buffer for 10 rows*/
+    lv_disp_draw_buf_init(&draw_buf_dsc_1, buf_1, NULL, MY_DISP_HOR_RES * 20);   /*Initialize the display buffer*/
 
     /* Example for 2) */
 //    static lv_disp_draw_buf_t draw_buf_dsc_2;
@@ -129,6 +130,13 @@ void lv_port_disp_init(void)
 /**********************
  *   STATIC FUNCTIONS
  **********************/
+void tft_dma_transfer_done_isr(void)
+{
+    if (s_disp_drv_act) {
+        lv_disp_flush_ready(s_disp_drv_act);   // 告诉 LVGL：这次 flush 已经完成
+        s_disp_drv_act = NULL;
+    }
+}
 
 /*Initialize your display and the required peripherals.*/
 static void disp_init(void)
@@ -155,27 +163,45 @@ void disp_disable_update(void)
 /*Flush the content of the internal buffer the specific area on the display
  *You can use DMA or any hardware acceleration to do this operation in the background but
  *'lv_disp_flush_ready()' has to be called when finished.*/
-/*static void disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_color_t * color_p)
+static void disp_flush(lv_disp_drv_t * disp_drv,
+                       const lv_area_t * area,
+                       lv_color_t * color_p)
 {
-    if(disp_flush_enabled) {
-        //The most simple case (but also the slowest) to put all pixels to the screen one-by-one
-
-        int32_t x;
-        int32_t y;
-        for(y = area->y1; y <= area->y2; y++) {
-            for(x = area->x1; x <= area->x2; x++) {
-                //Put a pixel to the display. For example:
-                //put_px(x, y, *color_p)
-								TFT_DrawPixel(x,y, *(uint16_t *)color_p);
-                color_p++;
-            }
-        }
+    if(!disp_flush_enabled) {
+        lv_disp_flush_ready(disp_drv);
+        return;
     }
 
-    //IMPORTANT!!!Inform the graphics library that you are ready with the flushing
-    lv_disp_flush_ready(disp_drv);
-}*/
-static void disp_flush(lv_disp_drv_t * disp_drv,
+    uint16_t x1 = area->x1;
+    uint16_t y1 = area->y1;
+    uint16_t x2 = area->x2;
+    uint16_t y2 = area->y2;
+
+    if(x2 >= TFT_WIDTH)  x2 = TFT_WIDTH  - 1;
+    if(y2 >= TFT_HEIGHT) y2 = TFT_HEIGHT - 1;
+
+    uint32_t w = (uint32_t)(x2 - x1 + 1);
+    uint32_t h = (uint32_t)(y2 - y1 + 1);
+    uint32_t px_cnt = w * h;
+    uint32_t byte_len = px_cnt * sizeof(lv_color_t);
+
+    // 如果你的 LVGL 缓冲就是部分行（比如 240x20），这个 byte_len 一般远小于 65535
+    // 若你用的是全屏 buffer（240x280），注意 DMA 最大长度限制，后面我会提一嘴
+
+    // 1. 保存当前驱动指针，供 DMA 完成时调用 lv_disp_flush_ready
+    s_disp_drv_act = disp_drv;
+
+    // 2. 设置 TFT 的绘图窗口
+    tft_set_addr_window(x1, y1, x2, y2);
+
+    // 3. 启动 DMA 发送像素数据（异步）
+    tft_write_data_dma((uint8_t *)color_p, (uint16_t)byte_len);
+
+    // 4. 注意：这里 **不要** 调 lv_disp_flush_ready()
+    //    等 DMA 传输完成中断里调用 tft_dma_transfer_done_isr -> lv_disp_flush_ready
+}
+
+/*static void disp_flush(lv_disp_drv_t * disp_drv,
                        const lv_area_t * area,
                        lv_color_t * color_p)
 {
@@ -190,7 +216,7 @@ static void disp_flush(lv_disp_drv_t * disp_drv,
 
     // 通知 LVGL：这一块刷完了
     lv_disp_flush_ready(disp_drv);
-}
+}*/
 
 /*OPTIONAL: GPU INTERFACE*/
 

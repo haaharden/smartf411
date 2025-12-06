@@ -44,6 +44,8 @@ void disp_enable_update(void);
  */
 void disp_disable_update(void);
 
+void tft_dma_transfer_done_isr(void);
+
 /**********************
  *      MACROS
  **********************/

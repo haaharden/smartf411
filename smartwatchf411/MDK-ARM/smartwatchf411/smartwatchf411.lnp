@@ -7,6 +7,7 @@
 "smartwatchf411\touch.o"
 "smartwatchf411\main.o"
 "smartwatchf411\gpio.o"
+"smartwatchf411\dma.o"
 "smartwatchf411\i2c.o"
 "smartwatchf411\rtc.o"
 "smartwatchf411\spi.o"

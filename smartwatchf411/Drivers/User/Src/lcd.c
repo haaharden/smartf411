@@ -3,6 +3,7 @@
 #include "gpio.h"
 #include "lcdfont.h"
 #include "stdio.h"
+#include "lv_port_disp.h"
 
 /*SCK<->PA5
 	SDA<->PA7
@@ -36,6 +37,14 @@
 extern SPI_HandleTypeDef hspi1;
 #define TFT_SPI  hspi1
 
+void HAL_SPI_TxCpltCallback(SPI_HandleTypeDef *hspi)
+{
+    if (hspi == &TFT_SPI) {
+        TFT_CS_HIGH();           // 传输结束，拉高 CS
+        tft_dma_transfer_done_isr();   // 通知 LVGL flush 完成
+    }
+}
+
 /*================== 内部基础函数 ==================*/
 
 /* 发送一个命令 */
@@ -45,6 +54,17 @@ static void tft_write_cmd(uint8_t cmd)
     TFT_DC_CMD();
     HAL_SPI_Transmit(&TFT_SPI, &cmd, 1, HAL_MAX_DELAY);
     TFT_CS_HIGH();
+}
+
+/* 大块数据 DMA 发送（只负责 DATA，不带命令） */
+void tft_write_data_dma(uint8_t *data, uint16_t size)
+{
+    TFT_CS_LOW();
+    TFT_DC_DATA();   // 标成数据模式
+
+    // 启动 DMA 发送
+    HAL_SPI_Transmit_DMA(&TFT_SPI, data, size);
+    // 注意：这里 **不抬 CS**，等 DMA 传完在中断里抬
 }
 
 /* 发送一串数据 */
@@ -73,8 +93,7 @@ static void tft_write_data16(uint16_t data)
 }
 
 /* 设置窗口区域（带 offset） */
-static void tft_set_addr_window(uint16_t x0, uint16_t y0,
-                                uint16_t x1, uint16_t y1)
+void tft_set_addr_window(uint16_t x0, uint16_t y0,uint16_t x1, uint16_t y1)
 {
     uint8_t buf[4];
 
