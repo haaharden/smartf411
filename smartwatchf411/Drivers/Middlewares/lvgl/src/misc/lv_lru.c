@@ -238,8 +238,14 @@ void lv_lru_remove_lru_item(lv_lru_t * cache)
 {
     lv_lru_item_t * min_item = NULL, *min_prev = NULL;
     lv_lru_item_t * item = NULL, *prev = NULL;
+	#pragma diag_suppress=68
     uint32_t i = 0, min_index = -1;
-    uint64_t min_access_count = -1;
+	#pragma diag_default=68
+	#pragma diag_suppress=68
+		uint64_t min_access_count = -1;
+	#pragma diag_default=68
+
+    
 
     for(; i < cache->hash_table_size; i++) {
         item = cache->items[i];

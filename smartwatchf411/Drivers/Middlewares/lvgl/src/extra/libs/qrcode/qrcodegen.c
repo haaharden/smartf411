@@ -275,8 +275,12 @@ bool qrcodegen_encodeSegmentsAdvanced(const struct qrcodegen_Segment segs[], siz
 		}
 	}
 	LV_ASSERT(0 <= (int)mask && (int)mask <= 7);
-	applyMask(tempBuffer, qrcode, mask);
-	drawFormatBits(ecl, mask, qrcode);
+	#pragma diag_suppress=188
+		applyMask(tempBuffer, qrcode, mask);
+	#pragma diag_default=188
+	#pragma diag_suppress=188
+		drawFormatBits(ecl, mask, qrcode);
+	#pragma diag_default=188
 	return true;
 }
 
@@ -617,7 +621,9 @@ static void applyMask(const uint8_t functionModules[], uint8_t qrcode[], enum qr
 				case 5:  invert = x * y % 2 + x * y % 3 == 0;          break;
 				case 6:  invert = (x * y % 2 + x * y % 3) % 2 == 0;    break;
 				case 7:  invert = ((x + y) % 2 + x * y % 3) % 2 == 0;  break;
+				#pragma diag_suppress=111
 				default:  LV_ASSERT(false);  return;
+				#pragma diag_default=111
 			}
 			bool val = getModule(qrcode, x, y);
 			setModule(qrcode, x, y, val ^ invert);
@@ -850,7 +856,9 @@ testable int calcSegmentBitLength(enum qrcodegen_Mode mode, size_t numChars) {
 		result = 3 * 8;
 	else {  // Invalid argument
 		LV_ASSERT(false);
+		#pragma diag_suppress=111
 		return -1;
+		#pragma diag_default=111
 	}
 	LV_ASSERT(result >= 0);
 	if ((unsigned int)result > (unsigned int)INT16_MAX)
@@ -1005,7 +1013,9 @@ static int numCharCountBits(enum qrcodegen_Mode mode, int version) {
 		case qrcodegen_Mode_BYTE        : { static const int temp[] = { 8, 16, 16}; return temp[i]; }
 		case qrcodegen_Mode_KANJI       : { static const int temp[] = { 8, 10, 12}; return temp[i]; }
 		case qrcodegen_Mode_ECI         : return 0;
-		default:  LV_ASSERT(false);  return -1;  // Dummy value
+		#pragma diag_suppress=111
+				default:  LV_ASSERT(false);  return -1;  // Dummy value
+		#pragma diag_default=111
 	}
 }
 

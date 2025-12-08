@@ -10,6 +10,10 @@
  * ************************************************************************
  */
 #include "MAX30102.h"
+#include "cmsis_os.h"
+#include "stdio.h"
+
+extern osMutexId_t I2C1_MutexHandle;
 
 /*SCL<->PB6
 	SDA<->PB7
@@ -28,10 +32,23 @@ uint16_t fifo_ir;   //定义FIFO中的红外光数据
  * @return 
  * ************************************************************************
  */
-uint8_t max30102_write_reg(uint8_t addr, uint8_t data)
+uint8_t max30102_write_reg(uint8_t reg, uint8_t data)
 {
-  HAL_I2C_Mem_Write(&hi2c1, MAX30102_Device_address,	addr,	1,	&data,1,HAL_MAX_DELAY);
-  return 1;
+    if (osMutexAcquire(I2C1_MutexHandle, osWaitForever) != osOK) {
+        return 0;   // 拿不到锁，直接失败
+    }
+
+    HAL_StatusTypeDef status = HAL_I2C_Mem_Write(&hi2c1,
+                                                 MAX30102_Device_address,
+                                                 reg,
+                                                 I2C_MEMADD_SIZE_8BIT,
+                                                 &data,
+                                                 1,
+                                                 100);
+
+    osMutexRelease(I2C1_MutexHandle);
+
+    return (status == HAL_OK) ? 1 : 0;
 }
 
 
@@ -44,51 +61,87 @@ uint8_t max30102_write_reg(uint8_t addr, uint8_t data)
  * @return 
  * ************************************************************************
  */
-uint8_t max30102_read_reg(uint8_t addr )
+uint8_t max30102_read_reg(uint8_t reg)
 {
-  uint8_t data=0;
-  HAL_I2C_Mem_Read(&hi2c1, MAX30102_Device_address, addr, 1, &data, 1, HAL_MAX_DELAY);
-  return data;
+    uint8_t data = 0;
+
+    if (osMutexAcquire(I2C1_MutexHandle, osWaitForever) != osOK) {
+        return 0;
+    }
+
+    HAL_StatusTypeDef status = HAL_I2C_Mem_Read(&hi2c1,
+                                                MAX30102_Device_address,
+                                                reg,
+                                                I2C_MEMADD_SIZE_8BIT,
+                                                &data,
+                                                1,
+                                                100);
+
+    osMutexRelease(I2C1_MutexHandle);
+
+    if (status != HAL_OK) {
+        return 0;   // 这里 0 既是失败标志，也可能是真 0，调试阶段够用
+    }
+
+    return data;
 }
 
 
+uint8_t max30102_get_part_id(void)
+{
+    uint8_t id = max30102_read_reg(REG_PART_ID);
+    return id;
+}
+
 /**
  * ************************************************************************
- * @brief MAX30102传感器复位
+ * @brief MAX30102传感器初始化
  * 
  * 
  * @return 
  * ************************************************************************
  */
-uint8_t Max30102_reset(void)
+uint8_t MAX30102_Init(void)
 {
-	if(max30102_write_reg(REG_MODE_CONFIG, 0x40))
-        return 1;
-    else
-        return 0;    
-}
+    // 1) 先读一下 PART ID，确认芯片在不在
+    uint8_t part_id = max30102_read_reg(REG_PART_ID);
+    printf("MAX30102 PART ID = 0x%02X\r\n", part_id);
 
-/**
- * ************************************************************************
- * @brief MAX30102传感器模式配置
- * 
- * 
- * ************************************************************************
- */
-void MAX30102_Config(void)
-{
-	max30102_write_reg(REG_INTR_ENABLE_1,0xc0);//// INTR setting
-	max30102_write_reg(REG_INTR_ENABLE_2,0x00);//
-	max30102_write_reg(REG_FIFO_WR_PTR,0x00);//FIFO_WR_PTR[4:0]
-	max30102_write_reg(REG_OVF_COUNTER,0x00);//OVF_COUNTER[4:0]
-	max30102_write_reg(REG_FIFO_RD_PTR,0x00);//FIFO_RD_PTR[4:0]
-	
-	max30102_write_reg(REG_FIFO_CONFIG,0x0f);//sample avg = 1, fifo rollover=false, fifo almost full = 17
-	max30102_write_reg(REG_MODE_CONFIG,0x03);//0x02 for Red only, 0x03 for SpO2 mode 0x07 multimode LED
-	max30102_write_reg(REG_SPO2_CONFIG,0x27);	// SPO2_ADC range = 4096nA, SPO2 sample rate (50 Hz), LED pulseWidth (400uS)  
-	max30102_write_reg(REG_LED1_PA,0x32);//Choose value for ~ 10mA for LED1
-	max30102_write_reg(REG_LED2_PA,0x32);// Choose value for ~ 10mA for LED2
-	max30102_write_reg(REG_PILOT_PA,0x7f);// Choose value for ~ 25mA for Pilot LED
+    if(part_id != 0x15) {   // datasheet 里 PART ID 一般是 0x15
+        printf("MAX30102 not detected!\r\n");
+        return 0;
+    }
+
+    // 2) 软复位
+    if(!max30102_write_reg(REG_MODE_CONFIG, 0x40)) {
+        printf("MAX30102 reset write failed!\r\n");
+        return 0;
+    }
+    HAL_Delay(10);
+
+    // 3) 一条条配寄存器，顺便检查有没有写失败
+    uint8_t ok = 1;
+
+    ok &= max30102_write_reg(REG_INTR_ENABLE_1,0xc0);
+    ok &= max30102_write_reg(REG_INTR_ENABLE_2,0x00);
+    ok &= max30102_write_reg(REG_FIFO_WR_PTR,0x00);
+    ok &= max30102_write_reg(REG_OVF_COUNTER,0x00);
+    ok &= max30102_write_reg(REG_FIFO_RD_PTR,0x00);
+
+    ok &= max30102_write_reg(REG_FIFO_CONFIG,0x0f);
+    ok &= max30102_write_reg(REG_MODE_CONFIG,0x03);
+    ok &= max30102_write_reg(REG_SPO2_CONFIG,0x27);
+    ok &= max30102_write_reg(REG_LED1_PA,0x32);
+    ok &= max30102_write_reg(REG_LED2_PA,0x32);
+    ok &= max30102_write_reg(REG_PILOT_PA,0x7f);
+
+    if(!ok) {
+        printf("MAX30102 config I2C write failed!\r\n");
+        return 0;
+    }
+
+    printf("MAX30102 init OK\r\n");
+    return 1;
 }
 
 /**

@@ -895,14 +895,14 @@ static void lv_draw_span(lv_obj_t * obj, lv_draw_ctx_t * draw_ctx)
                 is_end_line = true;
             }
         }
-
+				lv_text_align_t align;
         /*Go the first visible line*/
         if(txt_pos.y + max_line_h < clip_area.y1) {
             goto Next_line_init;
         }
 
         /* align deal with */
-        lv_text_align_t align = lv_obj_get_style_text_align(obj, LV_PART_MAIN);
+        align = lv_obj_get_style_text_align(obj, LV_PART_MAIN);
         if(align == LV_TEXT_ALIGN_CENTER || align == LV_TEXT_ALIGN_RIGHT) {
             lv_coord_t align_ofs = 0;
             lv_coord_t txts_w = is_first_line ? indent : 0;

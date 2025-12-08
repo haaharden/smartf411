@@ -113,10 +113,8 @@ int main(void)
 	lv_init();
 	lv_port_disp_init();
 	lv_port_indev_init();
-	Max30102_reset();
-	MAX30102_Config();
-	printf("Initialize successfully\n\r");
 	ui_init();
+	printf("Initialize successfully\n\r");
   /* USER CODE END 2 */
 
   /* Init scheduler */
@@ -136,7 +134,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-		//blood_Loop();
   }
   /* USER CODE END 3 */
 }

@@ -322,7 +322,10 @@ void * lv_mem_buf_get(uint32_t size)
 
     LV_LOG_ERROR("no more buffers. (increase LV_MEM_BUF_MAX_NUM)");
     LV_ASSERT_MSG(false, "No more buffers. Increase LV_MEM_BUF_MAX_NUM.");
+		#pragma diag_suppress=111
     return NULL;
+		#pragma diag_default=111
+
 }
 
 /**

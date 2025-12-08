@@ -389,7 +389,9 @@ lv_coord_t _lv_obj_get_ext_draw_size(const lv_obj_t * obj)
 lv_layer_type_t _lv_obj_get_layer_type(const lv_obj_t * obj)
 {
 
+		#pragma diag_suppress=188
     if(obj->spec_attr) return obj->spec_attr->layer_type;
+		#pragma diag_default=188
     else return LV_LAYER_TYPE_NONE;
 }
 

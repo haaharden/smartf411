@@ -211,12 +211,17 @@ lv_style_prop_t lv_style_register_prop(uint8_t flag)
     /* This should never happen - we should bail out above */
     LV_ASSERT_NULL(LV_GC_ROOT(_lv_style_custom_prop_flag_lookup_table));
     LV_GC_ROOT(_lv_style_custom_prop_flag_lookup_table)[last_custom_prop_id - _LV_STYLE_NUM_BUILT_IN_PROPS] = flag;
+	#pragma diag_suppress=188
     return last_custom_prop_id;
+	#pragma diag_default=188
+
 }
 
 lv_style_prop_t lv_style_get_num_custom_props(void)
 {
+	#pragma diag_suppress=188
     return last_custom_prop_id - _LV_STYLE_LAST_BUILT_IN_PROP;
+	#pragma diag_default=188
 }
 
 bool lv_style_remove_prop(lv_style_t * style, lv_style_prop_t prop)
@@ -287,7 +292,9 @@ void lv_style_set_prop(lv_style_t * style, lv_style_prop_t prop, lv_style_value_
 
 void lv_style_set_prop_meta(lv_style_t * style, lv_style_prop_t prop, uint16_t meta)
 {
+	#pragma diag_suppress=188
     lv_style_set_prop_internal(style, prop | meta, null_style_value, lv_style_set_prop_meta_helper);
+	#pragma diag_default=188
 }
 
 lv_style_res_t lv_style_get_prop(const lv_style_t * style, lv_style_prop_t prop, lv_style_value_t * value)

@@ -579,7 +579,9 @@ lv_disp_rot_t lv_disp_get_rotation(lv_disp_t * disp)
 {
     if(disp == NULL) disp = lv_disp_get_default();
     if(disp == NULL) return LV_DISP_ROT_NONE;
+	#pragma diag_suppress=188
     return disp->driver->rotated;
+	#pragma diag_default=188
 }
 
 void lv_disp_drv_use_generic_set_px_cb(lv_disp_drv_t * disp_drv, lv_img_cf_t cf)

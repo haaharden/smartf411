@@ -4,6 +4,9 @@
 #include "stm32f4xx_it.h"
 #include "usart.h"
 #include <stdio.h>
+#include "cmsis_os.h"
+
+extern osMutexId_t I2C1_MutexHandle;
 
 /*	TP_SCL<->PB6
 		TP_SDA<->PB7
@@ -17,31 +20,44 @@ extern I2C_HandleTypeDef hi2c1;
 /*------------------ 内部小工具函数：I2C 读写 ------------------*/
 
 // 写单字节寄存器
-static void CST816_WriteReg(uint8_t reg, uint8_t value)
+uint8_t CST816_WriteReg(uint8_t reg, uint8_t data)
 {
-    HAL_I2C_Mem_Write(&hi2c1,
-                      CST816_ADDRESS,           // 0x2A：已经是 8bit 地址，不要再左移
-                      reg,
-                      I2C_MEMADD_SIZE_8BIT,
-                      &value,
-                      1,
-                      100);
+    if (osMutexAcquire(I2C1_MutexHandle, osWaitForever) != osOK) {
+        return 0;
+    }
+
+    HAL_StatusTypeDef status = HAL_I2C_Mem_Write(&hi2c1,
+                                                CST816_ADDRESS,
+                                                reg,
+                                                I2C_MEMADD_SIZE_8BIT,
+                                                &data,
+                                                1,
+                                                100);
+
+    osMutexRelease(I2C1_MutexHandle);
+
+    return (status == HAL_OK) ? 1 : 0;
 }
 
+
 // 连续读多个寄存器
-static uint8_t CST816_ReadRegs(uint8_t reg, uint8_t *buf, uint8_t len)
+uint8_t CST816_ReadRegs(uint8_t reg, uint8_t *buf, uint16_t len)
 {
-    if (HAL_I2C_Mem_Read(&hi2c1,
-                         CST816_ADDRESS,
-                         reg,
-                         I2C_MEMADD_SIZE_8BIT,
-                         buf,
-                         len,
-                         100) == HAL_OK)
-    {
-        return 1;
+    if (osMutexAcquire(I2C1_MutexHandle, osWaitForever) != osOK) {
+        return 0;
     }
-    return 0;
+
+    HAL_StatusTypeDef status = HAL_I2C_Mem_Read(&hi2c1,
+                                               CST816_ADDRESS,
+                                               reg,
+                                               I2C_MEMADD_SIZE_8BIT,
+                                               buf,
+                                               len,
+                                               100);
+
+    osMutexRelease(I2C1_MutexHandle);
+
+    return (status == HAL_OK) ? 1 : 0;
 }
 
 /*------------------ 1. 中断回调：把“有触摸了”记下来 ------------------*/
@@ -54,7 +70,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
         // 只做简单的标志位，不在中断里读 I2C
 				//注意，flag只能判断是不是抬起和松手的状态变了，不能判断手是否在屏幕上
         touch_int_flag = 1;
-				//HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
+				HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
     }
 }
 

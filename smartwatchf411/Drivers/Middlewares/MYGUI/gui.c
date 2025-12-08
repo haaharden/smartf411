@@ -2,12 +2,17 @@
 #include "lvgl.h"
 #include "data.h"
 
+lv_obj_t *switch_obj = NULL;
 lv_obj_t *label_time = NULL;
 lv_obj_t *label_spo2 = NULL;
 lv_obj_t *label_hr   = NULL;
 
 void ui_init(void)
 {
+		lv_obj_t* switch_obj = lv_switch_create(lv_scr_act());
+		lv_obj_set_size(switch_obj, 120, 50);
+		lv_obj_align(switch_obj, LV_ALIGN_BOTTOM_MID, 0, -10);
+
     // 创建一个简单界面示例 
     label_time = lv_label_create(lv_scr_act());
     lv_obj_align(label_time, LV_ALIGN_TOP_MID, 0, 10);

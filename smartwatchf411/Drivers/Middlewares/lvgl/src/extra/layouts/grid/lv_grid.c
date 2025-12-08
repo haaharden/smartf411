@@ -588,8 +588,13 @@ static void item_repos(lv_obj_t * item, _lv_grid_calc_t * c, item_repos_hint_t *
 
     uint32_t col_pos = get_col_pos(item);
     uint32_t row_pos = get_row_pos(item);
+		#pragma diag_suppress=188
     lv_grid_align_t col_align = get_cell_col_align(item);
+		#pragma diag_default=188
+		#pragma diag_suppress=188
     lv_grid_align_t row_align = get_cell_row_align(item);
+		#pragma diag_default=188
+
 
 
     lv_coord_t col_x1 = c->x[col_pos];

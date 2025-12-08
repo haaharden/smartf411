@@ -134,7 +134,9 @@ const uint8_t * lv_font_get_bitmap_fmt_txt(const lv_font_t * font, uint32_t unic
     }
 
     /*If not returned earlier then the letter is not found in this font*/
-    return NULL;
+		#pragma diag_suppress=111
+				    return NULL;
+		#pragma diag_default=111
 }
 
 /**

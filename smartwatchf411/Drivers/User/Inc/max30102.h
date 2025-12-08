@@ -44,12 +44,12 @@
 
 #define SAMPLES_PER_SECOND 					100	//¼ì²âÆµÂÊ
 
-uint8_t Max30102_reset(void);
-void MAX30102_Config(void);
+uint8_t MAX30102_Init(void);
 void max30102_read_fifo(void);
 
 uint8_t max30102_write_reg(uint8_t addr, uint8_t data);
 uint8_t max30102_read_reg(uint8_t addr );
+uint8_t max30102_get_part_id(void);
 
 #endif
 

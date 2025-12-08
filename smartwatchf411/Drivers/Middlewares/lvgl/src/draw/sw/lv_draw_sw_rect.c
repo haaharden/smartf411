@@ -99,6 +99,7 @@ void lv_draw_sw_bg(lv_draw_ctx_t * draw_ctx, const lv_draw_rect_dsc_t * dsc, con
 
 static void draw_bg(lv_draw_ctx_t * draw_ctx, const lv_draw_rect_dsc_t * dsc, const lv_area_t * coords)
 {
+		bool mask_any_center = false; 
     if(dsc->bg_opa <= LV_OPA_MIN) return;
 
     lv_area_t bg_coords;
@@ -282,7 +283,7 @@ static void draw_bg(lv_draw_ctx_t * draw_ctx, const lv_draw_rect_dsc_t * dsc, co
     center_coords.x2 = bg_coords.x2;
     center_coords.y1 = bg_coords.y1 + rout;
     center_coords.y2 = bg_coords.y2 - rout;
-    bool mask_any_center = lv_draw_mask_is_any(&center_coords);
+		mask_any_center = lv_draw_mask_is_any(&center_coords);
     if(!mask_any_center && grad_dir == LV_GRAD_DIR_NONE) {
         blend_area.y1 = bg_coords.y1 + rout;
         blend_area.y2 = bg_coords.y2 - rout;

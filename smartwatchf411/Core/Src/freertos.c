@@ -25,6 +25,7 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "stdio.h"
 #include "lvgl.h"
 #include "data.h"
 #include "gui.h"
@@ -49,7 +50,10 @@
 
 /* Private variables ---------------------------------------------------------*/
 /* USER CODE BEGIN Variables */
-
+osMutexId_t I2C1_MutexHandle;
+const osMutexAttr_t I2C1_Mutex_attributes = {
+    .name = "I2C1_Mutex"
+};
 /* USER CODE END Variables */
 /* Definitions for guiTask */
 osThreadId_t guiTaskHandle;
@@ -106,7 +110,11 @@ void vApplicationTickHook( void )
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
-
+  /* 创建 I2C1 互斥锁 */
+  I2C1_MutexHandle = osMutexNew(&I2C1_Mutex_attributes);
+  if (I2C1_MutexHandle == NULL) {
+      Error_Handler();     // 建议直接报错，说明系统有问题
+  }
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -228,6 +236,12 @@ void StartRTCTask(void *argument)
 void StartMAX30102Task(void *argument)
 {
   /* USER CODE BEGIN StartMAX30102Task */
+    osDelay(200);  // 等 I2C、FreeRTOS、互斥锁都起来
+
+    if(!MAX30102_Init()) {
+        printf("MAX init failed, SpO2 task exit\r\n");
+        vTaskDelete(NULL);
+    }
   /* Infinite loop */
   for(;;)
   {

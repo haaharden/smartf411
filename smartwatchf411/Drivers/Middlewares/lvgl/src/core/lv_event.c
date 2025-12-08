@@ -117,7 +117,9 @@ lv_obj_t * lv_event_get_current_target(lv_event_t * e)
 
 lv_event_code_t lv_event_get_code(lv_event_t * e)
 {
+		#pragma diag_suppress=188
     return e->code & ~LV_EVENT_PREPROCESS;
+		#pragma diag_default=188
 }
 
 void * lv_event_get_param(lv_event_t * e)
