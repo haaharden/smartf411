@@ -1,11 +1,11 @@
 #include "gui.h"
 #include "lvgl.h"
-#include "data.h"
 
 lv_obj_t *switch_obj = NULL;
 lv_obj_t *label_time = NULL;
 lv_obj_t *label_spo2 = NULL;
 lv_obj_t *label_hr   = NULL;
+ClockTime_t g_clock_time = {0};
 
 void ui_init(void)
 {

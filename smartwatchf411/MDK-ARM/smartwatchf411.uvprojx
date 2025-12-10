@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F411xE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/User/Inc;../Drivers/Middlewares/lvgl;../Drivers/Middlewares/lvgl/src;../Drivers/Middlewares/lvgl/examples;../Drivers/Middlewares/lvgl/examples/porting;../Drivers/Middlewares/lvgl/demos;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;..\Drivers\Middlewares\MYGUI</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/User/Inc;../Drivers/Middlewares/lvgl;../Drivers/Middlewares/lvgl/src;../Drivers/Middlewares/lvgl/examples;../Drivers/Middlewares/lvgl/examples/porting;../Drivers/Middlewares/lvgl/demos;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/Middlewares/MYGUI</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -409,6 +409,11 @@
               <FileName>touch.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\User\Src\touch.c</FilePath>
+            </File>
+            <File>
+              <FileName>mpu6500.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\User\Src\mpu6500.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -2174,11 +2179,6 @@
               <FileName>gui.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\Middlewares\MYGUI\gui.c</FilePath>
-            </File>
-            <File>
-              <FileName>data.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Drivers\Middlewares\MYGUI\data.c</FilePath>
             </File>
           </Files>
         </Group>
