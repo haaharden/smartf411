@@ -70,7 +70,7 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
         // 只做简单的标志位，不在中断里读 I2C
 				//注意，flag只能判断是不是抬起和松手的状态变了，不能判断手是否在屏幕上
         touch_int_flag = 1;
-				HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
+				//HAL_GPIO_TogglePin(GPIOC,GPIO_PIN_13);
     }
 }
 

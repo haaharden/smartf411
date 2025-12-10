@@ -51,12 +51,31 @@ typedef struct {
 /* 全局 IMU 数据 */
 extern ImuData_t g_imu_data;
 
+/* 用户活动状态枚举 */
+typedef enum {
+    IMU_ACTIVITY_UNKNOWN = 0,   /* 未知 / 初始化状态 */
+
+    IMU_ACTIVITY_REST,         /* 静止 / 躺着 / 睡觉候选 */
+    IMU_ACTIVITY_LIGHT,        /* 轻微活动（站立、轻微晃动） */
+    IMU_ACTIVITY_WALK,         /* 走路 */
+    IMU_ACTIVITY_RUN           /* 跑步 / 剧烈活动 */
+} ImuActivity_t;
+
+/* 当前识别出的用户状态 */
+extern ImuActivity_t g_imu_activity;
+
 /* 接口函数 */
 uint8_t MPU6500_Init(void);
 uint8_t MPU6500_ReadRaw(int16_t *ax, int16_t *ay, int16_t *az,
                         int16_t *gx, int16_t *gy, int16_t *gz,
                         int16_t *temp);
 void MPU6500_Update(void);
+
+/* 活动识别更新函数：在 IMU 任务中周期性调用 */
+void IMU_Activity_Update(void);
+
+/* 获取当前活动状态（读取 g_imu_activity） */
+ImuActivity_t IMU_GetActivity(void);
 
 /* FreeRTOS 任务入口函数（在 freertos.c 里用 osThreadNew 调用） */
 void StartIMUTask(void *argument);

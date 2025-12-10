@@ -8,6 +8,12 @@ extern osMutexId_t I2C1_MutexHandle;
 /* 对外的全局 IMU 数据 */
 ImuData_t g_imu_data = {0};
 
+/* 新增：当前活动状态 */
+ImuActivity_t g_imu_activity = IMU_ACTIVITY_UNKNOWN;
+/* 内部：用于低通滤波的变量 */
+static float s_acc_dyn_lp = 0.0f;   /* 动态加速度的低通结果（去掉重力） */
+static float s_gyro_lp    = 0.0f;   /* 角速度模长的低通结果 */
+
 /* 内部 I2C 读写封装，带互斥锁 */
 static uint8_t mpu6500_write_reg(uint8_t reg, uint8_t data)
 {
@@ -154,3 +160,62 @@ void MPU6500_Update(void)
     g_imu_data.temperature = ((float)temp_raw) / 333.87f + 21.0f;
 }
 
+/* 简单的活动识别算法：
+ * 使用 g_imu_data 计算：
+ *   - 总加速度模长 |a|，减去 1g 得到“动态加速度”
+ *   - 角速度模长 |g|
+ * 再做一个简单的低通滤波，然后根据阈值分类。
+ */
+void IMU_Activity_Update(void)
+{
+    /* 1. 取当前 IMU 数据 */
+    float ax = g_imu_data.ax;
+    float ay = g_imu_data.ay;
+    float az = g_imu_data.az;
+
+    float gx = g_imu_data.gx;
+    float gy = g_imu_data.gy;
+    float gz = g_imu_data.gz;
+
+    /* 2. 计算模长 */
+    float acc_mag  = sqrtf(ax * ax + ay * ay + az * az);  /* 单位：g */
+    float gyro_mag = sqrtf(gx * gx + gy * gy + gz * gz);  /* 单位：deg/s */
+
+    /* 3. 去掉重力得到“动态加速度” */
+    float acc_dyn = fabsf(acc_mag - 1.0f);  /* 大概表示运动强度 */
+
+    /* 4. 一阶 IIR 低通滤波，防抖 / 平滑 */
+    const float alpha = 0.1f;   /* 0~1，越大越敏感，越小越平滑 */
+
+    s_acc_dyn_lp += alpha * (acc_dyn  - s_acc_dyn_lp);
+    s_gyro_lp    += alpha * (gyro_mag - s_gyro_lp);
+
+    /* 5. 根据平滑后的数值做分类（阈值可以以后慢慢调） */
+    ImuActivity_t act;
+
+    if (s_acc_dyn_lp < 0.03f && s_gyro_lp < 3.0f) {
+        /* 几乎不动：可能躺着 / 坐着 / 睡觉 */
+        act = IMU_ACTIVITY_REST;
+    }
+    else if (s_acc_dyn_lp < 0.15f && s_gyro_lp < 20.0f) {
+        /* 轻微活动：比如站着、偶尔动一下手 */
+        act = IMU_ACTIVITY_LIGHT;
+    }
+    else if (s_acc_dyn_lp < 0.6f && s_gyro_lp < 80.0f) {
+        /* 中等活动：正常走路 */
+        act = IMU_ACTIVITY_WALK;
+    }
+    else {
+        /* 大幅度加速度 + 大角速度：跑步 / 剧烈运动 */
+        act = IMU_ACTIVITY_RUN;
+    }
+
+    /* 6. 写到全局变量，给别的任务用 */
+    g_imu_activity = act;
+}
+
+/* 提供一个简单的 getter，方便别的地方调用 */
+ImuActivity_t IMU_GetActivity(void)
+{
+    return g_imu_activity;
+}

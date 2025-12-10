@@ -234,6 +234,29 @@ void StartGUITask(void *argument)
                 default:
                     break;
             }*/
+						ImuActivity_t act = IMU_GetActivity();
+						//printf("act = %d\r\n", act);
+						/*switch (act) {
+                case IMU_ACTIVITY_REST:
+                    // 比如可以认为“用户静止 / 可能在休息”
+                    // 可以将来用来做：自动熄屏 / 睡眠检测的一个条件
+                    break;
+
+                case IMU_ACTIVITY_LIGHT:
+                    // 轻微活动
+                    break;
+
+                case IMU_ACTIVITY_WALK:
+                    // 走路：可以将来计步
+                    break;
+
+                case IMU_ACTIVITY_RUN:
+                    // 跑步：运动模式
+                    break;
+
+                default:
+                    break;
+            }*/
     }
   /* USER CODE END StartGUITask */
 }
@@ -379,6 +402,7 @@ void StartMPU6500Task(void *argument)
     for (;;)
     {
         MPU6500_Update();  // 读取一次数据并更新 g_imu_data
+				IMU_Activity_Update();
 				/*printf("ACC[g]: ax=%.2f ay=%.2f az=%.2f, "
                "GYRO[dps]: gx=%.2f gy=%.2f gz=%.2f, "
                "T=%.2fC\r\n",
