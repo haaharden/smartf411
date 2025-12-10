@@ -114,7 +114,7 @@ int main(void)
 	lv_port_disp_init();
 	lv_port_indev_init();
 	ui_init();
-	printf("Initialize successfully\n\r");
+	//printf("Initialize successfully\n\r");
   /* USER CODE END 2 */
 
   /* Init scheduler */

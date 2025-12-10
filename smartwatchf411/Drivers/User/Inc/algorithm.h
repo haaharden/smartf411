@@ -1,61 +1,38 @@
-/**
- * ************************************************************************
- * 
- * @file algorithm.h
- * @author zxr
- * @brief 
- * 
- * ************************************************************************
- * @copyright Copyright (c) 2024 zxr 
- * ************************************************************************
- */
 #ifndef __ALGORITHM_H
 #define __ALGORITHM_H
 
-#define FFT_N 			1024    //定义傅里叶变换的点数
-#define START_INDEX 	8  		//低频过滤阈值
-
-struct compx     	//定义一个复数结构
-{
-	float real;
-	float imag;
-};  
-
-typedef struct		//定义一个直流滤波器结构体
-{
-	float w;
-	int init;
-	float a;
-}DC_FilterData;		//用于存储直流滤波器的参数
-
-
-typedef struct		//定义一个带宽滤波器结构体
-{
-	float v0;
-	float v1;
-}BW_FilterData;		//用于存储带宽滤波器的参数
-
-
-
-double my_floor(double x);
-
-double my_fmod(double x, double y);
-
-double XSin( double x );
-
-double XCos( double x );
-
-int qsqrt(int a);
-
-
-struct compx EE(struct compx a,struct compx b);
-
-void FFT(struct compx *xin);
-
-int find_max_num_index(struct compx *data,int count);
-int dc_filter(int input,DC_FilterData * df);
-int bw_filter(int input,BW_FilterData * bw);
-
-
+#ifdef __cplusplus
+extern "C" {
 #endif
 
+#include <stdint.h>
+
+/* 采样频率（和 MAX30102 配置保持一致） */
+#define FS                100            // 100 Hz
+/* 每次算法使用多少点：这里用 5 秒数据 */
+#define BUFFER_SIZE       (FS * 5)       // 500 点
+
+/**
+ * @brief   从一段红光/红外波形中估算心率和血氧
+ * @param   ir_buffer       红外通道原始数据数组（长度 = buffer_length）
+ * @param   red_buffer      红光通道原始数据数组
+ * @param   buffer_length   数组长度（建议 >= BUFFER_SIZE）
+ * @param   spo2            输出：血氧（百分比）
+ * @param   spo2_valid      输出：1=有效，0=无效
+ * @param   heart_rate      输出：心率（bpm）
+ * @param   hr_valid        输出：1=有效，0=无效
+ */
+void maxim_heart_rate_and_oxygen_saturation(
+    const uint32_t *ir_buffer,
+    const uint32_t *red_buffer,
+    int32_t buffer_length,
+    int32_t *spo2,
+    int8_t  *spo2_valid,
+    int32_t *heart_rate,
+    int8_t  *hr_valid);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __ALGORITHM_H */

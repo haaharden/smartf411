@@ -127,45 +127,32 @@ void CST816T_Init(void)
  *   1  -> 有有效触摸（至少 1 个手指）
  *   0  -> 没有有效触摸（FingerNum=0 或 I2C 读失败）
  */
-uint8_t CST816_GetAction(uint16_t *X, uint16_t *Y, uint8_t *Gesture)
+uint8_t CST816_GetAction(uint16_t *X, uint16_t *Y,uint8_t *Gesture, uint8_t *pFingerNum)
 {
     uint8_t buf[6];
 
-    // 从 GestureID(0x01) 连续读到 YposL(0x06)
-    if (!CST816_ReadRegs(GestureID, buf, sizeof(buf)))
-    {
-        return 0;   // I2C 读失败
-    }
-
-    uint8_t gesture = buf[0];      // GestureID
-    uint8_t fingers = buf[1] & 0x0F; // FingerNum（低 4 位）
-
-    if (fingers == 0)
-    {
-        // 手指数量为 0，说明当前没有触摸
+    if (!CST816_ReadRegs(GestureID, buf, sizeof(buf))) {
         return 0;
     }
 
-    // 解析坐标：高 4 位在 XposH/YposH 低 4bit，低 8 位在 XposL/YposL
+    uint8_t gesture = buf[0];          // GestureID
+    uint8_t fingers = buf[1] & 0x0F;   // FingerNum
+
+    if (fingers == 0) {
+        return 0;
+    }
+
     uint16_t x = ((uint16_t)(buf[2] & 0x0F) << 8) | buf[3];
     uint16_t y = ((uint16_t)(buf[4] & 0x0F) << 8) | buf[5];
 
     if (X) *X = x;
     if (Y) *Y = y;
-    if (Gesture) *Gesture = gesture;
-    
-		{
-        char msg[64];
-        int len = snprintf(msg, sizeof(msg),
-                           "raw x=%u y=%u gesture=0x%02X\r\n",
-                           x, y, gesture);
-        if (len > 0)
-        {
-            HAL_UART_Transmit(&huart1, (uint8_t *)msg, len, 100);
-        }
-    }
+    if (Gesture)   *Gesture   = gesture;
+    if (pFingerNum) *pFingerNum = fingers;
+
     return 1;
 }
+
 
 /*------------------ 4. 把原始手势映射成你的枚举事件 ------------------*/
 /*
@@ -189,14 +176,13 @@ uint8_t CST816_GetAction(uint16_t *X, uint16_t *Y, uint8_t *Gesture)
  *     GestureID = 0x0B -> Double click
  *     GestureID = 0x0C -> Long press
  */
-TouchEvent GetTouchEvent(uint16_t x, uint16_t y, uint8_t gesture, uint8_t status)
+TouchEvent GetTouchEvent(uint16_t x, uint16_t y, uint8_t gesture, uint8_t fingers)
 {
-    (void)x; // 先不用坐标，避免未使用警告
+    (void)x;
     (void)y;
 
-    if (status == 0)
-    {
-        return EVENT_NONE;  // 没有手指触摸
+    if (fingers == 0) {
+        return EVENT_NONE;    // 没触摸
     }
 
     switch (gesture)
@@ -206,6 +192,21 @@ TouchEvent GetTouchEvent(uint16_t x, uint16_t y, uint8_t gesture, uint8_t status
 
         case 0x0B:  // Double click
             return EVENT_DOUBLE_CLICK;
+
+        case 0x0C:  // Long press
+            return EVENT_LONG_PRESS;
+
+        case 0x01:  // Up
+            return EVENT_SLIDE_UP;
+
+        case 0x02:  // Down
+            return EVENT_SLIDE_DOWN;
+
+        case 0x03:  // Left
+            return EVENT_SLIDE_LEFT;
+
+        case 0x04:  // Right
+            return EVENT_SLIDE_RIGHT;
 
         default:
             return EVENT_NONE;

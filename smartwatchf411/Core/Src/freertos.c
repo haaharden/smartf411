@@ -30,7 +30,10 @@
 #include "data.h"
 #include "gui.h"
 #include "rtc.h"
+#include "touch.h"
 #include "blood.h"
+#include "algorithm.h"
+#include "MAX30102.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -40,7 +43,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+extern volatile TouchEvent g_last_event;//主要为了用手势
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -191,6 +194,34 @@ void StartGUITask(void *argument)
             lv_snprintf(buf_hr, sizeof(buf_hr), "HR: %d", g_spo2_data.heart_rate);
             lv_label_set_text(label_hr, buf_hr);
         }
+				TouchEvent ev = g_last_event;
+        /*if (ev != EVENT_NONE) {
+            g_last_event = EVENT_NONE;
+
+            switch (ev) {
+                case EVENT_SLIDE_LEFT:
+                    // 切到下一页
+                    // lv_scr_load_anim(next_screen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 200, 0, false);
+                    break;
+
+                case EVENT_SLIDE_RIGHT:
+                    // 返回上一页
+                    break;
+
+                case EVENT_SLIDE_UP:
+                    // 弹出上拉菜单
+                    break;
+
+                case EVENT_SLIDE_DOWN:
+                    // 下拉状态栏
+                    break;
+
+                case EVENT_SINGLE_CLICK:
+                    // 单击逻辑（比如点中间按钮就点亮屏幕）
+                    break;
+                default:
+                    break;
+            }*/
     }
   /* USER CODE END StartGUITask */
 }
@@ -236,40 +267,83 @@ void StartRTCTask(void *argument)
 void StartMAX30102Task(void *argument)
 {
   /* USER CODE BEGIN StartMAX30102Task */
-    osDelay(200);  // 等 I2C、FreeRTOS、互斥锁都起来
+		static uint32_t ir_buf[BUFFER_SIZE];
+    static uint32_t red_buf[BUFFER_SIZE];
+    int buf_idx = 0;
 
-    if(!MAX30102_Init()) {
-        printf("MAX init failed, SpO2 task exit\r\n");
-        vTaskDelete(NULL);
+    int32_t spo2;
+    int8_t  spo2_valid;
+    int32_t heart_rate;
+    int8_t  hr_valid;
+
+    if (max30102_init() != 0) {
+        // 可以打 log，不要死循环
     }
   /* Infinite loop */
-  for(;;)
-  {
-        /* 1) 调用你原来的测量流程：采集 + 计算 */
-        blood_Loop();   // 里面已经做了 blood_data_update + blood_data_translate
+for (;;)
+    {
+        int samples_this_loop = 0;
 
-        /* 2) 把结果写到 GUI 用的结构体里 */
+        while (samples_this_loop < 4)
+        {
+            uint8_t intr1;
+            if (max30102_read_reg(REG_INTR_STATUS_1, &intr1) != 0) {
+                break;
+            }
 
-        // 先处理 SpO2（float -> uint8_t）
-        float spo2_val = SpO2;
+            if (intr1 & 0x40) {
+                uint32_t red, ir;
+                if (max30102_read_fifo(&red, &ir) == 0)
+                {
+                    ir_buf[buf_idx]  = ir;
+                    red_buf[buf_idx] = red;
+                    buf_idx++;
+                    samples_this_loop++;
 
-        if (spo2_val < 0.0f)      spo2_val = 0.0f;
-        if (spo2_val > 99.0f)     spo2_val = 99.0f;   // 你自己也在代码里限制到 99.99
+                    if (buf_idx >= BUFFER_SIZE)
+                    {
+                        maxim_heart_rate_and_oxygen_saturation(
+                            ir_buf,
+                            red_buf,
+                            BUFFER_SIZE,
+                            &spo2,
+                            &spo2_valid,
+                            &heart_rate,
+                            &hr_valid);
 
-        g_spo2_data.spo2 = (uint8_t)(spo2_val + 0.5f);  // 四舍五入取整
+                        if (spo2_valid) {
+                            g_spo2_data.spo2       = spo2;
+                            g_spo2_data.spo2_valid = 1;
+                        } else {
+                            g_spo2_data.spo2_valid = 0;
+                        }
 
-        // 再处理 heart（int -> uint8_t）
-        int hr_val = heart;
-        if (hr_val < 0)   hr_val = 0;
-        if (hr_val > 250) hr_val = 250;   // 给个合理上限
+                        if (hr_valid) {
+                            g_spo2_data.heart_rate = heart_rate;
+                            g_spo2_data.hr_valid   = 1;
+                        } else {
+                            g_spo2_data.hr_valid   = 0;
+                        }
 
-        g_spo2_data.heart_rate = (uint8_t)hr_val;
+                        int keep = BUFFER_SIZE / 2;
+                        for (int i = 0; i < keep; i++) {
+                            ir_buf[i]  = ir_buf[BUFFER_SIZE - keep + i];
+                            red_buf[i] = red_buf[BUFFER_SIZE - keep + i];
+                        }
+                        buf_idx = keep;
+                    }
+                }
+                else {
+                    break;
+                }
+            }
+            else {
+                break;
+            }
+        }
 
-        /* 3) 稍微休息一下再测下一组
-         *    具体间隔你可以自己调，500~1000ms 都可以
-         */
-        osDelay(1000);
-  }
+        osDelay(5);
+    }
   /* USER CODE END StartMAX30102Task */
 }
 

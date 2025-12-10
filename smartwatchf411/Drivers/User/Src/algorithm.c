@@ -1,360 +1,231 @@
-/**
- * ************************************************************************
- * 
- * @file algorithm.c
- * @author zxr
- * @brief 
- * 
- * ************************************************************************
- * @copyright Copyright (c) 2024 zxr 
- * ************************************************************************
- */
 #include "algorithm.h"
-#include "stm32f4xx.h" 
+#include <math.h>
 
-
-#define XPI         (3.1415926535897932384626433832795)				//定义圆周率值，保留31位
-#define XENTRY      (100)
-#define XINCL       (XPI/2/XENTRY)									//用于正弦函数的精度控制
-#define PI 			3.1415926535897932384626433832795028841971    	//定义圆周率值，保留40位
-
-
-/**
- * ************************************************************************
- * @brief 静态正弦值对应表
- * 
- * 	使用预先计算好的数值可以节省计算时间
- * ************************************************************************
- */
-static const double XSinTbl[] = 
+/* 简单排序，用于求 R 的中值（冒泡就够了，数据量很小） */
+static void sort_float(float *arr, int n)
 {
-	0.00000000000000000  , 0.015707317311820675 , 
-	0.031410759078128292 , 0.047106450709642665 , 
-	0.062790519529313374 , 0.078459095727844944 , 
-	0.094108313318514325 , 0.10973431109104528  , 
-	0.12533323356430426  , 0.14090123193758267  ,
-	0.15643446504023087  , 0.17192910027940955  , 
-	0.18738131458572463  , 0.20278729535651249  , 
-	0.21814324139654256  , 0.23344536385590542  , 
-	0.24868988716485479  , 0.26387304996537292  , 
-	0.27899110603922928  , 0.29404032523230400  ,
-	0.30901699437494740  , 0.32391741819814940  , 
-	0.33873792024529142  , 0.35347484377925714  , 
-	0.36812455268467797  , 0.38268343236508978  , 
-	0.39714789063478062  , 0.41151435860510882  , 
-	0.42577929156507272  , 0.43993916985591514  ,
-	0.45399049973954680  , 0.46792981426057340  , 
-	0.48175367410171532  , 0.49545866843240760  , 
-	0.50904141575037132  , 0.52249856471594880  , 
-	0.53582679497899666  , 0.54902281799813180  , 
-	0.56208337785213058  , 0.57500525204327857  ,
-	0.58778525229247314  , 0.60042022532588402  , 
-	0.61290705365297649  , 0.62524265633570519  , 
-	0.63742398974868975  , 0.64944804833018377  , 
-	0.66131186532365183  , 0.67301251350977331  , 
-	0.68454710592868873  , 0.69591279659231442  ,
-	0.70710678118654757  , 0.71812629776318881  , 
-	0.72896862742141155  , 0.73963109497860968  , 
-	0.75011106963045959  , 0.76040596560003104  , 
-	0.77051324277578925  , 0.78043040733832969  , 
-	0.79015501237569041  , 0.79968465848709058  ,
-	0.80901699437494745  , 0.81814971742502351  , 
-	0.82708057427456183  , 0.83580736136827027  , 
-	0.84432792550201508  , 0.85264016435409218  , 
-	0.86074202700394364  , 0.86863151443819120  , 
-	0.87630668004386369  , 0.88376563008869347  ,
-	0.89100652418836779  , 0.89802757576061565  , 
-	0.90482705246601958  , 0.91140327663544529  , 
-	0.91775462568398114  , 0.92387953251128674  , 
-	0.92977648588825146  , 0.93544403082986738  , 
-	0.94088076895422557  , 0.94608535882754530  ,
-	0.95105651629515353  , 0.95579301479833012  , 
-	0.96029368567694307  , 0.96455741845779808  , 
-	0.96858316112863108  , 0.97236992039767667  , 
-	0.97591676193874743  , 0.97922281062176575  , 
-	0.98228725072868872  , 0.98510932615477398  ,
-	0.98768834059513777  , 0.99002365771655754  , 
-	0.99211470131447788  , 0.99396095545517971  , 
-	0.99556196460308000  , 0.99691733373312796  , 
-	0.99802672842827156  , 0.99888987496197001  , 
-	0.99950656036573160  , 0.99987663248166059  ,
-	1.00000000000000000  
-};
-
-
-/**
- * ************************************************************************
- * @brief 向下取整函数
- * 
- * @param[in] x  需要取整的浮点数参数
- * 
- * @return 
- * ************************************************************************
- */
-double my_floor(double x)
-{
-	double y=x;
-    if( (*( ( (int *) &y)+1) & 0x80000000)  != 0) //或者if(x<0)
-        return (float)((int)x)-1;
-    else
-        return (float)((int)x);
+    for (int i = 0; i < n - 1; i++)
+        for (int j = 0; j < n - 1 - i; j++)
+            if (arr[j] > arr[j + 1]) {
+                float t = arr[j];
+                arr[j] = arr[j + 1];
+                arr[j + 1] = t;
+            }
 }
 
-
-/**
- * ************************************************************************
- * @brief 取余函数
- * 
- * @param[in] x  参数1
- * @param[in] y  参数2
- * @note	避免了对浮点数的直接除法运算，从而提高了效率
- * @return 
- * ************************************************************************
- */
-double my_fmod(double x, double y)
+void maxim_heart_rate_and_oxygen_saturation(
+    const uint32_t *ir_buffer,
+    const uint32_t *red_buffer,
+    int32_t buffer_length,
+    int32_t *spo2,
+    int8_t  *spo2_valid,
+    int32_t *heart_rate,
+    int8_t  *hr_valid)
 {
-	double temp, ret;
+    if (!ir_buffer || !red_buffer ||
+        !spo2 || !spo2_valid || !heart_rate || !hr_valid ||
+        buffer_length <= 0) {
+        if (spo2_valid) *spo2_valid = 0;
+        if (hr_valid)   *hr_valid   = 0;
+        return;
+    }
 
-	if (y == 0.0)
-		return 0.0;
-	temp = my_floor(x/y);
-   ret = x - temp * y;
-	if ((x < 0.0) != (y < 0.0))
-		ret = ret - y;
-	return ret;
+    if (buffer_length > BUFFER_SIZE) {
+        buffer_length = BUFFER_SIZE;
+    }
+
+    static float ir_work[BUFFER_SIZE];
+    static float red_work[BUFFER_SIZE];
+    static float ir_filt[BUFFER_SIZE];
+
+    /* 1. 复制数据，并计算 IR 的 DC + 幅度 */
+    float ir_mean = 0.0f;
+    float ir_min  = (float)ir_buffer[0];
+    float ir_max  = (float)ir_buffer[0];
+
+    for (int i = 0; i < buffer_length; i++) {
+        float irv  = (float)ir_buffer[i];
+        float redv = (float)red_buffer[i];
+
+        ir_work[i]  = irv;
+        red_work[i] = redv;
+
+        ir_mean += irv;
+        if (irv < ir_min) ir_min = irv;
+        if (irv > ir_max) ir_max = irv;
+    }
+    ir_mean /= (float)buffer_length;
+
+    /* 如果 IR 波形几乎没有变化，说明没戴好 / 没手指，直接无效 */
+    float ir_dc_amp = ir_max - ir_min;
+    if (ir_dc_amp < 500.0f) {   // 这个阈值可以调，比如 300~2000 之间试
+        *heart_rate  = -999;
+        *hr_valid    = 0;
+        *spo2        = -999;
+        *spo2_valid  = 0;
+        return;
+    }
+
+    /* 2. 去 DC */
+    for (int i = 0; i < buffer_length; i++) {
+        ir_work[i] -= ir_mean;
+    }
+
+    /* 3. 简单 4 点滑动平均 */
+    int filt_len = 0;
+    float max_abs = 0.0f;
+    float abs_sum = 0.0f;
+
+    for (int i = 0; i < buffer_length - 3; i++) {
+        float v = (ir_work[i] + ir_work[i+1] +
+                   ir_work[i+2] + ir_work[i+3]) * 0.25f;
+        ir_filt[i] = v;
+        float av = fabsf(v);
+        abs_sum += av;
+        if (av > max_abs) max_abs = av;
+        filt_len++;
+    }
+
+    if (filt_len < 10 || max_abs < 5.0f) {
+        *heart_rate  = -999;
+        *hr_valid    = 0;
+        *spo2        = -999;
+        *spo2_valid  = 0;
+        return;
+    }
+
+    /* 4. 峰检测阈值：用 max_abs 的一定比例，并设一个下限 */
+    float threshold = abs_sum / (float)filt_len;
+    float th2 = max_abs * 0.4f;      // 40% 峰值
+    if (th2 > threshold) threshold = th2;
+    if (threshold < 5.0f) threshold = 5.0f;   // 最低阈值
+
+    int peak_index[16];
+    int peak_count = 0;
+
+    int min_distance = (int)(0.4f * FS);   // 0.4 秒一个心跳 -> 150 bpm 上限
+    if (min_distance < 10) min_distance = 10;
+
+    for (int i = 1; i < filt_len - 1; i++) {
+        if (ir_filt[i] > threshold &&
+            ir_filt[i] > ir_filt[i - 1] &&
+            ir_filt[i] >= ir_filt[i + 1]) {
+
+            if (peak_count == 0 ||
+                (i - peak_index[peak_count - 1]) >= min_distance) {
+
+                if (peak_count < (int)(sizeof(peak_index)/sizeof(peak_index[0]))) {
+                    peak_index[peak_count++] = i;
+                }
+            }
+        }
+    }
+
+    /* 5. 计算心率（只接受 45~180 bpm） */
+    *hr_valid = 0;
+    *heart_rate = -999;
+
+    if (peak_count >= 2) {
+        float interval_sum = 0.0f;
+        int   interval_cnt = 0;
+
+        for (int i = 0; i < peak_count - 1; i++) {
+            int diff = peak_index[i+1] - peak_index[i];
+            if (diff > 0) {
+                float hr_tmp = 60.0f * (float)FS / (float)diff;
+                if (hr_tmp >= 45.0f && hr_tmp <= 180.0f) {
+                    interval_sum += (float)diff;
+                    interval_cnt++;
+                }
+            }
+        }
+
+        if (interval_cnt > 0) {
+            float avg_int = interval_sum / (float)interval_cnt;
+            float hr_f = 60.0f * (float)FS / avg_int;
+            *heart_rate = (int32_t)(hr_f + 0.5f);
+            *hr_valid   = 1;
+        }
+    }
+
+    /* 如果心率都算不出来，SpO2 也没意义 */
+    if (*hr_valid == 0) {
+        *spo2 = -999;
+        *spo2_valid = 0;
+        return;
+    }
+
+    /* 6. 按心跳周期计算 R 比值 */
+    float ratio_list[16];
+    int   ratio_count = 0;
+
+    for (int p = 0; p < peak_count - 1; p++) {
+        int start = peak_index[p];
+        int end   = peak_index[p+1];
+
+        if (end <= start + 5) continue;
+        if (end > buffer_length) end = buffer_length;
+
+        float red_min = red_work[start];
+        float red_max = red_work[start];
+        float red_sum = 0.0f;
+
+        float ir_min2 = (float)ir_buffer[start];
+        float ir_max2 = (float)ir_buffer[start];
+        float ir_sum2 = 0.0f;
+
+        int count = 0;
+        for (int i = start; i < end; i++) {
+            float rv = red_work[i];
+            float iv = (float)ir_buffer[i];
+
+            if (rv < red_min) red_min = rv;
+            if (rv > red_max) red_max = rv;
+            if (iv < ir_min2) ir_min2 = iv;
+            if (iv > ir_max2) ir_max2 = iv;
+
+            red_sum += rv;
+            ir_sum2 += iv;
+            count++;
+        }
+        if (count < 10) continue;
+
+        float red_dc = red_sum / (float)count;
+        float ir_dc2 = ir_sum2 / (float)count;
+
+        float red_ac = red_max - red_min;
+        float ir_ac2 = ir_max2 - ir_min2;
+
+        /* AC 太小的周期直接丢弃 */
+        if (red_ac < 50.0f || ir_ac2 < 50.0f) continue;
+
+        if (red_dc <= 0.0f || ir_dc2 <= 0.0f) continue;
+
+        float R = (red_ac / red_dc) / (ir_ac2 / ir_dc2);
+        if (R > 0.1f && R < 3.0f &&
+            ratio_count < (int)(sizeof(ratio_list)/sizeof(ratio_list[0]))) {
+            ratio_list[ratio_count++] = R;
+        }
+    }
+
+    if (ratio_count == 0) {
+        *spo2 = -999;
+        *spo2_valid = 0;
+        return;
+    }
+
+    sort_float(ratio_list, ratio_count);
+    float R;
+    if (ratio_count & 1) {
+        R = ratio_list[ratio_count / 2];
+    } else {
+        R = 0.5f * (ratio_list[ratio_count/2 - 1] + ratio_list[ratio_count/2]);
+    }
+
+    float spo2_f = -45.06f * R * R + 30.354f * R + 94.845f;
+    if (spo2_f > 100.0f) spo2_f = 100.0f;
+    if (spo2_f < 0.0f)   spo2_f = 0.0f;
+
+    *spo2 = (int32_t)(spo2_f + 0.5f);
+    *spo2_valid = 1;
 }
-
-
-/**
- * ************************************************************************
- * @brief 正弦函数
- * 
- * @param[in] x  角度值
- * 
- * @return 
- * 
- * @note 通过查表和泰勒展开式计算正弦值，相对于直接调用标准库函数，
- * 		 可能会牺牲一些精度，但在某些嵌入式系统中可能更加高效
- * ************************************************************************
- */
-double XSin( double x )
-{
-    int s = 0 , n;
-    double dx , sx , cx;
-    if( x < 0 )
-        s = 1 , x = -x;
-    x = my_fmod( x , 2 * XPI );
-    if( x > XPI )
-        s = !s , x -= XPI;
-    if( x > XPI / 2 )
-        x = XPI - x;
-    n = (int)( x / XINCL );
-    dx = x - n * XINCL;
-    if( dx > XINCL / 2 )
-        ++n , dx -= XINCL;
-    sx = XSinTbl[n];
-    cx = XSinTbl[XENTRY-n];
-    x = sx + dx*cx - (dx*dx)*sx/2
-        - (dx*dx*dx)*cx/6 
-        + (dx*dx*dx*dx)*sx/24;
-
-    return s ? -x : x;
-}
-
-
-/**
- * ************************************************************************
- * @brief 余弦函数
- * 
- * @param[in] x  角度值
- * 
- * @return 
- * ************************************************************************
- */
-double XCos( double x )
-{
-    return XSin( x + XPI/2 );
-}
-
-
-/**
- * ************************************************************************
- * @brief 开平方
- * 
- * @param[in] a  参数
- * 
- * @return 
- * ************************************************************************
- */
-int qsqrt(int a)
-{
-	uint32_t rem = 0, root = 0, divisor = 0;
-	uint16_t i;
-	for(i=0; i<16; i++)
-	{
-		root <<= 1;
-		rem = ((rem << 2) + (a>>30));
-		a <<= 2;
-		divisor = (root << 1) + 1;
-		if(divisor <= rem)
-		{
-			rem -= divisor;
-			root++;
-		}
-	}
-	return root;
-}
-
-
-/**
- * ************************************************************************
- * @brief 两个复数相乘
- * 
- * @param[in] a  复数1
- * @param[in] b  复数2
- * @note 乘积的实部为两个复数实部的乘积减去虚部的乘积
- * 		 乘积的虚部为两个复数实部的乘积加上虚部的乘积
- * @return 
- * ************************************************************************
- */
-struct compx EE(struct compx a,struct compx b)
-{
-	struct compx c;
-	c.real=a.real*b.real-a.imag*b.imag;
-	c.imag=a.real*b.imag+a.imag*b.real;
-	return(c);
-}
-
-
-/**
- * ************************************************************************
- * @brief 对输入的复数组进行快速傅里叶变换（FFT）
- * 
- * @param[in] xin  复数组
- * 
- * ************************************************************************
- */
-void FFT(struct compx *xin)
-{
-	int f,m,nv2,nm1,i,k,l,j=0;
-	struct compx u,w,t;
-
-	nv2=FFT_N/2;                  //变址运算，即把自然顺序变成倒位序，采用雷德算法
-	nm1=FFT_N-1;  
-	for(i=0;i<nm1;i++)        
-	{
-		if(i<j)                    //如果i<j,即进行变址
-		{
-			t=xin[j];           
-			xin[j]=xin[i];
-			xin[i]=t;
-		}
-		k=nv2;                    //求j的下一个倒位序
-		
-		while(k<=j)               //如果k<=j,表示j的最高位为1   
-		{           
-			j=j-k;                 //把最高位变成0
-			k=k/2;                 //k/2，比较次高位，依次类推，逐个比较，直到某个位为0
-		}
-		
-		j=j+k;                   //把0改为1
-	}
-
-	{  //FFT运算核，使用蝶形运算完成FFT运算
-		int le,lei,ip;                           
-		f=FFT_N;
-		for(l=1;(f=f/2)!=1;l++)                  //计算l的值，即计算蝶形级数
-			;
-		for(m=1;m<=l;m++)                           // 控制蝶形结级数
-		{                                           //m表示第m级蝶形，l为蝶形级总数l=log（2）N
-			le=2<<(m-1);                            //le蝶形结距离，即第m级蝶形的蝶形结相距le点
-			lei=le/2;                               //同一蝶形结中参加运算的两点的距离
-			u.real=1.0;                             //u为蝶形结运算系数，初始值为1
-			u.imag=0.0;
-			w.real=XCos(PI/lei);                     //w为系数商，即当前系数与前一个系数的商
-			w.imag=-XSin(PI/lei);
-			for(j=0;j<=lei-1;j++)                   //控制计算不同种蝶形结，即计算系数不同的蝶形结
-			{
-				for(i=j;i<=FFT_N-1;i=i+le)            //控制同一蝶形结运算，即计算系数相同蝶形结
-				{
-					ip=i+lei;                           //i，ip分别表示参加蝶形运算的两个节点
-					t=EE(xin[ip],u);                    //蝶形运算，详见公式
-					xin[ip].real=xin[i].real-t.real;
-					xin[ip].imag=xin[i].imag-t.imag;
-					xin[i].real=xin[i].real+t.real;
-					xin[i].imag=xin[i].imag+t.imag;
-				}
-				u=EE(u,w);                           //改变系数，进行下一个蝶形运算
-			}
-		}
-	}
-}
-
-
-/**
- * ************************************************************************
- * @brief 找到具有最大实部的元素的索引
- * 
- * @param[in] data  Comment
- * @param[in] count  Comment
- * 
- * @return 
- * ************************************************************************
- */
-int find_max_num_index(struct compx *data,int count)
-{
-	int i=START_INDEX;
-	int max_num_index = i;
-	float temp = data[i].real;
-	for(i=START_INDEX;i<count;i++)
-	{
-		if(temp < data[i].real)
-		{
-			temp = data[i].real;
-			max_num_index = i;
-		}
-	}
-	return max_num_index; 
-}
-
-
-/**
- * ************************************************************************
- * @brief 直流滤波器，去除信号中的直流成分，并输出滤波后的结果
- * 
- * @param[in] input  输入信号
- * @param[in] df  Comment
- * 
- * @return 
- * ************************************************************************
- */
-int dc_filter(int input,DC_FilterData * df) 
-{
-
-	float new_w  = input + df->w * df->a;
-	int16_t result = 5*(new_w - df->w);
-	df->w = new_w;
-	
-	return result;
-}
-
-
-/**
- * ************************************************************************
- * @brief 对输入信号进行带宽限制滤波，限制输入信号的频率范围，并输出滤波后的结果
- * 
- * @param[in] input  输入信号
- * @param[in] bw  Comment
- * 
- * @return 
- * ************************************************************************
- */
-int bw_filter(int input,BW_FilterData * bw) 
-{
-    bw->v0 = bw->v1;
-    
-    bw->v1 = (1.241106190967544882e-2f*input)+(0.97517787618064910582f * bw->v0);
-    return bw->v0 + bw->v1;
-}
-
-

@@ -1,188 +1,103 @@
-/**
- * ************************************************************************
- * 
- * @file blood.c
- * @author zxr
- * @brief 
- * 
- * ************************************************************************
- * @copyright Copyright (c) 2024 zxr 
- * ************************************************************************
- */
 #include "blood.h"
-#include "usart.h"
+#include "max30102.h"
+#include "algorithm.h"
 #include "cmsis_os.h"
 
-int heart;		//定义心率
-float SpO2;		//定义血氧饱和度
-
-//调用外部变量
-extern uint16_t fifo_red;		//定义FIFO中的红光数据
-extern uint16_t fifo_ir;		//定义FIFO中的红外光数据
-
-uint16_t g_fft_index = 0;         	 	//fft输入输出下标
-struct compx s1[FFT_N+16];           	//FFT输入和输出：从S[1]开始存放，根据大小自己定义
-struct compx s2[FFT_N+16];           	//FFT输入和输出：从S[1]开始存放，根据大小自己定义
-
-
-
-#define CORRECTED_VALUE			47   			//标定血液氧气含量
+SpO2_Data_t g_spo2_data = {0};
 
 /**
- * ************************************************************************
- * @brief 更新血氧数据
- * @note 从 MAX30102 的 FIFO 中读取红光和红外数据，并将它们存储到两个复数数组s1和s2中,
- * 		 这些数据随后可以用于进行傅里叶变换等后续处理
- * 
- * ************************************************************************
+ * @brief  MAX30102 + 算法任务
+ * @note   思路：
+ *         1. 周期性检查中断标志，有数据就读 FIFO。
+ *         2. 把 RED/IR 推进缓冲数组。
+ *         3. 满 500 点（5 秒）就调用一次算法，更新 g_spo2_data。
+ *         4. 每次循环都 osDelay(5)，不阻塞 FreeRTOS。
  */
-void blood_data_update(void)
+void StartSpO2Task(void *argument)
 {
-	//标志位被使能时 读取FIFO
-	g_fft_index=0;
-	while(g_fft_index < FFT_N)
+    static uint32_t ir_buf[BUFFER_SIZE];
+    static uint32_t red_buf[BUFFER_SIZE];
+    int buf_idx = 0;
+
+    int32_t spo2;
+    int8_t  spo2_valid;
+    int32_t heart_rate;
+    int8_t  hr_valid;
+
+    /* 初始化 MAX30102 */
+    if (max30102_init() != 0) {
+        // 这里可以打印一下错误，但不要死循环
+        // printf("MAX30102 init failed\r\n");
+    }
+
+    for (;;)
     {
-        uint8_t status = max30102_read_reg(REG_INTR_STATUS_1);
+        int samples_this_loop = 0;
 
-        if (status & 0x40)   // 有新数据
+        /* 一次循环最多处理几个 FIFO 样本，避免长时间占住 I2C */
+        while (samples_this_loop < 4)
         {
-            max30102_read_fifo();  // 从 FIFO 读出 red/ir
+            uint8_t intr1;
+            if (max30102_read_reg(REG_INTR_STATUS_1, &intr1) != 0) {
+                break;  // I2C 错了，下次再试
+            }
 
-            s1[g_fft_index].real = fifo_red;
-            s1[g_fft_index].imag = 0;
-            s2[g_fft_index].real = fifo_ir;
-            s2[g_fft_index].imag = 0;
-            g_fft_index++;
+            if (intr1 & 0x40) {   // A_FULL or PPG_RDY 之类的新数据标志
+                uint32_t red, ir;
+                if (max30102_read_fifo(&red, &ir) == 0)
+                {
+                    ir_buf[buf_idx]  = ir;
+                    red_buf[buf_idx] = red;
+                    buf_idx++;
+                    samples_this_loop++;
+
+                    if (buf_idx >= BUFFER_SIZE)
+                    {
+                        /* 调算法，算一次 HR + SpO2 */
+                        maxim_heart_rate_and_oxygen_saturation(
+                            ir_buf,
+                            red_buf,
+                            BUFFER_SIZE,
+                            &spo2,
+                            &spo2_valid,
+                            &heart_rate,
+                            &hr_valid);
+
+                        if (spo2_valid) {
+                            g_spo2_data.spo2       = spo2;
+                            g_spo2_data.spo2_valid = 1;
+                        } else {
+                            g_spo2_data.spo2_valid = 0;
+                        }
+
+                        if (hr_valid) {
+                            g_spo2_data.heart_rate = heart_rate;
+                            g_spo2_data.hr_valid   = 1;
+                        } else {
+                            g_spo2_data.hr_valid   = 0;
+                        }
+
+                        /* 做个滑动窗口：保留一半旧数据，响应更快 */
+                        int keep = BUFFER_SIZE / 2;   // 保留 2.5 秒
+                        for (int i = 0; i < keep; i++) {
+                            ir_buf[i]  = ir_buf[BUFFER_SIZE - keep + i];
+                            red_buf[i] = red_buf[BUFFER_SIZE - keep + i];
+                        }
+                        buf_idx = keep;
+                    }
+                }
+                else {
+                    break;  // 读 FIFO 失败
+                }
+            }
+            else {
+                /* 没有新数据，结束本轮 while */
+                break;
+            }
         }
-        else
-        {
-            // 没数据就等等，避免疯转
-            osDelay(1);    // 或者空跑几次，视情况
-        }
+
+        /* 一定要让出 CPU，避免把 I2C/CPU 占死 */
+        osDelay(5);   // 5 ms，理论上 10ms 一次采就能跟上 100Hz
     }
 }
-
-
-/**
- * ************************************************************************
- * @brief 血液信息转换
- * 
- * 
- * ************************************************************************
- */
-void blood_data_translate(void)
-{	
-	float n_denom;
-	uint16_t i;
-
-	//直流滤波
-	float dc_red =0; 
-	float dc_ir =0;
-	float ac_red =0; 
-	float ac_ir =0;
-	
-	for (i=0 ; i<FFT_N ; i++ ) 
-	{
-		dc_red += s1[i].real ;
-		dc_ir +=  s2[i].real ;
-	}
-		dc_red =dc_red/FFT_N ;
-		dc_ir =dc_ir/FFT_N ;
-	for (i=0 ; i<FFT_N ; i++ )  
-	{
-		s1[i].real =  s1[i].real - dc_red ; 
-		s2[i].real =  s2[i].real - dc_ir ; 
-	}
-
-	//移动平均滤波
-	for(i = 1;i < FFT_N-1;i++) 
-	{
-		n_denom= ( s1[i-1].real + 2*s1[i].real + s1[i+1].real);
-		s1[i].real=  n_denom/4.00f; 
-		
-		n_denom= ( s2[i-1].real + 2*s2[i].real + s2[i+1].real);
-		s2[i].real=  n_denom/4.00f; 			
-	}
-
-	//八点平均滤波
-	for(i = 0;i < FFT_N-8;i++) 
-	{
-		n_denom= ( s1[i].real+s1[i+1].real+ s1[i+2].real+ s1[i+3].real+ s1[i+4].real+ s1[i+5].real+ s1[i+6].real+ s1[i+7].real);
-		s1[i].real=  n_denom/8.00f; 
-		
-		n_denom= ( s2[i].real+s2[i+1].real+ s2[i+2].real+ s2[i+3].real+ s2[i+4].real+ s2[i+5].real+ s2[i+6].real+ s2[i+7].real);
-		s2[i].real=  n_denom/8.00f; 
-		
-	}
-
-	//开始变换显示	
-	g_fft_index = 0;	
-	//快速傅里叶变换
-	FFT(s1);
-	FFT(s2);
-	
-	for(i = 0;i < FFT_N;i++) 
-	{
-		s1[i].real=sqrtf(s1[i].real*s1[i].real+s1[i].imag*s1[i].imag);
-		s1[i].real=sqrtf(s2[i].real*s2[i].real+s2[i].imag*s2[i].imag);
-	}
-	//计算交流分量
-	for (i=1 ; i<FFT_N ; i++ ) 
-	{
-		ac_red += s1[i].real ;
-		ac_ir +=  s2[i].real ;
-	}
-	
-	for(i = 0;i < 50;i++) 
-	{
-		if(s1[i].real<=10)
-			break;
-	}
-	
-	//读取峰值点的横坐标  结果的物理意义为 
-	int s1_max_index = find_max_num_index(s1, 60);
-	int s2_max_index = find_max_num_index(s2, 60);
-
-	//检查HbO2和Hb的变化频率是否一致
-	if(i>=45)
-	{
-		//心率计算
-		uint16_t Heart_Rate = 60.00 * SAMPLES_PER_SECOND * s1_max_index / FFT_N;
-		heart = Heart_Rate;
-		
-		//血氧含量计算
-		float R = (ac_ir*dc_red)/(ac_red*dc_ir);
-		float sp02_num = -45.060f*R*R+ 30.354f *R + 94.845f;
-		SpO2 = sp02_num;
-		
-		//状态正常
-	}
-	else //数据发生异常
-	{
-		heart = 0;
-		SpO2 = 0;
-	}
-	//结束变换显示
-}
-
-/**
- * ************************************************************************
- * @brief 心率血氧循环函数
- * 
- * 
- * ************************************************************************
- */
-void blood_Loop(void)
-{
-	//血液信息获取
-	blood_data_update();
-	//血液信息转换
-	blood_data_translate();
-
-	SpO2 = (SpO2 > 99.99f) ? 99.99f:SpO2;  
-
-	//printf("心率%3d/min; 血氧%2d%%\n\r", heart, (int)SpO2);
-
-}
-
 

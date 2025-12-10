@@ -1,29 +1,32 @@
-/**
- * ************************************************************************
- * 
- * @file blood.h
- * @author zxr
- * @brief 
- * 
- * ************************************************************************
- * @copyright Copyright (c) 2024 zxr 
- * ************************************************************************
- */
-#ifndef _BLOOD_H
-#define _BLOOD_H
+#ifndef __BLOOD_H
+#define __BLOOD_H
 
-#include "main.h"
-#include "MAX30102.h"
-#include "algorithm.h"
-#include "math.h"
-
-extern int   heart;   // 算完的心率
-extern float SpO2;    // 算完的血氧
-void blood_data_translate(void);
-void blood_data_update(void);
-void blood_Loop(void);
-
+#ifdef __cplusplus
+extern "C" {
 #endif
+
+#include <stdint.h>
+
+/* 对外给 GUI 用的数据结构 */
+typedef struct {
+    int32_t spo2;        // 血氧百分比
+    int32_t heart_rate;  // 心率 bpm
+    uint8_t spo2_valid;  // 1 = 有效
+    uint8_t hr_valid;    // 1 = 有效
+} SpO2_Data_t;
+
+/* 全局变量：GUITask 直接读它 */
+extern SpO2_Data_t g_spo2_data;
+
+/* FreeRTOS 任务入口：在 freertos.c 里创建这个任务 */
+void StartSpO2Task(void *argument);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __BLOOD_H */
+
 
 
 

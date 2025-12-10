@@ -14,13 +14,7 @@ typedef struct {
     uint8_t sec;
 } ClockTime_t;
 
-typedef struct {
-    uint8_t spo2;        // ÑªÑõ %
-    uint8_t heart_rate;  // ĞÄÂÊ BPM
-} SpO2Data_t;
-
 extern ClockTime_t g_clock_time;
-extern SpO2Data_t  g_spo2_data;
 
 #ifdef __cplusplus
 }

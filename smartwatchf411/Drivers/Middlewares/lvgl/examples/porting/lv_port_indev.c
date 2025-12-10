@@ -44,28 +44,28 @@ lv_indev_t * indev_touchpad;
 static lv_coord_t tp_x = 0;
 static lv_coord_t tp_y = 0;
 static bool tp_pressed = false;
-
+volatile TouchEvent g_last_event = EVENT_NONE;
 /* 刷新当前触摸状态：只在这里读 CST816T */
 static void touch_update(void)
 {
     uint16_t tx, ty;
-    uint8_t gesture;
-
+    uint8_t gesture,fingers;
     // 只是顺便清标志位，不拿它当“门”
     if (touch_int_flag) {
         touch_int_flag = 0;
     }
 
-    /* 读一次当前状态：有手指 -> pressed；没手指 -> released */
-    if (CST816_GetAction(&tx, &ty, &gesture)) {
+		if (CST816_GetAction(&tx, &ty, &gesture, &fingers)) {
         tp_pressed = true;
-
-        // 这里可以顺便做坐标映射/偏移，你先简单直接赋值：
         tp_x = (lv_coord_t)tx;
         tp_y = (lv_coord_t)ty;
+
+        TouchEvent ev = GetTouchEvent(tx, ty, gesture, fingers);
+        if (ev != EVENT_NONE) {
+            g_last_event = ev;
+        }
     } else {
         tp_pressed = false;
-        // 坐标可以保持上一次的值，让 LVGL 看到“松开时在最后那个点”
     }
 }
 

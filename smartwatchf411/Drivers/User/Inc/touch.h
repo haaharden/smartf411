@@ -38,13 +38,21 @@ typedef struct TouchPoint {
 } TouchType;  
 
 typedef enum {
-    EVENT_NONE,
+    EVENT_NONE = 0,
+
     EVENT_SINGLE_CLICK,
-    EVENT_DOUBLE_CLICK
+    EVENT_DOUBLE_CLICK,
+    EVENT_LONG_PRESS,
+
+    EVENT_SLIDE_UP,//拉出通知栏
+    EVENT_SLIDE_DOWN,//拉出快捷开关等
+    EVENT_SLIDE_LEFT,//切到下一页表盘
+    EVENT_SLIDE_RIGHT,//返回上一页
 } TouchEvent;
 
+
 void CST816T_Init(void);
-uint8_t CST816_GetAction(uint16_t *X, uint16_t *Y, uint8_t *Gesture);
+uint8_t CST816_GetAction(uint16_t *X, uint16_t *Y,uint8_t *Gesture, uint8_t *pFingerNum);
 TouchEvent GetTouchEvent(uint16_t x, uint16_t y, uint8_t gesture, uint8_t status);
 
 #ifdef __cplusplus
