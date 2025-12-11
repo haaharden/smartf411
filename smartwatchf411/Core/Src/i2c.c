@@ -112,5 +112,71 @@ void HAL_I2C_MspDeInit(I2C_HandleTypeDef* i2cHandle)
 }
 
 /* USER CODE BEGIN 1 */
+//iic总线恢复函数，防止未掉电烧录之后iic仍被锁死
+void I2C1_BusRecover(void)
+{
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
 
+    /* 1. 先关掉 I2C1 时钟，防止外设抢占引脚 */
+    __HAL_RCC_I2C1_CLK_DISABLE();
+
+    /* 2. 使能 GPIOB 时钟 */
+    __HAL_RCC_GPIOB_CLK_ENABLE();
+
+    /* 3. 把 PB6(SCL)、PB7(SDA) 配成 开漏输出 + 上拉，用来手动打时钟 */
+    GPIO_InitStruct.Pin   = GPIO_PIN_6 | GPIO_PIN_7;
+    GPIO_InitStruct.Mode  = GPIO_MODE_OUTPUT_OD;
+    GPIO_InitStruct.Pull  = GPIO_PULLUP;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+    /* 4. 先都拉高，看看 SDA 是否被从机拉低 */
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);  // SCL 高
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);  // SDA 高
+    HAL_Delay(1);
+
+    /* 5. 如果 SDA 仍然为低，则认为有从机把总线锁死，打 9 个 SCL 脉冲尝试释放 */
+    for (int i = 0; i < 9; i++)
+    {
+        if (HAL_GPIO_ReadPin(GPIOB, GPIO_PIN_7) == GPIO_PIN_SET)
+        {
+            /* SDA 已经被释放，不再继续打脉冲 */
+            break;
+        }
+
+        /* SCL 拉低 */
+        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_RESET);
+        HAL_Delay(1);
+
+        /* SCL 拉高（从机在这里应该采样/移位） */
+        HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);
+        HAL_Delay(1);
+    }
+
+    /* 6. 产生一个 STOP 条件：在 SCL 高期间，SDA 从低->高 */
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_RESET);  // SDA 先拉低
+    HAL_Delay(1);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_6, GPIO_PIN_SET);    // 确保 SCL 为高
+    HAL_Delay(1);
+    HAL_GPIO_WritePin(GPIOB, GPIO_PIN_7, GPIO_PIN_SET);    // SDA 拉高，形成 STOP
+    HAL_Delay(1);
+
+    /* 7. 把 PB6/PB7 重新配置回 I2C1 的复用功能(AF4) */
+    GPIO_InitStruct.Pin       = GPIO_PIN_6 | GPIO_PIN_7;
+    GPIO_InitStruct.Mode      = GPIO_MODE_AF_OD;
+    GPIO_InitStruct.Pull      = GPIO_PULLUP;
+    GPIO_InitStruct.Speed     = GPIO_SPEED_FREQ_VERY_HIGH;
+    GPIO_InitStruct.Alternate = GPIO_AF4_I2C1;
+    HAL_GPIO_Init(GPIOB, &GPIO_InitStruct);
+
+    /* 8. 打开 I2C1 时钟并重新初始化外设 */
+    __HAL_RCC_I2C1_CLK_ENABLE();
+
+    HAL_I2C_DeInit(&hi2c1);
+    if (HAL_I2C_Init(&hi2c1) != HAL_OK)
+    {
+        /* 如果这里失败，可以打一下 log 或进 Error_Handler */
+        // Error_Handler();
+    }
+}
 /* USER CODE END 1 */

@@ -7,7 +7,7 @@ lv_obj_t *label_spo2 = NULL;
 lv_obj_t *label_hr   = NULL;
 ClockTime_t g_clock_time = {0};
 
-void ui_init(void)
+void gui_init(void)
 {
 		lv_obj_t* switch_obj = lv_switch_create(lv_scr_act());
 		lv_obj_set_size(switch_obj, 120, 50);

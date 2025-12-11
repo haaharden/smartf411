@@ -336,7 +336,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F411xE</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/User/Inc;../Drivers/Middlewares/lvgl;../Drivers/Middlewares/lvgl/src;../Drivers/Middlewares/lvgl/examples;../Drivers/Middlewares/lvgl/examples/porting;../Drivers/Middlewares/lvgl/demos;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/Middlewares/MYGUI</IncludePath>
+              <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/User/Inc;../Drivers/Middlewares/lvgl;../Drivers/Middlewares/lvgl/src;../Drivers/Middlewares/lvgl/examples;../Drivers/Middlewares/lvgl/examples/porting;../Drivers/Middlewares/lvgl/demos;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/Middlewares/MYGUI;..\Drivers\Middlewares\GUI_APP;..\Drivers\Middlewares\GUI_APP\screens</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -414,11 +414,6 @@
               <FileName>mpu6500.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\User\Src\mpu6500.c</FilePath>
-            </File>
-            <File>
-              <FileName>backlight.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Drivers\User\Src\backlight.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -3027,6 +3022,36 @@
                   </Cads>
                 </FileArmAds>
               </FileOption>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Middelwares/LVGL_GUI</GroupName>
+          <Files>
+            <File>
+              <FileName>ui_helpers.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\ui_helpers.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\ui.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_Screen2.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\screens\ui_Screen2.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_Screen1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\screens\ui_Screen1.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_comp_hook.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\components\ui_comp_hook.c</FilePath>
             </File>
           </Files>
         </Group>

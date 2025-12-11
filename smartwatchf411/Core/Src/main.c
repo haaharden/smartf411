@@ -114,10 +114,10 @@ int main(void)
   MX_ADC1_Init();
   MX_TIM3_Init();
   /* USER CODE BEGIN 2 */
+	I2C1_BusRecover();
 	lv_init();
 	lv_port_disp_init();
 	lv_port_indev_init();
-	ui_init();
 	//printf("Initialize successfully\n\r");
   /* USER CODE END 2 */
 

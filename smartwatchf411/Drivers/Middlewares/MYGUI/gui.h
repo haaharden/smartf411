@@ -27,7 +27,7 @@ extern ClockTime_t g_clock_time;
 /* USER CODE END Private defines */
 
 /* USER CODE BEGIN Prototypes */
-void ui_init(void);
+void gui_init(void);
 /* USER CODE END Prototypes */
 
 #ifdef __cplusplus

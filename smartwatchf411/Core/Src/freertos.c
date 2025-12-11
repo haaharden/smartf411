@@ -35,6 +35,7 @@
 #include "algorithm.h"
 #include "MAX30102.h"
 #include "mpu6500.h"
+#include "ui.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -178,10 +179,11 @@ void MX_FREERTOS_Init(void) {
 void StartGUITask(void *argument)
 {
   /* USER CODE BEGIN StartGUITask */
+	ui_init();
 	uint32_t tick = 0;
   /* Infinite loop */
   for(;;)
-  {		
+  {
       lv_timer_handler();   // 更新lvgl
       osDelay(5);           // ÿ 5ms ��һ��
 			tick += 5;
@@ -194,17 +196,17 @@ void StartGUITask(void *argument)
                         g_clock_time.hour,
                         g_clock_time.min,
                         g_clock_time.sec);
-            lv_label_set_text(label_time, buf_time);
+            lv_label_set_text(ui_labelclock, buf_time);
 
             // 2) ˢ��Ѫ��
             char buf_spo2[16];
             lv_snprintf(buf_spo2, sizeof(buf_spo2), "SpO2: %d%%", g_spo2_data.spo2);
-            lv_label_set_text(label_spo2, buf_spo2);
+            lv_label_set_text(ui_Labelspo2, buf_spo2);
 
             // 3) ˢ������
             char buf_hr[16];
             lv_snprintf(buf_hr, sizeof(buf_hr), "HR: %d", g_spo2_data.heart_rate);
-            lv_label_set_text(label_hr, buf_hr);
+            lv_label_set_text(ui_Labelheart, buf_hr);
         }
 				/*TouchEvent ev = g_last_event;
         if (ev != EVENT_NONE) {
@@ -234,7 +236,7 @@ void StartGUITask(void *argument)
                 default:
                     break;
             }*/
-						ImuActivity_t act = IMU_GetActivity();
+						//ImuActivity_t act = IMU_GetActivity();
 						//printf("act = %d\r\n", act);
 						/*switch (act) {
                 case IMU_ACTIVITY_REST:
