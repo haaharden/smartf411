@@ -181,7 +181,7 @@ void StartGUITask(void *argument)
 	uint32_t tick = 0;
   /* Infinite loop */
   for(;;)
-  {
+  {		
       lv_timer_handler();   // 更新lvgl
       osDelay(5);           // ÿ 5ms ��һ��
 			tick += 5;
@@ -206,8 +206,8 @@ void StartGUITask(void *argument)
             lv_snprintf(buf_hr, sizeof(buf_hr), "HR: %d", g_spo2_data.heart_rate);
             lv_label_set_text(label_hr, buf_hr);
         }
-				TouchEvent ev = g_last_event;
-        /*if (ev != EVENT_NONE) {
+				/*TouchEvent ev = g_last_event;
+        if (ev != EVENT_NONE) {
             g_last_event = EVENT_NONE;
 
             switch (ev) {
