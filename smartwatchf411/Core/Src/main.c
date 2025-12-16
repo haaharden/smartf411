@@ -19,7 +19,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
 #include "cmsis_os.h"
-#include "adc.h"
 #include "dma.h"
 #include "i2c.h"
 #include "rtc.h"
@@ -111,10 +110,11 @@ int main(void)
   MX_RTC_Init();
   MX_SPI1_Init();
   MX_USART1_UART_Init();
-  MX_ADC1_Init();
-  MX_TIM3_Init();
+  MX_I2C2_Init();
+  MX_TIM2_Init();
   /* USER CODE BEGIN 2 */
-	I2C1_BusRecover();
+	I2C_BusRecover(&hi2c1);
+	I2C_BusRecover(&hi2c2);
 	lv_init();
 	lv_port_disp_init();
 	lv_port_indev_init();

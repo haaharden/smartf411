@@ -5,6 +5,7 @@
 
 #include "../ui.h"
 
+lv_obj_t * uic_Switch4;
 lv_obj_t * ui_Screen2 = NULL;
 lv_obj_t * ui_Button02 = NULL;
 lv_obj_t * ui_Labelheart = NULL;
@@ -30,8 +31,8 @@ void ui_Screen2_screen_init(void)
     ui_Button02 = lv_btn_create(ui_Screen2);
     lv_obj_set_width(ui_Button02, 100);
     lv_obj_set_height(ui_Button02, 50);
-    lv_obj_set_x(ui_Button02, 2);
-    lv_obj_set_y(ui_Button02, 32);
+    lv_obj_set_x(ui_Button02, 26);
+    lv_obj_set_y(ui_Button02, -103);
     lv_obj_set_align(ui_Button02, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_Button02, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_Button02, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
@@ -55,11 +56,12 @@ void ui_Screen2_screen_init(void)
     ui_Switch4 = lv_switch_create(ui_Screen2);
     lv_obj_set_width(ui_Switch4, 75);
     lv_obj_set_height(ui_Switch4, 40);
-    lv_obj_set_x(ui_Switch4, -6);
-    lv_obj_set_y(ui_Switch4, -75);
+    lv_obj_set_x(ui_Switch4, -71);
+    lv_obj_set_y(ui_Switch4, -107);
     lv_obj_set_align(ui_Switch4, LV_ALIGN_CENTER);
 
     lv_obj_add_event_cb(ui_Switch4, ui_event_Switch4, LV_EVENT_ALL, NULL);
+    uic_Switch4 = ui_Switch4;
 
 }
 
@@ -72,6 +74,7 @@ void ui_Screen2_screen_destroy(void)
     ui_Button02 = NULL;
     ui_Labelheart = NULL;
     ui_Labelspo2 = NULL;
+    uic_Switch4 = NULL;
     ui_Switch4 = NULL;
 
 }

@@ -36,6 +36,7 @@
 #include "MAX30102.h"
 #include "mpu6500.h"
 #include "ui.h"
+#include "backlight.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -64,7 +65,7 @@ const osMutexAttr_t I2C1_Mutex_attributes = {
 osThreadId_t guiTaskHandle;
 const osThreadAttr_t guiTask_attributes = {
   .name = "guiTask",
-  .stack_size = 1024 * 4,
+  .stack_size = 2048 * 4,
   .priority = (osPriority_t) osPriorityNormal,
 };
 /* Definitions for rtcTask */
@@ -78,7 +79,7 @@ const osThreadAttr_t rtcTask_attributes = {
 osThreadId_t MAX30102TaskHandle;
 const osThreadAttr_t MAX30102Task_attributes = {
   .name = "MAX30102Task",
-  .stack_size = 512 * 4,
+  .stack_size = 1024 * 4,
   .priority = (osPriority_t) osPriorityBelowNormal,
 };
 /* Definitions for MPU6500Task */
@@ -123,7 +124,6 @@ void vApplicationTickHook( void )
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
-  /* ���� I2C1 ������ */
   I2C1_MutexHandle = osMutexNew(&I2C1_Mutex_attributes);
   if (I2C1_MutexHandle == NULL) {
       Error_Handler();     // ����ֱ�ӱ���˵��ϵͳ������
@@ -180,62 +180,30 @@ void StartGUITask(void *argument)
 {
   /* USER CODE BEGIN StartGUITask */
 	ui_init();
+	Back_Init(); // <--- 1. 初始化背光 (PWM启动)
 	uint32_t tick = 0;
   /* Infinite loop */
   for(;;)
   {
       lv_timer_handler();   // 更新lvgl
-      osDelay(5);           // ÿ 5ms ��һ��
+      osDelay(5);           
 			tick += 5;
-        if (tick >= 200) {    // ÿ ~200ms ����һ�� UI
+        if (tick >= 200) 
+				{
             tick = 0;
-
-            // 1) ˢ��ʱ��
             char buf_time[16];
             lv_snprintf(buf_time, sizeof(buf_time), "%02d:%02d:%02d",
                         g_clock_time.hour,
                         g_clock_time.min,
                         g_clock_time.sec);
             lv_label_set_text(ui_labelclock, buf_time);
-
-            // 2) ˢ��Ѫ��
             char buf_spo2[16];
             lv_snprintf(buf_spo2, sizeof(buf_spo2), "SpO2: %d%%", g_spo2_data.spo2);
             lv_label_set_text(ui_Labelspo2, buf_spo2);
-
-            // 3) ˢ������
             char buf_hr[16];
             lv_snprintf(buf_hr, sizeof(buf_hr), "HR: %d", g_spo2_data.heart_rate);
             lv_label_set_text(ui_Labelheart, buf_hr);
         }
-				/*TouchEvent ev = g_last_event;
-        if (ev != EVENT_NONE) {
-            g_last_event = EVENT_NONE;
-
-            switch (ev) {
-                case EVENT_SLIDE_LEFT:
-                    // �е���һҳ
-                    // lv_scr_load_anim(next_screen, LV_SCR_LOAD_ANIM_MOVE_LEFT, 200, 0, false);
-                    break;
-
-                case EVENT_SLIDE_RIGHT:
-                    // ������һҳ
-                    break;
-
-                case EVENT_SLIDE_UP:
-                    // ���������˵�
-                    break;
-
-                case EVENT_SLIDE_DOWN:
-                    // ����״̬��
-                    break;
-
-                case EVENT_SINGLE_CLICK:
-                    // �����߼���������м䰴ť�͵�����Ļ��
-                    break;
-                default:
-                    break;
-            }*/
 						//ImuActivity_t act = IMU_GetActivity();
 						//printf("act = %d\r\n", act);
 						/*switch (act) {
@@ -243,19 +211,15 @@ void StartGUITask(void *argument)
                     // 比如可以认为“用户静止 / 可能在休息”
                     // 可以将来用来做：自动熄屏 / 睡眠检测的一个条件
                     break;
-
                 case IMU_ACTIVITY_LIGHT:
                     // 轻微活动
                     break;
-
                 case IMU_ACTIVITY_WALK:
                     // 走路：可以将来计步
                     break;
-
                 case IMU_ACTIVITY_RUN:
                     // 跑步：运动模式
                     break;
-
                 default:
                     break;
             }*/
@@ -304,83 +268,7 @@ void StartRTCTask(void *argument)
 void StartMAX30102Task(void *argument)
 {
   /* USER CODE BEGIN StartMAX30102Task */
-		static uint32_t ir_buf[BUFFER_SIZE];
-    static uint32_t red_buf[BUFFER_SIZE];
-    int buf_idx = 0;
-
-    int32_t spo2;
-    int8_t  spo2_valid;
-    int32_t heart_rate;
-    int8_t  hr_valid;
-
-    if (max30102_init() != 0) {
-        // ���Դ� log����Ҫ��ѭ��
-    }
-  /* Infinite loop */
-for (;;)
-    {
-        int samples_this_loop = 0;
-
-        while (samples_this_loop < 4)
-        {
-            uint8_t intr1;
-            if (max30102_read_reg(REG_INTR_STATUS_1, &intr1) != 0) {
-                break;
-            }
-
-            if (intr1 & 0x40) {
-                uint32_t red, ir;
-                if (max30102_read_fifo(&red, &ir) == 0)
-                {
-                    ir_buf[buf_idx]  = ir;
-                    red_buf[buf_idx] = red;
-                    buf_idx++;
-                    samples_this_loop++;
-
-                    if (buf_idx >= BUFFER_SIZE)
-                    {
-                        maxim_heart_rate_and_oxygen_saturation(
-                            ir_buf,
-                            red_buf,
-                            BUFFER_SIZE,
-                            &spo2,
-                            &spo2_valid,
-                            &heart_rate,
-                            &hr_valid);
-
-                        if (spo2_valid) {
-                            g_spo2_data.spo2       = spo2;
-                            g_spo2_data.spo2_valid = 1;
-                        } else {
-                            g_spo2_data.spo2_valid = 0;
-                        }
-
-                        if (hr_valid) {
-                            g_spo2_data.heart_rate = heart_rate;
-                            g_spo2_data.hr_valid   = 1;
-                        } else {
-                            g_spo2_data.hr_valid   = 0;
-                        }
-
-                        int keep = BUFFER_SIZE / 2;
-                        for (int i = 0; i < keep; i++) {
-                            ir_buf[i]  = ir_buf[BUFFER_SIZE - keep + i];
-                            red_buf[i] = red_buf[BUFFER_SIZE - keep + i];
-                        }
-                        buf_idx = keep;
-                    }
-                }
-                else {
-                    break;
-                }
-            }
-            else {
-                break;
-            }
-        }
-
-        osDelay(5);
-    }
+		StartSpO2Task(argument);
   /* USER CODE END StartMAX30102Task */
 }
 

@@ -6,10 +6,10 @@
 "smartwatchf411\lcd.o"
 "smartwatchf411\touch.o"
 "smartwatchf411\mpu6500.o"
+"smartwatchf411\backlight.o"
 "smartwatchf411\main.o"
 "smartwatchf411\gpio.o"
 "smartwatchf411\freertos.o"
-"smartwatchf411\adc.o"
 "smartwatchf411\dma.o"
 "smartwatchf411\i2c.o"
 "smartwatchf411\rtc.o"
@@ -21,8 +21,6 @@
 "smartwatchf411\stm32f4xx_hal_timebase_tim.o"
 "smartwatchf411\stm32f4xx_hal_tim.o"
 "smartwatchf411\stm32f4xx_hal_tim_ex.o"
-"smartwatchf411\stm32f4xx_hal_adc.o"
-"smartwatchf411\stm32f4xx_hal_adc_ex.o"
 "smartwatchf411\stm32f4xx_hal_rcc.o"
 "smartwatchf411\stm32f4xx_hal_rcc_ex.o"
 "smartwatchf411\stm32f4xx_hal_flash.o"
@@ -318,6 +316,7 @@
 "smartwatchf411\ui_screen2.o"
 "smartwatchf411\ui_screen1.o"
 "smartwatchf411\ui_comp_hook.o"
+"smartwatchf411\ui_events.o"
 --library_type=microlib --strict --scatter "smartwatchf411\smartwatchf411.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

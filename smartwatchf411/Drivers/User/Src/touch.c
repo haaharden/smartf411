@@ -36,7 +36,12 @@ uint8_t CST816_WriteReg(uint8_t reg, uint8_t data)
 
     osMutexRelease(I2C1_MutexHandle);
 
-    return (status == HAL_OK) ? 1 : 0;
+    if (status != HAL_OK)
+    {
+        I2C_BusRecover(&hi2c1); // 写入失败也复位
+        return 0;
+    }
+    return 1;
 }
 
 
@@ -57,7 +62,16 @@ uint8_t CST816_ReadRegs(uint8_t reg, uint8_t *buf, uint16_t len)
 
     osMutexRelease(I2C1_MutexHandle);
 
-    return (status == HAL_OK) ? 1 : 0;
+    if (status != HAL_OK)
+    {
+        printf("Touch I2C Fail (Error=%d)! Recovering...\r\n", status);
+        
+        // 调用你刚才写的通用复位函数，救活 I2C1
+        I2C_BusRecover(&hi2c1); 
+        
+        return 0; // 返回错误，让上层下次再试
+    }
+    return 1;
 }
 
 /*------------------ 1. 中断回调：把“有触摸了”记下来 ------------------*/

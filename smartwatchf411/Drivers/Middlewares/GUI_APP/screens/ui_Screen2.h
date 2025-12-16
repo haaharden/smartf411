@@ -20,6 +20,7 @@ extern lv_obj_t * ui_Labelspo2;
 extern void ui_event_Switch4(lv_event_t * e);
 extern lv_obj_t * ui_Switch4;
 // CUSTOM VARIABLES
+extern lv_obj_t * uic_Switch4;
 
 #ifdef __cplusplus
 } /*extern "C"*/

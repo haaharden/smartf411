@@ -18,7 +18,10 @@ extern lv_obj_t * ui_Button01;
 extern lv_obj_t * ui_labelclock;
 extern void ui_event_Switch1(lv_event_t * e);
 extern lv_obj_t * ui_Switch1;
+extern void ui_event_Slider1(lv_event_t * e);
+extern lv_obj_t * ui_Slider1;
 // CUSTOM VARIABLES
+extern lv_obj_t * uic_Switch1;
 
 #ifdef __cplusplus
 } /*extern "C"*/

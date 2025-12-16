@@ -1,10 +1,10 @@
 #include "max30102.h"
 #include "cmsis_os.h"
+#include "i2c.h"   
+#include <stdio.h> 
 
 /* CubeMX 生成的 I2C1 句柄 */
-extern I2C_HandleTypeDef hi2c1;
-/* 你在 freertos.c 里创建的互斥锁 */
-extern osMutexId_t I2C1_MutexHandle;
+extern I2C_HandleTypeDef hi2c2;
 
 /* 内部工具函数：带互斥锁的 I2C 寄存器读写
  * 返回值：
@@ -13,36 +13,50 @@ extern osMutexId_t I2C1_MutexHandle;
  */
 static uint8_t i2c_write_reg(uint8_t reg, uint8_t value)
 {
-    if (osMutexAcquire(I2C1_MutexHandle, osWaitForever) != osOK)
+    HAL_StatusTypeDef ret;
+    uint8_t retry = 0;
+
+    for(retry = 0; retry < 3; retry++)
+    {
+        ret = HAL_I2C_Mem_Write(&hi2c2, MAX30102_I2C_ADDR, reg, 1, &value, 1, 100);
+        if(ret == HAL_OK) return 0;
+        HAL_Delay(1);
+    }
+
+    if (ret != HAL_OK) {
+        printf("MAX30102 Write Dead! Recovering...\r\n");
+        I2C_BusRecover(&hi2c2);
         return 1;
-
-    HAL_StatusTypeDef ret = HAL_I2C_Mem_Write(&hi2c1,
-                                              MAX30102_I2C_ADDR,
-                                              reg,
-                                              I2C_MEMADD_SIZE_8BIT,
-                                              &value,
-                                              1,
-                                              100);
-
-    osMutexRelease(I2C1_MutexHandle);
-    return (ret == HAL_OK) ? 0 : 1;
+    }
+    return 0;
 }
 
 static uint8_t i2c_read_reg(uint8_t reg, uint8_t *value)
 {
-    if (osMutexAcquire(I2C1_MutexHandle, osWaitForever) != osOK)
+    HAL_StatusTypeDef ret;
+    uint8_t retry = 0;
+
+    // 给 3 次机会
+    for(retry = 0; retry < 3; retry++)
+    {
+        ret = HAL_I2C_Mem_Read(&hi2c2, MAX30102_I2C_ADDR, reg, 1, value, 1, 100);
+        
+        if(ret == HAL_OK) {
+            return 0; // 成功直接返回
+        }
+        
+        // 如果失败，稍微等一下让总线缓一缓，不要立即重试
+        HAL_Delay(1); 
+    }
+
+    // === 如果 3 次都失败了，说明真的出大事了，这时候再复位 ===
+    if (ret != HAL_OK) {
+        printf("MAX30102 Read Dead! Recovering...\r\n");
+        I2C_BusRecover(&hi2c2); 
         return 1;
+    }
 
-    HAL_StatusTypeDef ret = HAL_I2C_Mem_Read(&hi2c1,
-                                             MAX30102_I2C_ADDR,
-                                             reg,
-                                             I2C_MEMADD_SIZE_8BIT,
-                                             value,
-                                             1,
-                                             100);
-
-    osMutexRelease(I2C1_MutexHandle);
-    return (ret == HAL_OK) ? 0 : 1;
+    return 0;
 }
 
 /* 对外封装 */
@@ -107,24 +121,42 @@ uint8_t max30102_read_fifo(uint32_t *red, uint32_t *ir)
     uint8_t dummy;
 
     /* 读一下中断状态寄存器，把中断标志清一下（可选） */
+    /* 注意：假设你的 max30102_read_reg 内部已经加了重试机制，这里就很安全 */
     max30102_read_reg(REG_INTR_STATUS_1, &dummy);
     max30102_read_reg(REG_INTR_STATUS_2, &dummy);
 
-    if (osMutexAcquire(I2C1_MutexHandle, osWaitForever) != osOK)
+    HAL_StatusTypeDef ret;
+    uint8_t retry = 0;
+
+    /* ================= 【核心修改：加入 3 次重试循环】 ================= */
+    for(retry = 0; retry < 3; retry++)
+    {
+        ret = HAL_I2C_Mem_Read(&hi2c2,
+                               MAX30102_I2C_ADDR,
+                               REG_FIFO_DATA,
+                               I2C_MEMADD_SIZE_8BIT,
+                               buf,
+                               6,
+                               100);
+
+        if(ret == HAL_OK) {
+            break; // 成功！跳出循环，去处理数据
+        }
+
+        // 失败了？不要急着复位！
+        // 可能是背光 PWM 刚闪了一下，等 1ms 避开那个尖峰
+        HAL_Delay(1); 
+    }
+    /* ================================================================= */
+
+    /* 只有当 3 次机会全部用完，依然是 Error，才判定为“死机”，执行复位 */
+    if (ret != HAL_OK) {
+        printf("MAX30102 FIFO Read Dead! Recovering...\r\n");
+        I2C_BusRecover(&hi2c2); // 只有真的挂了才复位
         return 1;
+    }
 
-    HAL_StatusTypeDef ret = HAL_I2C_Mem_Read(&hi2c1,
-                                             MAX30102_I2C_ADDR,
-                                             REG_FIFO_DATA,
-                                             I2C_MEMADD_SIZE_8BIT,
-                                             buf,
-                                             6,
-                                             100);
-
-    osMutexRelease(I2C1_MutexHandle);
-
-    if (ret != HAL_OK) return 1;
-
+    /* 数据拼接处理 (保持原样) */
     uint32_t raw_red = ((uint32_t)buf[0] << 16) |
                        ((uint32_t)buf[1] << 8)  |
                         (uint32_t)buf[2];
