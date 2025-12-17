@@ -301,6 +301,7 @@
 "smartwatchf411\img_demo_widgets_avatar.o"
 "smartwatchf411\img_lvgl_logo.o"
 "smartwatchf411\gui.o"
+"smartwatchf411\ui_logic.o"
 "smartwatchf411\croutine.o"
 "smartwatchf411\event_groups.o"
 "smartwatchf411\list.o"

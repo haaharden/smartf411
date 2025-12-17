@@ -686,7 +686,7 @@ I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_spi.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h)(0x691AC3D8)
 I (../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h)(0x691AC3D8)
-F (../Core/Src/freertos.c)(0x69410E27)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc -I ../Drivers/Middlewares/lvgl -I ../Drivers/Middlewares/lvgl/src -I ../Drivers/Middlewares/lvgl/examples -I ../Drivers/Middlewares/lvgl/examples/porting -I ../Drivers/Middlewares/lvgl/demos -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/Middlewares/MYGUI -I ../Drivers/Middlewares/GUI_APP -I ../Drivers/Middlewares/GUI_APP/screens-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\freertos.o --omf_browse smartwatchf411\freertos.crf --depend smartwatchf411\freertos.d)
+F (../Core/Src/freertos.c)(0x69420E90)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc -I ../Drivers/Middlewares/lvgl -I ../Drivers/Middlewares/lvgl/src -I ../Drivers/Middlewares/lvgl/examples -I ../Drivers/Middlewares/lvgl/examples/porting -I ../Drivers/Middlewares/lvgl/demos -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/Middlewares/MYGUI -I ../Drivers/Middlewares/GUI_APP -I ../Drivers/Middlewares/GUI_APP/screens-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\freertos.o --omf_browse smartwatchf411\freertos.crf --depend smartwatchf411\freertos.d)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x691AC3DA)
 I (C:\Emb\keil\ARM\ARMCC\include\stddef.h)(0x588B8344)
 I (C:\Emb\keil\ARM\ARMCC\include\stdint.h)(0x588B8344)
@@ -870,11 +870,11 @@ I (../Drivers/User/Inc/blood.h)(0x6938D4C0)
 I (../Drivers/User/Inc/algorithm.h)(0x6938D4C0)
 I (../Drivers/User/Inc/MAX30102.h)(0x6938D4C0)
 I (../Drivers/User/Inc/mpu6500.h)(0x69392F7C)
-I (../Drivers/Middlewares/GUI_APP/ui.h)(0x6940FF85)
-I (../Drivers/Middlewares/GUI_APP/ui_helpers.h)(0x6940FF85)
-I (../Drivers/Middlewares/GUI_APP/ui_events.h)(0x6940FF85)
-I (../Drivers/Middlewares/GUI_APP/screens/ui_Screen1.h)(0x6940FF85)
-I (../Drivers/Middlewares/GUI_APP/screens/ui_Screen2.h)(0x6940FF85)
+I (../Drivers/Middlewares/GUI_APP/ui.h)(0x69424B89)
+I (../Drivers/Middlewares/GUI_APP/ui_helpers.h)(0x69424B89)
+I (../Drivers/Middlewares/GUI_APP/ui_events.h)(0x69424B89)
+I (../Drivers/Middlewares/GUI_APP/screens/ui_Screen1.h)(0x69424B89)
+I (../Drivers/Middlewares/GUI_APP/screens/ui_Screen2.h)(0x69424B89)
 I (../Drivers/User/Inc/backlight.h)(0x6940C353)
 F (../Core/Src/dma.c)(0x69339D46)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc -I ../Drivers/Middlewares/lvgl -I ../Drivers/Middlewares/lvgl/src -I ../Drivers/Middlewares/lvgl/examples -I ../Drivers/Middlewares/lvgl/examples/porting -I ../Drivers/Middlewares/lvgl/demos -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/Middlewares/MYGUI -I ../Drivers/Middlewares/GUI_APP -I ../Drivers/Middlewares/GUI_APP/screens-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\dma.o --omf_browse smartwatchf411\dma.crf --depend smartwatchf411\dma.d)
 I (../Core/Inc/dma.h)(0x69338F5D)
@@ -23905,6 +23905,142 @@ I (../Drivers/Middlewares/lvgl/src/extra/widgets/colorwheel/lv_colorwheel.h)(0x6
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/led/lv_led.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/imgbtn/lv_imgbtn.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/span/lv_span.h)(0x65707EAF)
+F (..\Drivers\Middlewares\MYGUI\ui_logic.c)(0x69424BD6)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc -I ../Drivers/Middlewares/lvgl -I ../Drivers/Middlewares/lvgl/src -I ../Drivers/Middlewares/lvgl/examples -I ../Drivers/Middlewares/lvgl/examples/porting -I ../Drivers/Middlewares/lvgl/demos -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/Middlewares/MYGUI -I ../Drivers/Middlewares/GUI_APP -I ../Drivers/Middlewares/GUI_APP/screens-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\ui_logic.o --omf_browse smartwatchf411\ui_logic.crf --depend smartwatchf411\ui_logic.d)
+I (../Drivers/Middlewares/GUI_APP/ui.h)(0x69424B89)
+I (../Drivers/Middlewares/lvgl/lvgl.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/misc/lv_log.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/misc/../lv_conf_internal.h)(0x65707EAF)
+I (C:\Emb\keil\ARM\ARMCC\include\stdint.h)(0x588B8344)
+I (../Drivers/Middlewares/lvgl/src/misc/../lv_conf_kconfig.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/examples/porting/../../lv_conf.h)(0x69363A9A)
+I (../Drivers/Middlewares/lvgl/src/misc/lv_types.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/misc/lv_timer.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/misc/../hal/lv_hal_tick.h)(0x65707EAF)
+I (C:\Emb\keil\ARM\ARMCC\include\stdbool.h)(0x588B8344)
+I (../Drivers/Middlewares/lvgl/src/misc/lv_math.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/misc/lv_mem.h)(0x65707EAF)
+I (C:\Emb\keil\ARM\ARMCC\include\stddef.h)(0x588B8344)
+I (C:\Emb\keil\ARM\ARMCC\include\string.h)(0x588B8344)
+I (../Drivers/Middlewares/lvgl/src/misc/lv_async.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/misc/lv_anim_timeline.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/misc/lv_anim.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/misc/lv_printf.h)(0x65707EAF)
+I (C:\Emb\keil\ARM\ARMCC\include\stdarg.h)(0x588B8344)
+I (../Drivers/Middlewares/lvgl/src/hal/lv_hal.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/lv_hal_disp.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/lv_draw.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/../misc/lv_style.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/../misc/../font/lv_font.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/../misc/../font/lv_symbol_def.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/../misc/../font/../misc/lv_area.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/../misc/lv_color.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/../misc/lv_assert.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/../misc/lv_txt.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/../misc/lv_bidi.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/../misc/lv_style_gen.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/lv_img_decoder.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/lv_img_buf.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/../misc/lv_fs.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/lv_img_cache.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/lv_draw_rect.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/sw/lv_draw_sw_gradient.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/sw/lv_draw_sw_dither.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/sw/../../core/lv_obj_pos.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/lv_draw_label.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/lv_draw_img.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/lv_draw_line.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/lv_draw_triangle.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/lv_draw_arc.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/lv_draw_mask.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/lv_draw_transform.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../draw/lv_draw_layer.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/../misc/lv_ll.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/hal/lv_hal_indev.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/core/lv_obj.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/core/lv_obj_tree.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/core/lv_obj_scroll.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/core/lv_obj_style.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/core/lv_obj_style_gen.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/core/lv_obj_draw.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/core/lv_obj_class.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/core/lv_event.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/core/lv_group.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/core/lv_indev.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/core/lv_refr.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/core/lv_disp.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/core/lv_theme.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/font/lv_font_loader.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/font/lv_font_fmt_txt.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/widgets/lv_arc.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/widgets/lv_btn.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/widgets/lv_img.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/widgets/lv_label.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/widgets/lv_line.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/widgets/lv_table.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/widgets/lv_checkbox.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/widgets/lv_bar.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/widgets/lv_slider.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/widgets/lv_btnmatrix.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/widgets/lv_dropdown.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/widgets/lv_roller.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/widgets/lv_textarea.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/widgets/lv_canvas.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/widgets/lv_switch.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/lv_api_map.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/../lvgl.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/lv_extra.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/layouts/lv_layouts.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/layouts/flex/lv_flex.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/layouts/grid/lv_grid.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/libs/lv_libs.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/libs/bmp/lv_bmp.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/libs/fsdrv/lv_fsdrv.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/libs/png/lv_png.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/libs/gif/lv_gif.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/libs/gif/../../../lvgl.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/libs/qrcode/lv_qrcode.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/libs/sjpg/lv_sjpg.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/libs/freetype/lv_freetype.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/libs/rlottie/lv_rlottie.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/libs/ffmpeg/lv_ffmpeg.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/libs/tiny_ttf/lv_tiny_ttf.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/others/lv_others.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/others/snapshot/lv_snapshot.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/others/monkey/lv_monkey.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/others/gridnav/lv_gridnav.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/others/fragment/lv_fragment.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/others/imgfont/lv_imgfont.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/others/msg/lv_msg.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/others/ime/lv_ime_pinyin.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/themes/lv_themes.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/themes/default/lv_theme_default.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/themes/mono/lv_theme_mono.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/themes/basic/lv_theme_basic.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/lv_widgets.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/animimg/lv_animimg.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/calendar/lv_calendar.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/calendar/lv_calendar_header_arrow.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/calendar/lv_calendar_header_dropdown.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/chart/lv_chart.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/keyboard/lv_keyboard.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/list/lv_list.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/menu/lv_menu.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/msgbox/lv_msgbox.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/meter/lv_meter.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/spinbox/lv_spinbox.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/spinner/lv_spinner.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/tabview/lv_tabview.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/tileview/lv_tileview.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/win/lv_win.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/colorwheel/lv_colorwheel.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/led/lv_led.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/imgbtn/lv_imgbtn.h)(0x65707EAF)
+I (../Drivers/Middlewares/lvgl/src/extra/widgets/span/lv_span.h)(0x65707EAF)
+I (../Drivers/Middlewares/GUI_APP/ui_helpers.h)(0x69424B89)
+I (../Drivers/Middlewares/GUI_APP/ui_events.h)(0x69424B89)
+I (../Drivers/Middlewares/GUI_APP/screens/ui_Screen1.h)(0x69424B89)
+I (../Drivers/Middlewares/GUI_APP/screens/ui_Screen2.h)(0x69424B89)
+I (C:\Emb\keil\ARM\ARMCC\include\stdio.h)(0x588B8344)
 F (../Middlewares/Third_Party/FreeRTOS/Source/croutine.c)(0x691AC3DA)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc -I ../Drivers/Middlewares/lvgl -I ../Drivers/Middlewares/lvgl/src -I ../Drivers/Middlewares/lvgl/examples -I ../Drivers/Middlewares/lvgl/examples/porting -I ../Drivers/Middlewares/lvgl/demos -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/Middlewares/MYGUI -I ../Drivers/Middlewares/GUI_APP -I ../Drivers/Middlewares/GUI_APP/screens-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\croutine.o --omf_browse smartwatchf411\croutine.crf --depend smartwatchf411\croutine.d)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/FreeRTOS.h)(0x691AC3DA)
 I (C:\Emb\keil\ARM\ARMCC\include\stddef.h)(0x588B8344)
@@ -24083,9 +24219,9 @@ I (../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F/portmacro.h
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/mpu_wrappers.h)(0x691AC3DA)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/task.h)(0x691AC3DA)
 I (../Middlewares/Third_Party/FreeRTOS/Source/include/list.h)(0x691AC3DA)
-F (..\Drivers\Middlewares\GUI_APP\ui_helpers.c)(0x6940FF85)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc -I ../Drivers/Middlewares/lvgl -I ../Drivers/Middlewares/lvgl/src -I ../Drivers/Middlewares/lvgl/examples -I ../Drivers/Middlewares/lvgl/examples/porting -I ../Drivers/Middlewares/lvgl/demos -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/Middlewares/MYGUI -I ../Drivers/Middlewares/GUI_APP -I ../Drivers/Middlewares/GUI_APP/screens-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\ui_helpers.o --omf_browse smartwatchf411\ui_helpers.crf --depend smartwatchf411\ui_helpers.d)
-I (..\Drivers\Middlewares\GUI_APP\ui_helpers.h)(0x6940FF85)
-I (..\Drivers\Middlewares\GUI_APP\ui.h)(0x6940FF85)
+F (..\Drivers\Middlewares\GUI_APP\ui_helpers.c)(0x69424B89)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc -I ../Drivers/Middlewares/lvgl -I ../Drivers/Middlewares/lvgl/src -I ../Drivers/Middlewares/lvgl/examples -I ../Drivers/Middlewares/lvgl/examples/porting -I ../Drivers/Middlewares/lvgl/demos -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/Middlewares/MYGUI -I ../Drivers/Middlewares/GUI_APP -I ../Drivers/Middlewares/GUI_APP/screens-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\ui_helpers.o --omf_browse smartwatchf411\ui_helpers.crf --depend smartwatchf411\ui_helpers.d)
+I (..\Drivers\Middlewares\GUI_APP\ui_helpers.h)(0x69424B89)
+I (..\Drivers\Middlewares\GUI_APP\ui.h)(0x69424B89)
 I (../Drivers/Middlewares/lvgl/lvgl.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/misc/lv_log.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/misc/../lv_conf_internal.h)(0x65707EAF)
@@ -24215,11 +24351,11 @@ I (../Drivers/Middlewares/lvgl/src/extra/widgets/colorwheel/lv_colorwheel.h)(0x6
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/led/lv_led.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/imgbtn/lv_imgbtn.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/span/lv_span.h)(0x65707EAF)
-I (..\Drivers\Middlewares\GUI_APP\ui_events.h)(0x6940FF85)
-I (..\Drivers\Middlewares\GUI_APP\screens/ui_Screen1.h)(0x6940FF85)
-I (..\Drivers\Middlewares\GUI_APP\screens/ui_Screen2.h)(0x6940FF85)
-F (..\Drivers\Middlewares\GUI_APP\ui.c)(0x6940FF85)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc -I ../Drivers/Middlewares/lvgl -I ../Drivers/Middlewares/lvgl/src -I ../Drivers/Middlewares/lvgl/examples -I ../Drivers/Middlewares/lvgl/examples/porting -I ../Drivers/Middlewares/lvgl/demos -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/Middlewares/MYGUI -I ../Drivers/Middlewares/GUI_APP -I ../Drivers/Middlewares/GUI_APP/screens-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\ui.o --omf_browse smartwatchf411\ui.crf --depend smartwatchf411\ui.d)
-I (..\Drivers\Middlewares\GUI_APP\ui.h)(0x6940FF85)
+I (..\Drivers\Middlewares\GUI_APP\ui_events.h)(0x69424B89)
+I (..\Drivers\Middlewares\GUI_APP\screens/ui_Screen1.h)(0x69424B89)
+I (..\Drivers\Middlewares\GUI_APP\screens/ui_Screen2.h)(0x69424B89)
+F (..\Drivers\Middlewares\GUI_APP\ui.c)(0x69424B89)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc -I ../Drivers/Middlewares/lvgl -I ../Drivers/Middlewares/lvgl/src -I ../Drivers/Middlewares/lvgl/examples -I ../Drivers/Middlewares/lvgl/examples/porting -I ../Drivers/Middlewares/lvgl/demos -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/Middlewares/MYGUI -I ../Drivers/Middlewares/GUI_APP -I ../Drivers/Middlewares/GUI_APP/screens-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\ui.o --omf_browse smartwatchf411\ui.crf --depend smartwatchf411\ui.d)
+I (..\Drivers\Middlewares\GUI_APP\ui.h)(0x69424B89)
 I (../Drivers/Middlewares/lvgl/lvgl.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/misc/lv_log.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/misc/../lv_conf_internal.h)(0x65707EAF)
@@ -24349,12 +24485,12 @@ I (../Drivers/Middlewares/lvgl/src/extra/widgets/colorwheel/lv_colorwheel.h)(0x6
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/led/lv_led.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/imgbtn/lv_imgbtn.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/span/lv_span.h)(0x65707EAF)
-I (..\Drivers\Middlewares\GUI_APP\ui_helpers.h)(0x6940FF85)
-I (..\Drivers\Middlewares\GUI_APP\ui_events.h)(0x6940FF85)
-I (..\Drivers\Middlewares\GUI_APP\screens/ui_Screen1.h)(0x6940FF85)
-I (..\Drivers\Middlewares\GUI_APP\screens/ui_Screen2.h)(0x6940FF85)
-F (..\Drivers\Middlewares\GUI_APP\screens\ui_Screen2.c)(0x6940FF85)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc -I ../Drivers/Middlewares/lvgl -I ../Drivers/Middlewares/lvgl/src -I ../Drivers/Middlewares/lvgl/examples -I ../Drivers/Middlewares/lvgl/examples/porting -I ../Drivers/Middlewares/lvgl/demos -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/Middlewares/MYGUI -I ../Drivers/Middlewares/GUI_APP -I ../Drivers/Middlewares/GUI_APP/screens-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\ui_screen2.o --omf_browse smartwatchf411\ui_screen2.crf --depend smartwatchf411\ui_screen2.d)
-I (..\Drivers\Middlewares\GUI_APP\screens\../ui.h)(0x6940FF85)
+I (..\Drivers\Middlewares\GUI_APP\ui_helpers.h)(0x69424B89)
+I (..\Drivers\Middlewares\GUI_APP\ui_events.h)(0x69424B89)
+I (..\Drivers\Middlewares\GUI_APP\screens/ui_Screen1.h)(0x69424B89)
+I (..\Drivers\Middlewares\GUI_APP\screens/ui_Screen2.h)(0x69424B89)
+F (..\Drivers\Middlewares\GUI_APP\screens\ui_Screen2.c)(0x69424B89)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc -I ../Drivers/Middlewares/lvgl -I ../Drivers/Middlewares/lvgl/src -I ../Drivers/Middlewares/lvgl/examples -I ../Drivers/Middlewares/lvgl/examples/porting -I ../Drivers/Middlewares/lvgl/demos -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/Middlewares/MYGUI -I ../Drivers/Middlewares/GUI_APP -I ../Drivers/Middlewares/GUI_APP/screens-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\ui_screen2.o --omf_browse smartwatchf411\ui_screen2.crf --depend smartwatchf411\ui_screen2.d)
+I (..\Drivers\Middlewares\GUI_APP\screens\../ui.h)(0x69424B89)
 I (../Drivers/Middlewares/lvgl/lvgl.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/misc/lv_log.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/misc/../lv_conf_internal.h)(0x65707EAF)
@@ -24484,12 +24620,12 @@ I (../Drivers/Middlewares/lvgl/src/extra/widgets/colorwheel/lv_colorwheel.h)(0x6
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/led/lv_led.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/imgbtn/lv_imgbtn.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/span/lv_span.h)(0x65707EAF)
-I (..\Drivers\Middlewares\GUI_APP\screens\../ui_helpers.h)(0x6940FF85)
-I (..\Drivers\Middlewares\GUI_APP\screens\../ui_events.h)(0x6940FF85)
-I (..\Drivers\Middlewares\GUI_APP\screens\../screens/ui_Screen1.h)(0x6940FF85)
-I (..\Drivers\Middlewares\GUI_APP\screens\../screens/ui_Screen2.h)(0x6940FF85)
-F (..\Drivers\Middlewares\GUI_APP\screens\ui_Screen1.c)(0x6940FF85)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc -I ../Drivers/Middlewares/lvgl -I ../Drivers/Middlewares/lvgl/src -I ../Drivers/Middlewares/lvgl/examples -I ../Drivers/Middlewares/lvgl/examples/porting -I ../Drivers/Middlewares/lvgl/demos -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/Middlewares/MYGUI -I ../Drivers/Middlewares/GUI_APP -I ../Drivers/Middlewares/GUI_APP/screens-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\ui_screen1.o --omf_browse smartwatchf411\ui_screen1.crf --depend smartwatchf411\ui_screen1.d)
-I (..\Drivers\Middlewares\GUI_APP\screens\../ui.h)(0x6940FF85)
+I (..\Drivers\Middlewares\GUI_APP\screens\../ui_helpers.h)(0x69424B89)
+I (..\Drivers\Middlewares\GUI_APP\screens\../ui_events.h)(0x69424B89)
+I (..\Drivers\Middlewares\GUI_APP\screens\../screens/ui_Screen1.h)(0x69424B89)
+I (..\Drivers\Middlewares\GUI_APP\screens\../screens/ui_Screen2.h)(0x69424B89)
+F (..\Drivers\Middlewares\GUI_APP\screens\ui_Screen1.c)(0x69424B89)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc -I ../Drivers/Middlewares/lvgl -I ../Drivers/Middlewares/lvgl/src -I ../Drivers/Middlewares/lvgl/examples -I ../Drivers/Middlewares/lvgl/examples/porting -I ../Drivers/Middlewares/lvgl/demos -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/Middlewares/MYGUI -I ../Drivers/Middlewares/GUI_APP -I ../Drivers/Middlewares/GUI_APP/screens-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\ui_screen1.o --omf_browse smartwatchf411\ui_screen1.crf --depend smartwatchf411\ui_screen1.d)
+I (..\Drivers\Middlewares\GUI_APP\screens\../ui.h)(0x69424B89)
 I (../Drivers/Middlewares/lvgl/lvgl.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/misc/lv_log.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/misc/../lv_conf_internal.h)(0x65707EAF)
@@ -24619,13 +24755,13 @@ I (../Drivers/Middlewares/lvgl/src/extra/widgets/colorwheel/lv_colorwheel.h)(0x6
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/led/lv_led.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/imgbtn/lv_imgbtn.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/span/lv_span.h)(0x65707EAF)
-I (..\Drivers\Middlewares\GUI_APP\screens\../ui_helpers.h)(0x6940FF85)
-I (..\Drivers\Middlewares\GUI_APP\screens\../ui_events.h)(0x6940FF85)
-I (..\Drivers\Middlewares\GUI_APP\screens\../screens/ui_Screen1.h)(0x6940FF85)
-I (..\Drivers\Middlewares\GUI_APP\screens\../screens/ui_Screen2.h)(0x6940FF85)
-F (..\Drivers\Middlewares\GUI_APP\components\ui_comp_hook.c)(0x6940FF85)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc -I ../Drivers/Middlewares/lvgl -I ../Drivers/Middlewares/lvgl/src -I ../Drivers/Middlewares/lvgl/examples -I ../Drivers/Middlewares/lvgl/examples/porting -I ../Drivers/Middlewares/lvgl/demos -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/Middlewares/MYGUI -I ../Drivers/Middlewares/GUI_APP -I ../Drivers/Middlewares/GUI_APP/screens-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\ui_comp_hook.o --omf_browse smartwatchf411\ui_comp_hook.crf --depend smartwatchf411\ui_comp_hook.d)
-F (..\Drivers\Middlewares\GUI_APP\ui_events.c)(0x6940D22E)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc -I ../Drivers/Middlewares/lvgl -I ../Drivers/Middlewares/lvgl/src -I ../Drivers/Middlewares/lvgl/examples -I ../Drivers/Middlewares/lvgl/examples/porting -I ../Drivers/Middlewares/lvgl/demos -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/Middlewares/MYGUI -I ../Drivers/Middlewares/GUI_APP -I ../Drivers/Middlewares/GUI_APP/screens-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\ui_events.o --omf_browse smartwatchf411\ui_events.crf --depend smartwatchf411\ui_events.d)
-I (..\Drivers\Middlewares\GUI_APP\ui.h)(0x6940FF85)
+I (..\Drivers\Middlewares\GUI_APP\screens\../ui_helpers.h)(0x69424B89)
+I (..\Drivers\Middlewares\GUI_APP\screens\../ui_events.h)(0x69424B89)
+I (..\Drivers\Middlewares\GUI_APP\screens\../screens/ui_Screen1.h)(0x69424B89)
+I (..\Drivers\Middlewares\GUI_APP\screens\../screens/ui_Screen2.h)(0x69424B89)
+F (..\Drivers\Middlewares\GUI_APP\components\ui_comp_hook.c)(0x69424B89)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc -I ../Drivers/Middlewares/lvgl -I ../Drivers/Middlewares/lvgl/src -I ../Drivers/Middlewares/lvgl/examples -I ../Drivers/Middlewares/lvgl/examples/porting -I ../Drivers/Middlewares/lvgl/demos -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/Middlewares/MYGUI -I ../Drivers/Middlewares/GUI_APP -I ../Drivers/Middlewares/GUI_APP/screens-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\ui_comp_hook.o --omf_browse smartwatchf411\ui_comp_hook.crf --depend smartwatchf411\ui_comp_hook.d)
+F (..\Drivers\Middlewares\GUI_APP\ui_events.c)(0x694206C8)(--c99 -c --cpu Cortex-M4.fp -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ../Core/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc -I ../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I ../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I ../Drivers/CMSIS/Include -I ../Drivers/User/Inc -I ../Drivers/Middlewares/lvgl -I ../Drivers/Middlewares/lvgl/src -I ../Drivers/Middlewares/lvgl/examples -I ../Drivers/Middlewares/lvgl/examples/porting -I ../Drivers/Middlewares/lvgl/demos -I ../Middlewares/Third_Party/FreeRTOS/Source/include -I ../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2 -I ../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F -I ../Drivers/Middlewares/MYGUI -I ../Drivers/Middlewares/GUI_APP -I ../Drivers/Middlewares/GUI_APP/screens-I.\RTE\_smartwatchf411-IC:\Emb\keil\ARM\PACK\ARM\CMSIS\5.0.1\CMSIS\Include-D__UVISION_VERSION="524" -D_RTE_ -DSTM32F411xE -DUSE_HAL_DRIVER -DSTM32F411xE-o smartwatchf411\ui_events.o --omf_browse smartwatchf411\ui_events.crf --depend smartwatchf411\ui_events.d)
+I (..\Drivers\Middlewares\GUI_APP\ui.h)(0x69424B89)
 I (../Drivers/Middlewares/lvgl/lvgl.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/misc/lv_log.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/misc/../lv_conf_internal.h)(0x65707EAF)
@@ -24755,8 +24891,8 @@ I (../Drivers/Middlewares/lvgl/src/extra/widgets/colorwheel/lv_colorwheel.h)(0x6
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/led/lv_led.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/imgbtn/lv_imgbtn.h)(0x65707EAF)
 I (../Drivers/Middlewares/lvgl/src/extra/widgets/span/lv_span.h)(0x65707EAF)
-I (..\Drivers\Middlewares\GUI_APP\ui_helpers.h)(0x6940FF85)
-I (..\Drivers\Middlewares\GUI_APP\ui_events.h)(0x6940FF85)
-I (..\Drivers\Middlewares\GUI_APP\screens/ui_Screen1.h)(0x6940FF85)
-I (..\Drivers\Middlewares\GUI_APP\screens/ui_Screen2.h)(0x6940FF85)
+I (..\Drivers\Middlewares\GUI_APP\ui_helpers.h)(0x69424B89)
+I (..\Drivers\Middlewares\GUI_APP\ui_events.h)(0x69424B89)
+I (..\Drivers\Middlewares\GUI_APP\screens/ui_Screen1.h)(0x69424B89)
+I (..\Drivers\Middlewares\GUI_APP\screens/ui_Screen2.h)(0x69424B89)
 I (../Drivers/User/Inc/backlight.h)(0x6940C353)

@@ -2240,6 +2240,11 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\Middlewares\MYGUI\gui.c</FilePath>
             </File>
+            <File>
+              <FileName>ui_logic.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\MYGUI\ui_logic.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

@@ -9,10 +9,8 @@ void OnBrightnessChange(lv_event_t * e)
 {
 	// Your code here
 		lv_obj_t * slider = lv_event_get_target(e);
-    
-    // 获取滑块当前的数值 (0-100)
+    // 获取滑块当前的数值 (50-100)
     int32_t value = lv_slider_get_value(slider);
-    
     // 调用你的硬件驱动，改变 PWM
     Back_SetBrightness((uint8_t)value);
 

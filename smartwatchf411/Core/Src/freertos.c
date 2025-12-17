@@ -46,7 +46,8 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-extern volatile TouchEvent g_last_event;//��ҪΪ��������
+extern volatile TouchEvent g_last_event;
+extern void Setup_Gesture_Logic(void);
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -181,6 +182,7 @@ void StartGUITask(void *argument)
   /* USER CODE BEGIN StartGUITask */
 	ui_init();
 	Back_Init(); // <--- 1. 初始化背光 (PWM启动)
+	Setup_Gesture_Logic();
 	uint32_t tick = 0;
   /* Infinite loop */
   for(;;)
