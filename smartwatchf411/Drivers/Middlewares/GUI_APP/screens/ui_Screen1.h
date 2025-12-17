@@ -16,8 +16,9 @@ extern void ui_Screen1_screen_destroy(void);
 extern lv_obj_t * ui_Screen1;
 extern lv_obj_t * ui_Button01;
 extern lv_obj_t * ui_labelclock;
-extern void ui_event_Switch1(lv_event_t * e);
-extern lv_obj_t * ui_Switch1;
+extern lv_obj_t * ui_Button1;
+extern lv_obj_t * ui_Labelspo2;
+extern lv_obj_t * ui_Labelheart;
 extern lv_obj_t * ui_PanelStatus;
 extern lv_obj_t * ui_Bar1;
 extern void ui_event_light(lv_event_t * e);
@@ -25,7 +26,6 @@ extern lv_obj_t * ui_light;
 extern lv_obj_t * ui_PanelFunc;
 extern lv_obj_t * ui_Spinbox1;
 // CUSTOM VARIABLES
-extern lv_obj_t * uic_Switch1;
 
 #ifdef __cplusplus
 } /*extern "C"*/

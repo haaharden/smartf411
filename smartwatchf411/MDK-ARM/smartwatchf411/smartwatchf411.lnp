@@ -314,7 +314,6 @@
 "smartwatchf411\port.o"
 "smartwatchf411\ui_helpers.o"
 "smartwatchf411\ui.o"
-"smartwatchf411\ui_screen2.o"
 "smartwatchf411\ui_screen1.o"
 "smartwatchf411\ui_comp_hook.o"
 "smartwatchf411\ui_events.o"

@@ -5,26 +5,18 @@
 
 #include "../ui.h"
 
-lv_obj_t * uic_Switch1;
 lv_obj_t * ui_Screen1 = NULL;
 lv_obj_t * ui_Button01 = NULL;
 lv_obj_t * ui_labelclock = NULL;
-lv_obj_t * ui_Switch1 = NULL;
+lv_obj_t * ui_Button1 = NULL;
+lv_obj_t * ui_Labelspo2 = NULL;
+lv_obj_t * ui_Labelheart = NULL;
 lv_obj_t * ui_PanelStatus = NULL;
 lv_obj_t * ui_Bar1 = NULL;
 lv_obj_t * ui_light = NULL;
 lv_obj_t * ui_PanelFunc = NULL;
 lv_obj_t * ui_Spinbox1 = NULL;
 // event funtions
-void ui_event_Switch1(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-
-    if(event_code == LV_EVENT_PRESSED) {
-        _ui_screen_change(&ui_Screen2, LV_SCR_LOAD_ANIM_MOVE_LEFT, 20, 0, &ui_Screen2_screen_init);
-    }
-}
-
 void ui_event_light(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -44,11 +36,9 @@ void ui_Screen1_screen_init(void)
     ui_Button01 = lv_btn_create(ui_Screen1);
     lv_obj_set_width(ui_Button01, 100);
     lv_obj_set_height(ui_Button01, 50);
-    lv_obj_set_x(ui_Button01, 42);
-    lv_obj_set_y(ui_Button01, -105);
     lv_obj_set_align(ui_Button01, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_Button01, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_clear_flag(ui_Button01, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    lv_obj_clear_flag(ui_Button01, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
     ui_labelclock = lv_label_create(ui_Button01);
     lv_obj_set_width(ui_labelclock, LV_SIZE_CONTENT);   /// 1
@@ -56,12 +46,30 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_align(ui_labelclock, LV_ALIGN_CENTER);
     lv_label_set_text(ui_labelclock, "00:00:00");
 
-    ui_Switch1 = lv_switch_create(ui_Screen1);
-    lv_obj_set_width(ui_Switch1, 75);
-    lv_obj_set_height(ui_Switch1, 40);
-    lv_obj_set_x(ui_Switch1, -65);
-    lv_obj_set_y(ui_Switch1, -106);
-    lv_obj_set_align(ui_Switch1, LV_ALIGN_CENTER);
+    ui_Button1 = lv_btn_create(ui_Screen1);
+    lv_obj_set_width(ui_Button1, 100);
+    lv_obj_set_height(ui_Button1, 50);
+    lv_obj_set_x(ui_Button1, 0);
+    lv_obj_set_y(ui_Button1, 60);
+    lv_obj_set_align(ui_Button1, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Button1, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_Button1, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Labelspo2 = lv_label_create(ui_Button1);
+    lv_obj_set_width(ui_Labelspo2, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Labelspo2, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Labelspo2, 0);
+    lv_obj_set_y(ui_Labelspo2, -10);
+    lv_obj_set_align(ui_Labelspo2, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Labelspo2, "0");
+
+    ui_Labelheart = lv_label_create(ui_Button1);
+    lv_obj_set_width(ui_Labelheart, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Labelheart, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Labelheart, 0);
+    lv_obj_set_y(ui_Labelheart, 10);
+    lv_obj_set_align(ui_Labelheart, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_Labelheart, "0");
 
     ui_PanelStatus = lv_obj_create(ui_Screen1);
     lv_obj_set_width(ui_PanelStatus, 240);
@@ -122,9 +130,7 @@ void ui_Screen1_screen_init(void)
     lv_spinbox_set_range(ui_Spinbox1, 0, 9999);
     lv_spinbox_set_cursor_pos(ui_Spinbox1, 1 - 1);
 
-    lv_obj_add_event_cb(ui_Switch1, ui_event_Switch1, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_light, ui_event_light, LV_EVENT_ALL, NULL);
-    uic_Switch1 = ui_Switch1;
 
 }
 
@@ -136,8 +142,9 @@ void ui_Screen1_screen_destroy(void)
     ui_Screen1 = NULL;
     ui_Button01 = NULL;
     ui_labelclock = NULL;
-    uic_Switch1 = NULL;
-    ui_Switch1 = NULL;
+    ui_Button1 = NULL;
+    ui_Labelspo2 = NULL;
+    ui_Labelheart = NULL;
     ui_PanelStatus = NULL;
     ui_Bar1 = NULL;
     ui_light = NULL;

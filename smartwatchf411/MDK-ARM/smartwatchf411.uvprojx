@@ -2884,11 +2884,6 @@
               <FilePath>..\Drivers\Middlewares\GUI_APP\ui.c</FilePath>
             </File>
             <File>
-              <FileName>ui_Screen2.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Drivers\Middlewares\GUI_APP\screens\ui_Screen2.c</FilePath>
-            </File>
-            <File>
               <FileName>ui_Screen1.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\Middlewares\GUI_APP\screens\ui_Screen1.c</FilePath>
