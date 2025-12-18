@@ -33,6 +33,7 @@
 #include "algorithm.h"
 #include "blood.h"
 #include "key.h"
+#include "w25q64.h"
 #include "touch.h"
 #include "lcd.h"
 #include "gui.h"
@@ -73,6 +74,7 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+/* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
 
@@ -112,6 +114,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_I2C2_Init();
   MX_TIM2_Init();
+  MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
 	I2C_BusRecover(&hi2c1);
 	I2C_BusRecover(&hi2c2);

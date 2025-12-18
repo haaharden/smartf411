@@ -71,6 +71,8 @@ void Error_Handler(void);
 #define LCD_DC_GPIO_Port GPIOB
 #define LCD_RST_Pin GPIO_PIN_2
 #define LCD_RST_GPIO_Port GPIOB
+#define W25Q_CS_Pin GPIO_PIN_12
+#define W25Q_CS_GPIO_Port GPIOB
 #define TP_RST_Pin GPIO_PIN_8
 #define TP_RST_GPIO_Port GPIOB
 #define TP_INT_Pin GPIO_PIN_9

@@ -420,6 +420,11 @@
               <FileType>1</FileType>
               <FilePath>..\Drivers\User\Src\backlight.c</FilePath>
             </File>
+            <File>
+              <FileName>w25q64.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\User\Src\w25q64.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
