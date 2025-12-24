@@ -27,6 +27,24 @@ extern "C" {
 
 extern lv_obj_t * ui____initial_actions0;
 
+// IMAGES AND IMAGE SETS
+LV_IMG_DECLARE(ui_img_21505875);    // assets/惊讶 (1).png
+LV_IMG_DECLARE(ui_img_1219711373);    // assets/血氧记录 (1).png
+LV_IMG_DECLARE(ui_img_70400119);    // assets/心率 (1).png
+LV_IMG_DECLARE(ui_img_1905141978);    // assets/消耗热量 (1).png
+LV_IMG_DECLARE(ui_img_1907056666);    // assets/WIFI (1).png
+LV_IMG_DECLARE(ui_img_2091611716);    // assets/蓝牙开锁备份2x (1).png
+LV_IMG_DECLARE(ui_img_840545791);    // assets/设置 (1).png
+LV_IMG_DECLARE(ui_img_723305328);    // assets/太阳 (1).png
+
+// FONTS
+LV_FONT_DECLARE(ui_font_fontclock48);
+LV_FONT_DECLARE(ui_font_fontclock24);
+LV_FONT_DECLARE(ui_font_font16);
+LV_FONT_DECLARE(ui_font_chinafont16);
+LV_FONT_DECLARE(ui_font_chinafont32);
+LV_FONT_DECLARE(ui_font_chinafont20);
+
 // UI INIT
 void ui_init(void);
 void ui_destroy(void);

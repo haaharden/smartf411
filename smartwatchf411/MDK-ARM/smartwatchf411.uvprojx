@@ -333,7 +333,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls>--no_multibyte_chars</MiscControls>
               <Define>USE_HAL_DRIVER,STM32F411xE</Define>
               <Undefine></Undefine>
               <IncludePath>../Core/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc;../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F4xx/Include;../Drivers/CMSIS/Include;../Drivers/User/Inc;../Drivers/Middlewares/lvgl;../Drivers/Middlewares/lvgl/src;../Drivers/Middlewares/lvgl/examples;../Drivers/Middlewares/lvgl/examples/porting;../Drivers/Middlewares/lvgl/demos;../Middlewares/Third_Party/FreeRTOS/Source/include;../Middlewares/Third_Party/FreeRTOS/Source/CMSIS_RTOS_V2;../Middlewares/Third_Party/FreeRTOS/Source/portable/RVDS/ARM_CM4F;../Drivers/Middlewares/MYGUI;../Drivers/Middlewares/GUI_APP;../Drivers/Middlewares/GUI_APP/screens</IncludePath>
@@ -2902,6 +2902,76 @@
               <FileName>ui_events.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Drivers\Middlewares\GUI_APP\ui_events.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_font_chinafont16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\fonts\ui_font_chinafont16.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_font_chinafont32.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\fonts\ui_font_chinafont32.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_font_font16.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\fonts\ui_font_font16.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_font_fontclock24.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\fonts\ui_font_fontclock24.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_font_fontclock48.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\fonts\ui_font_fontclock48.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_img_21505875.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\images\ui_img_21505875.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_img_70400119.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\images\ui_img_70400119.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_img_1219711373.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\images\ui_img_1219711373.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_img_1905141978.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\images\ui_img_1905141978.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_img_723305328.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\images\ui_img_723305328.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_img_1907056666.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\images\ui_img_1907056666.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_img_2091611716.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\images\ui_img_2091611716.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_img_840545791.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\images\ui_img_840545791.c</FilePath>
+            </File>
+            <File>
+              <FileName>ui_font_chinafont20.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Drivers\Middlewares\GUI_APP\fonts\ui_font_chinafont20.c</FilePath>
             </File>
           </Files>
         </Group>

@@ -193,12 +193,14 @@ void StartGUITask(void *argument)
         if (tick >= 200) 
 				{
             tick = 0;
-            char buf_time[16];
-            lv_snprintf(buf_time, sizeof(buf_time), "%02d:%02d:%02d",
+            char buf_timeh[16];
+            lv_snprintf(buf_timeh, sizeof(buf_timeh), "%02d:%02d",
                         g_clock_time.hour,
-                        g_clock_time.min,
-                        g_clock_time.sec);
-            lv_label_set_text(ui_labelclock, buf_time);
+                        g_clock_time.min);
+            lv_label_set_text(ui_labelhourmin, buf_timeh);
+						char buf_times[16];
+            lv_snprintf(buf_times, sizeof(buf_times), "%02d%", g_clock_time.sec);
+            lv_label_set_text(ui_Labelsec, buf_times);
             char buf_spo2[16];
             lv_snprintf(buf_spo2, sizeof(buf_spo2), "SpO2: %d%%", g_spo2_data.spo2);
             lv_label_set_text(ui_Labelspo2, buf_spo2);
