@@ -180,8 +180,9 @@ void MX_FREERTOS_Init(void) {
 void StartGUITask(void *argument)
 {
   /* USER CODE BEGIN StartGUITask */
+	my_decoder_init();
 	ui_init();
-	Back_Init(); // <--- 1. 初始化背光 (PWM启动)
+	Back_Init(); // 初始化背光 (PWM启动)
 	Setup_Gesture_Logic();
 	uint32_t tick = 0;
   /* Infinite loop */

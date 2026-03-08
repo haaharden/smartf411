@@ -4,6 +4,7 @@
 // Project name: SquareLine_Project
 
 #include "../ui.h"
+#include "gui.h"
 
 lv_obj_t * ui_Screen1 = NULL;
 lv_obj_t * ui_PanelBtnBG = NULL;
@@ -344,7 +345,7 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_style_bg_opa(ui_Button2, 255, LV_PART_MAIN | LV_STATE_CHECKED);
 
     ui_Image14 = lv_img_create(ui_Button2);
-    lv_img_set_src(ui_Image14, &ui_img_2091611716);
+    lv_img_set_src(ui_Image14, &my_external_img);
     lv_obj_set_width(ui_Image14, LV_SIZE_CONTENT);   /// 32
     lv_obj_set_height(ui_Image14, LV_SIZE_CONTENT);    /// 32
     lv_obj_set_align(ui_Image14, LV_ALIGN_CENTER);

@@ -78,23 +78,10 @@ void lv_port_disp_init(void)
      *      and you only need to change the frame buffer's address.
      */
 
-    /* Example for 1) */
     static lv_disp_draw_buf_t draw_buf_dsc_1;
-    static lv_color_t buf_1[MY_DISP_HOR_RES * 20];                          /*A buffer for 10 rows*/
-    lv_disp_draw_buf_init(&draw_buf_dsc_1, buf_1, NULL, MY_DISP_HOR_RES * 20);   /*Initialize the display buffer*/
-
-    /* Example for 2) */
-//    static lv_disp_draw_buf_t draw_buf_dsc_2;
-//    static lv_color_t buf_2_1[MY_DISP_HOR_RES * 10];                        /*A buffer for 10 rows*/
-//    static lv_color_t buf_2_2[MY_DISP_HOR_RES * 10];                        /*An other buffer for 10 rows*/
-//    lv_disp_draw_buf_init(&draw_buf_dsc_2, buf_2_1, buf_2_2, MY_DISP_HOR_RES * 10);   /*Initialize the display buffer*/
-
-    /* Example for 3) also set disp_drv.full_refresh = 1 below*/
-//    static lv_disp_draw_buf_t draw_buf_dsc_3;
-//    static lv_color_t buf_3_1[MY_DISP_HOR_RES * MY_DISP_VER_RES];            /*A screen sized buffer*/
-//    static lv_color_t buf_3_2[MY_DISP_HOR_RES * MY_DISP_VER_RES];            /*Another screen sized buffer*/
-//    lv_disp_draw_buf_init(&draw_buf_dsc_3, buf_3_1, buf_3_2,
-//                          MY_DISP_VER_RES * LV_VER_RES_MAX);   /*Initialize the display buffer*/
+    static lv_color_t buf_1[MY_DISP_HOR_RES * 20]; 
+    static lv_color_t buf_2[MY_DISP_HOR_RES * 20];   //这是双缓冲    
+    lv_disp_draw_buf_init(&draw_buf_dsc_1, buf_1, buf_2, MY_DISP_HOR_RES * 20);  
 
     /*-----------------------------------
      * Register the display in LVGL
@@ -185,9 +172,6 @@ static void disp_flush(lv_disp_drv_t * disp_drv,
     uint32_t px_cnt = w * h;
     uint32_t byte_len = px_cnt * sizeof(lv_color_t);
 
-    // 如果你的 LVGL 缓冲就是部分行（比如 240x20），这个 byte_len 一般远小于 65535
-    // 若你用的是全屏 buffer（240x280），注意 DMA 最大长度限制，后面我会提一嘴
-
     // 1. 保存当前驱动指针，供 DMA 完成时调用 lv_disp_flush_ready
     s_disp_drv_act = disp_drv;
 
@@ -201,44 +185,16 @@ static void disp_flush(lv_disp_drv_t * disp_drv,
     //    等 DMA 传输完成中断里调用 tft_dma_transfer_done_isr -> lv_disp_flush_ready
 }
 
-/*static void disp_flush(lv_disp_drv_t * disp_drv,
-                       const lv_area_t * area,
-                       lv_color_t * color_p)
-{
-    if(disp_flush_enabled) {
-
-        TFT_FlushArea(area->x1,
-                      area->y1,
-                      area->x2,
-                      area->y2,
-                      color_p);
-    }
-
-    // 通知 LVGL：这一块刷完了
-    lv_disp_flush_ready(disp_drv);
-}*/
-
-/*OPTIONAL: GPU INTERFACE*/
-
-/*If your MCU has hardware accelerator (GPU) then you can use it to fill a memory with a color*/
-//static void gpu_fill(lv_disp_drv_t * disp_drv, lv_color_t * dest_buf, lv_coord_t dest_width,
-//                    const lv_area_t * fill_area, lv_color_t color)
-//{
-//    /*It's an example code which should be done by your GPU*/
-//    int32_t x, y;
-//    dest_buf += dest_width * fill_area->y1; /*Go to the first line*/
-//
-//    for(y = fill_area->y1; y <= fill_area->y2; y++) {
-//        for(x = fill_area->x1; x <= fill_area->x2; x++) {
-//            dest_buf[x] = color;
-//        }
-//        dest_buf+=dest_width;    /*Go to the next line*/
-//    }
-//}
-
-
 #else /*Enable this file at the top*/
-
+//DMA中断回调
+HAL_SPI_TxCpltCallback()
+{
+	if(hspi->Instance == SPI1) 
+	{
+		HAL_GPIO_WritePin(LCD_CS_GPIO_Port, LCD_CS_Pin, GPIO_PIN_SET);
+		lv_disp_flush_ready();
+	}
+}
 /*This dummy typedef exists purely to silence -Wpedantic.*/
 typedef int keep_pedantic_happy;
 #endif

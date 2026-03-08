@@ -1,5 +1,5 @@
 #include "backlight.h"
-#include "tim.h"   // 确保这里面包含了 extern TIM_HandleTypeDef htim2;
+#include "tim.h"   // 这里面包含了 extern TIM_HandleTypeDef htim2;
 
 /* 修改宏定义：现在的定时器是 TIM2，周期是 999 */
 #define BACK_PWM_TIM       &htim2         // <--- 改成 TIM2

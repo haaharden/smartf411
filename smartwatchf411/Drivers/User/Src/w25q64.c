@@ -29,9 +29,7 @@ uint32_t W25Q_ReadID(void) {
     return id;
 }
 
-/* ================= W25Q64 写入驱动核心 ================= */
-
-// 1. 写使能 (写入/擦除前必须调用)
+// 写使能 (写入/擦除前必须调用)
 void W25Q_WriteEnable(void) {
     W25Q_CS_LOW();
     uint8_t cmd = 0x06;
@@ -39,7 +37,7 @@ void W25Q_WriteEnable(void) {
     W25Q_CS_HIGH();
 }
 
-// 2. 等待忙状态结束 (写入后必须等待)
+// 等待忙状态结束 (写入后必须等待)
 void W25Q_WaitForWriteEnd(void) {
     uint8_t status = 0;
     uint8_t cmd = 0x05; // 读状态寄存器1
@@ -52,7 +50,7 @@ void W25Q_WaitForWriteEnd(void) {
     } while ((status & 0x01) == 0x01);
 }
 
-// 3. 擦除一个扇区 (4KB)
+// 擦除一个扇区 (4KB)
 // addr: 扇区地址 (0, 4096, 8192...)
 void W25Q_EraseSector(uint32_t addr) {
     W25Q_WriteEnable();
@@ -70,7 +68,7 @@ void W25Q_EraseSector(uint32_t addr) {
     W25Q_WaitForWriteEnd(); // 擦除需要时间，必须死等
 }
 
-// 4. 页写入 (最多一次写 256 字节)
+// 页写入 (最多一次写 256 字节)
 void W25Q_PageProgram(uint32_t addr, const uint8_t *data, uint16_t size) {
     W25Q_WriteEnable();
     
@@ -87,37 +85,53 @@ void W25Q_PageProgram(uint32_t addr, const uint8_t *data, uint16_t size) {
     W25Q_WaitForWriteEnd();
 }
 
-// 5. 【封装】写入大量数据 (自动处理翻页和擦除)
+// 【封装】写入大量数据 (自动处理翻页和擦除)
 // start_addr: W25Q64里的起始地址 (比如 0)
 // data: 图片数组指针
 // size: 数组总大小
-void W25Q_WriteData_Smart(uint32_t start_addr, const uint8_t *data, uint32_t size) {
+void W25Q_WriteData_Smart(uint32_t start_addr, const uint8_t *data, uint32_t size)
+{
     uint32_t addr = start_addr;
-    uint32_t index = 0;
     uint32_t remain = size;
+    uint32_t index = 0;
 
-    // 1. 先擦除涉及到的区域 (按4KB擦除)
-    // 注意：这里简单暴力擦除，每4KB擦一次
-    uint32_t sector_count = (size / 4096) + 1;
-    for(int i=0; i<sector_count; i++) {
-        W25Q_EraseSector(addr + i*4096);
-        // 可选：反转LED表示正在擦除
-        HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13); 
-    }
+    /* ---------- 1. 擦除涉及到的扇区（4KB对齐） ---------- */
+    uint32_t sector_start = start_addr & ~0xFFF;               // 起始扇区地址
+    uint32_t end_addr     = start_addr + size - 1;             // 最后字节地址
+    uint32_t sector_end   = end_addr & ~0xFFF;                 // 结束扇区地址
+    uint32_t sector_count = (sector_end - sector_start) / 4096 + 1;
 
-    // 2. 开始写入
-    while(remain > 0) {
-        // 每次最多写 256 字节，且不能跨页
-        // 这里简化逻辑，每次只写 256
-        uint16_t write_len = (remain > 256) ? 256 : remain;
-        
-        W25Q_PageProgram(addr, &data[index], write_len);
-        
-        addr += write_len;
-        index += write_len;
-        remain -= write_len;
-        
-        // 可选：写入时LED快闪
+    for (uint32_t i = 0; i < sector_count; i++) {
+        uint32_t sector_addr = sector_start + i * 4096;
+        W25Q_EraseSector(sector_addr);
+        // 可选：LED 闪烁指示正在擦除
         HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
     }
+
+    /* ---------- 2. 按页写入（处理页内偏移） ---------- */
+    while (remain > 0) {
+        // 计算当前页剩余空间
+        uint32_t page_offset = addr & 0xFF;               // 页内偏移 (0~255)
+        uint32_t page_remain = 256 - page_offset;         // 当前页剩余可写字节数
+
+        uint32_t write_len = (remain < page_remain) ? remain : page_remain;
+
+        W25Q_PageProgram(addr, &data[index], (uint16_t)write_len);
+
+        addr   += write_len;
+        index  += write_len;
+        remain -= write_len;
+    }
+}
+// 读函数
+void W25Q_ReadData(uint32_t addr, uint8_t *data, uint32_t size) {
+    W25Q_CS_LOW();
+    uint8_t cmd[4];
+    cmd[0] = 0x03; // 读取指令
+    cmd[1] = (uint8_t)(addr >> 16);
+    cmd[2] = (uint8_t)(addr >> 8);
+    cmd[3] = (uint8_t)(addr);
+    HAL_SPI_Transmit(&hspi2, cmd, 4, 100);
+    HAL_SPI_Receive(&hspi2, data, size, 1000);
+    W25Q_CS_HIGH();
 }

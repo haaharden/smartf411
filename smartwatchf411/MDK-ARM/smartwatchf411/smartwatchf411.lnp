@@ -335,4 +335,4 @@
 --library_type=microlib --strict --scatter "smartwatchf411\smartwatchf411.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
---list "smartwatchf411.map" -o smartwatchf411\smartwatchf411.axf
+--list "..\..\..\..\..\..\Documents\map\smartwatchf411.map" -o smartwatchf411\smartwatchf411.axf

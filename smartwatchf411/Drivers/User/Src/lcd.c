@@ -68,12 +68,11 @@ void tft_write_data_dma(uint8_t *data, uint16_t size)
 }
 
 /* 发送一串数据 */
-//有些低效，之后肯定是要在外面通义片选和dc，不用没传一次数据就拉一次
 static void tft_write_data(const uint8_t *data, uint16_t size)
 {
     TFT_CS_LOW();
     TFT_DC_DATA();
-    HAL_SPI_Transmit(&TFT_SPI, (uint8_t *)data, size, HAL_MAX_DELAY);
+    HAL_SPI_Transmit_DMA(&TFT_SPI, (uint8_t *)data, size);
     TFT_CS_HIGH();
 }
 

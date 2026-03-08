@@ -74,12 +74,12 @@ uint8_t CST816_ReadRegs(uint8_t reg, uint8_t *buf, uint16_t len)
     return 1;
 }
 
-/*------------------ 1. 中断回调：把“有触摸了”记下来 ------------------*/
+
 
 // EXTI 中断回调，在 stm32f4xx_it.c 里调用 HAL_GPIO_EXTI_IRQHandler 后自动进这里
 void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 {
-    if (GPIO_Pin == TP_INT_Pin)   // TP_INT_Pin 在 main.h 里，一般就是 GPIO_PIN_x
+    if (GPIO_Pin == TP_INT_Pin)   // TP_INT_Pin 在 main.h
     {
         // 只做简单的标志位，不在中断里读 I2C
 				//注意，flag只能判断是不是抬起和松手的状态变了，不能判断手是否在屏幕上
@@ -92,15 +92,14 @@ void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
 
 void CST816T_Init(void)
 {
-    // ① 硬件复位：拉低 RST 再拉高
-    //    这里假设你在 CubeMX 里把 TP_RST 配成了普通推挽输出
+    // 硬件复位：拉低 RST 再拉高
     HAL_GPIO_WritePin(TP_RST_GPIO_Port, TP_RST_Pin, GPIO_PIN_RESET);
     HAL_Delay(10);
     HAL_GPIO_WritePin(TP_RST_GPIO_Port, TP_RST_Pin, GPIO_PIN_SET);
     HAL_Delay(50);
 
-    // ②（可选）关自动休眠、配置中断行为
-    // 根据 CST816S/T 寄存器手册：
+    // 关自动休眠、配置中断行为
+    // 根据 CST816T 寄存器手册：
     // DisAutoSleep(0xFE) 非 0 => 禁止自动进低功耗
     CST816_WriteReg(DisAutoSleep, 0x01);
 
@@ -112,15 +111,15 @@ void CST816T_Init(void)
     // 0x70 = 0b0111_0000，对大部分场景够用
     CST816_WriteReg(IrqCrl, 0x70);
 
-    // ③（可选）读一下芯片 ID，验证 I2C 是否正常
+    // 读一下芯片 ID，验证 I2C 是否正常
     uint8_t id = 0;
     if (CST816_ReadRegs(ChipID, &id, 1))
     {
-        // 你可以在这里 printf 看一下 ID 值，用于调试
+        // 可以在这里 printf 看一下 ID 值，用于调试
         // printf("CST816 ChipID: 0x%02X\r\n", id);
     }
 
-    // ④ 读一次 GestureID，把上电残留的中断状态清掉
+    // 读一次 GestureID，把上电残留的中断状态清掉
     uint8_t dummy;
     CST816_ReadRegs(GestureID, &dummy, 1);
 }

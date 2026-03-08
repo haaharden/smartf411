@@ -102,7 +102,7 @@ int main(void)
   SystemClock_Config();
 
   /* USER CODE BEGIN SysInit */
-	HAL_Delay(200);     
+	HAL_Delay(200); //�����ϵ���ʱ    
   /* USER CODE END SysInit */
 
   /* Initialize all configured peripherals */
@@ -116,8 +116,7 @@ int main(void)
   MX_TIM2_Init();
   MX_SPI2_Init();
   /* USER CODE BEGIN 2 */
-	I2C_BusRecover(&hi2c1);
-	I2C_BusRecover(&hi2c2);
+	//W25Q_WriteData_Smart(0, image_data, 134400);
 	lv_init();
 	lv_port_disp_init();
 	lv_port_indev_init();
